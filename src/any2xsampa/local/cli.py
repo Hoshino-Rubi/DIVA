@@ -47,7 +47,13 @@ def add_parsers(sub):
     p.add_argument("template_path")
     p.add_argument("--output-dir")
     p = sub.add_parser("models", help="Verify local runtime packages.")
-    p.add_subparsers(dest="models_command", required=True).add_parser("list")
+    commands = p.add_subparsers(dest="models_command", required=True)
+    commands.add_parser("list")
+    commands.add_parser("status")
+    setup = commands.add_parser("install", help="Download missing fixed models, or import verified offline assets")
+    setup.add_argument("--proxy")
+    setup.add_argument("--offline-dir")
+    setup.add_argument("--reset-downloads", action="store_true")
     sub.add_parser("doctor", help="Check configuration without loading any model.")
 
 def run(args):
@@ -62,6 +68,8 @@ def run(args):
     signal.signal(signal.SIGINT, lambda *_: cancel.set())
     try:
         action = args.command
+        if action == "models" and args.models_command in {"status", "install"}:
+            action = "model_setup_status" if args.models_command == "status" else "install_models"
         if action in {"score", "import-score"}:
             return engine.execute("build_score" if action == "score" else "import_score", params, cancel, progress)
         if action == "export-vsqx":

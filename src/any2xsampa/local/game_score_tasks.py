@@ -24,7 +24,9 @@ def runtime_config(snapshot: str | None = None) -> tuple[Path, str]:
     if not directory.is_absolute():
         directory = (config_file.parent if config else ROOT) / directory
     if not (directory / "snapshot-lock.json").is_file():
-        raise FileNotFoundError("GAME is not configured. Set --snapshot, ANY2XSAMPA_GAME_SNAPSHOT or local-notes.json; no fallback or download.")
+        raise FileNotFoundError("GAME is not configured. Set --snapshot, ANY2XSAMPA_GAME_SNAPSHOT or local-notes.json; install it with models install or configure a local snapshot; no inference fallback.")
+    from any2xsampa.music.game_notes import load_snapshot
+    load_snapshot(directory)
     python = Path(config.get("python", sys.executable))
     if not python.is_absolute():
         python = config_file.parent / python

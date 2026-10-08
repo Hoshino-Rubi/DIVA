@@ -49,6 +49,9 @@ public sealed class LocalTaskService : IDisposable
                 if (!File.Exists(registry)) throw new FileNotFoundException("找不到此版本的模型注册表。", registry);
                 start.Environment["ANY2XSAMPA_MODELS"] = registry;
             }
+            start.Environment.Remove("PYTHONHOME");
+            start.Environment.Remove("ANY2XSAMPA_NOTES");
+            start.Environment.Remove("ANY2XSAMPA_GAME_SNAPSHOT");
             foreach (var name in new[] { "OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS" }) start.Environment[name] = "4";
             start.Environment["HF_HUB_OFFLINE"] = start.Environment["TRANSFORMERS_OFFLINE"] = "1";
             process = Process.Start(start) ?? throw new IOException("Cannot start local worker");
@@ -120,7 +123,7 @@ public sealed class LocalTaskService : IDisposable
             await SendAsync(new { protocol=Protocol, id, command, @params=parameters });
             // A whole-file task has a bounded per-window worker watchdog, but may
             // legitimately outlive the timeout for a single window.
-            try { return command is "recognize-whole" or "build_score"
+            try { return command is "recognize-whole" or "build_score" or "install_models"
                     ? await completion.Task.WaitAsync(ct)
                     : await completion.Task.WaitAsync(TimeSpan.FromSeconds(960), ct); }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)

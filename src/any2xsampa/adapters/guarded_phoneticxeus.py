@@ -15,6 +15,12 @@ class GuardedPhoneHead:
         self.candidate=read_json(candidate_path)
         if self.candidate.get('schema_version')!='guarded_phone_candidate_v1' or self.candidate.get('default_replacement') is not False or self.candidate.get('test_opening') is not False:
             raise ValueError('unsupported or auto-deploying candidate')
+        # Portable packages retain the frozen hashes and resolve only file locations.
+        for key in ('policy', 'teacher_checkpoint', 'student_checkpoint'):
+            item = dict(self.candidate[key])
+            file = Path(item['path'])
+            item['path'] = str((candidate_path.parent / file).resolve())
+            self.candidate[key] = item
         policy=self.candidate['policy'];verify_file(Path(policy['path']),policy['sha256']);self.policy=read_json(Path(policy['path']))
         self.torch,self.head,self.vocabulary=torch,head,vocabulary
         if len(vocabulary)!=428 or any(p.requires_grad for p in head.parameters()):raise ValueError('guard requires frozen 428-label head')

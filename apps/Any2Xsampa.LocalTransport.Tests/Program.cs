@@ -2,6 +2,27 @@ using Any2Xsampa_Desktop.Services;
 using System.Text.Json;
 using System.Security.Cryptography;
 
+if(args.Length==4 && args[0]=="--portable-setup")
+{
+    using var portable=new LocalTaskService(args[1]);
+    var before=await portable.CallAsync("model_setup_status",new{});
+    if(!before.GetProperty("enabled").GetBoolean())throw new Exception("Installer unavailable");
+    int progressCount=0;
+    portable.Progress+=_=>progressCount++;
+    var done=await portable.CallAsync("install_models",new{offline_dir=args[2]});
+    if(!done.GetProperty("ready").GetBoolean())throw new Exception("Offline installation incomplete");
+    var models=await portable.CallAsync("models",new{});
+    if(!models.GetProperty("models").EnumerateArray().All(x=>x.GetProperty("available").GetBoolean()))
+        throw new Exception("Portable runtime verification failed");
+    var note=await portable.CallAsync("note_runtime",new{});
+    if(!note.GetProperty("available").GetBoolean())throw new Exception("GAME not ready");
+    var output=JsonSerializer.Serialize(new{status="passed",transport="CSharp_stdio",
+        installation_ready=true,model_forwards=0,progressCount,models,note});
+    await File.WriteAllTextAsync(args[3],output);
+    Console.WriteLine(output);
+    return;
+}
+
 if(args.Length>=3 && args[0]=="--validate-vsqx")
 {
     var settings=new System.Xml.XmlReaderSettings{ValidationType=System.Xml.ValidationType.Schema};
