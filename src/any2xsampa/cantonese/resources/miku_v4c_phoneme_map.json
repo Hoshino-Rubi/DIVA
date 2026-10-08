@@ -1,0 +1,480 @@
+{
+  "schema_version": "cantonese_v4c_map_v1",
+  "target": "miku_v4c",
+  "phoneme_map": {
+    "aa": {
+      "ipa": [
+        "aː"
+      ],
+      "v4c": [
+        "a"
+      ],
+      "notes": []
+    },
+    "a": {
+      "ipa": [
+        "ɐ"
+      ],
+      "v4c": [
+        "a"
+      ],
+      "notes": [
+        "Cantonese short /ɐ/ approximated with V4C a"
+      ]
+    },
+    "e": {
+      "ipa": [
+        "ɛː"
+      ],
+      "v4c": [
+        "@`"
+      ],
+      "notes": [
+        "V4C Chinese does not expose plain e in the phoneme table; @` is the closest listed open-mid/erhua-colored vowel candidate"
+      ]
+    },
+    "i": {
+      "ipa": [
+        "i"
+      ],
+      "v4c": [
+        "i"
+      ],
+      "notes": []
+    },
+    "o": {
+      "ipa": [
+        "ɔ"
+      ],
+      "v4c": [
+        "o"
+      ],
+      "notes": []
+    },
+    "ou": {
+      "ipa": [
+        "ou"
+      ],
+      "v4c": [
+        "@U"
+      ],
+      "notes": [
+        "V4C Chinese exposes ou-like final as @U; do not split into o+u"
+      ]
+    },
+    "u": {
+      "ipa": [
+        "u"
+      ],
+      "v4c": [
+        "u"
+      ],
+      "notes": []
+    },
+    "yu": {
+      "ipa": [
+        "yː"
+      ],
+      "v4c": [
+        "j",
+        "u"
+      ],
+      "notes": [
+        "V4C has no front rounded /y/; approximated as j+u"
+      ]
+    },
+    "oe": {
+      "ipa": [
+        "œː"
+      ],
+      "v4c": [
+        "o",
+        "e"
+      ],
+      "notes": [
+        "V4C has no /œː/; approximated with o+e vowel color"
+      ]
+    },
+    "eo": {
+      "ipa": [
+        "ɵ"
+      ],
+      "v4c": [
+        "e",
+        "o"
+      ],
+      "notes": [
+        "V4C has no /ɵ/; approximated with e+o vowel color"
+      ]
+    },
+    "eoi": {
+      "ipa": [
+        "ɵ",
+        "y"
+      ],
+      "v4c": [
+        "e",
+        "u",
+        "i"
+      ],
+      "notes": [
+        "eoi /ɵy/ approximated as e+u+i; review singer intelligibility"
+      ]
+    },
+    "m": {
+      "ipa": [
+        "m̩"
+      ],
+      "v4c": [
+        "m"
+      ],
+      "notes": [
+        "syllabic m kept as nasal phoneme evidence"
+      ]
+    },
+    "ng": {
+      "ipa": [
+        "ŋ̍"
+      ],
+      "v4c": [
+        "N"
+      ],
+      "notes": [
+        "syllabic ng kept as nasal phoneme evidence"
+      ]
+    },
+    "ai": {
+      "ipa": [
+        "ɐ",
+        "i"
+      ],
+      "v4c": [
+        "aI"
+      ],
+      "notes": [
+        "V4C Chinese exposes ai as one final token aI; do not split into a+i"
+      ]
+    },
+    "au": {
+      "ipa": [
+        "ɐ",
+        "u"
+      ],
+      "v4c": [
+        "AU"
+      ],
+      "notes": [
+        "V4C Chinese exposes au as one final token AU; do not split into a+u"
+      ]
+    },
+    "ei": {
+      "ipa": [
+        "e",
+        "i"
+      ],
+      "v4c": [
+        "ei"
+      ],
+      "notes": [
+        "V4C Chinese exposes ei as one final token; do not split into e+i because split tokens can mute Miku V4C"
+      ]
+    },
+    "oi": {
+      "ipa": [
+        "ɔː",
+        "i"
+      ],
+      "v4c": [
+        "aI"
+      ],
+      "notes": [
+        "Cantonese oi approximated with the closest listed V4C final aI; requires singer review"
+      ]
+    },
+    "ui": {
+      "ipa": [
+        "u",
+        "i"
+      ],
+      "v4c": [
+        "uei"
+      ],
+      "notes": [
+        "Cantonese ui approximated with listed Mandarin/V4C final uei"
+      ]
+    },
+    "iu": {
+      "ipa": [
+        "i",
+        "u"
+      ],
+      "v4c": [
+        "i@U"
+      ],
+      "notes": [
+        "Cantonese iu approximated with listed Mandarin/V4C final i@U"
+      ]
+    },
+    "onset_b": {
+      "ipa": [
+        "p"
+      ],
+      "v4c": [
+        "p"
+      ],
+      "notes": [
+        "Jyutping b is unaspirated /p/"
+      ]
+    },
+    "onset_p": {
+      "ipa": [
+        "pʰ"
+      ],
+      "v4c": [
+        "p"
+      ],
+      "notes": [
+        "aspiration not represented in V4C candidate"
+      ]
+    },
+    "onset_d": {
+      "ipa": [
+        "t"
+      ],
+      "v4c": [
+        "t"
+      ],
+      "notes": [
+        "Jyutping d is unaspirated /t/"
+      ]
+    },
+    "onset_t": {
+      "ipa": [
+        "tʰ"
+      ],
+      "v4c": [
+        "t"
+      ],
+      "notes": [
+        "aspiration not represented in V4C candidate"
+      ]
+    },
+    "onset_g": {
+      "ipa": [
+        "k"
+      ],
+      "v4c": [
+        "k"
+      ],
+      "notes": [
+        "Jyutping g is unaspirated /k/"
+      ]
+    },
+    "onset_k": {
+      "ipa": [
+        "kʰ"
+      ],
+      "v4c": [
+        "k"
+      ],
+      "notes": [
+        "aspiration not represented in V4C candidate"
+      ]
+    },
+    "onset_gw": {
+      "ipa": [
+        "k",
+        "w"
+      ],
+      "v4c": [
+        "k",
+        "w"
+      ],
+      "notes": [
+        "gw kept as labialized velar sequence k+w"
+      ]
+    },
+    "onset_kw": {
+      "ipa": [
+        "kʰ",
+        "w"
+      ],
+      "v4c": [
+        "k",
+        "w"
+      ],
+      "notes": [
+        "kw kept as k+w; aspiration dropped for V4C"
+      ]
+    },
+    "onset_z": {
+      "ipa": [
+        "ts"
+      ],
+      "v4c": [
+        "ts"
+      ],
+      "notes": []
+    },
+    "onset_c": {
+      "ipa": [
+        "tsʰ"
+      ],
+      "v4c": [
+        "ts"
+      ],
+      "notes": [
+        "aspiration not represented in V4C candidate"
+      ]
+    },
+    "onset_s": {
+      "ipa": [
+        "s"
+      ],
+      "v4c": [
+        "s"
+      ],
+      "notes": []
+    },
+    "onset_f": {
+      "ipa": [
+        "f"
+      ],
+      "v4c": [
+        "f"
+      ],
+      "notes": []
+    },
+    "onset_h": {
+      "ipa": [
+        "h"
+      ],
+      "v4c": [
+        "x"
+      ],
+      "notes": [
+        "Jyutping h /h/ maps better to the Miku V4C Chinese unvoiced fricative x than to English h"
+      ]
+    },
+    "onset_l": {
+      "ipa": [
+        "l"
+      ],
+      "v4c": [
+        "l"
+      ],
+      "notes": []
+    },
+    "onset_n": {
+      "ipa": [
+        "n"
+      ],
+      "v4c": [
+        "n"
+      ],
+      "notes": []
+    },
+    "onset_m": {
+      "ipa": [
+        "m"
+      ],
+      "v4c": [
+        "m"
+      ],
+      "notes": []
+    },
+    "onset_ng": {
+      "ipa": [
+        "ŋ"
+      ],
+      "v4c": [
+        "N"
+      ],
+      "notes": []
+    },
+    "onset_w": {
+      "ipa": [
+        "w"
+      ],
+      "v4c": [
+        "w"
+      ],
+      "notes": []
+    },
+    "onset_j": {
+      "ipa": [
+        "j"
+      ],
+      "v4c": [
+        "j"
+      ],
+      "notes": []
+    },
+    "coda_m": {
+      "ipa": [
+        "m"
+      ],
+      "v4c": [
+        "m"
+      ],
+      "notes": [
+        "nasal coda kept as phoneme evidence"
+      ]
+    },
+    "coda_n": {
+      "ipa": [
+        "n"
+      ],
+      "v4c": [
+        "n"
+      ],
+      "notes": [
+        "nasal coda kept as phoneme evidence"
+      ]
+    },
+    "coda_ng": {
+      "ipa": [
+        "ŋ"
+      ],
+      "v4c": [
+        "N"
+      ],
+      "notes": [
+        "nasal coda kept as phoneme evidence"
+      ]
+    },
+    "coda_p": {
+      "ipa": [
+        "p̚"
+      ],
+      "v4c": [
+        "p"
+      ],
+      "notes": [
+        "entering-tone unreleased -p represented as final p candidate"
+      ]
+    },
+    "coda_t": {
+      "ipa": [
+        "t̚"
+      ],
+      "v4c": [
+        "t"
+      ],
+      "notes": [
+        "entering-tone unreleased -t represented as final t candidate"
+      ]
+    },
+    "coda_k": {
+      "ipa": [
+        "k̚"
+      ],
+      "v4c": [
+        "k"
+      ],
+      "notes": [
+        "entering-tone unreleased -k represented as final k candidate"
+      ]
+    }
+  }
+}

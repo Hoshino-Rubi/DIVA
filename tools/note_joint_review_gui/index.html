@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' file: data:; media-src 'self' file: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'">
+  <title>原唱音符审核 · 五段集中审计</title>
+  <style>/* INLINE_CSS */</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="identity"><strong>原唱音符审核</strong><span>五首训练歌 · 同一原唱时钟</span></div>
+    <div class="top-actions">
+      <label>审核人 <input id="reviewer" autocomplete="name" placeholder="姓名或代号"></label>
+      <button type="button" id="save" title="保存本机草稿">保存草稿</button>
+      <label class="file-button" title="导入本包已有答案">导入 JSON<input id="import" type="file" accept=".json,application/json"></label>
+      <button type="button" class="primary" id="export" title="导出五段全部答案与待定项">导出 JSON</button>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="song-list" id="songs" aria-label="五段原唱"></nav>
+    <main>
+      <div class="section-heading"><div><h1 id="song-title"></h1><p id="source-info"></p></div><span id="clip-state" class="status"></span></div>
+      <div class="transport">
+        <button type="button" id="play" title="播放或暂停">播放</button>
+        <button type="button" id="source-mixed" class="active" title="同条件原唱混音">原唱混音</button>
+        <button type="button" id="source-vocal" title="分离人声仅作试听辅助">分离人声</button>
+        <label class="loop"><input type="checkbox" id="loop"> 循环选中</label>
+        <input type="range" id="playhead" min="0" max="10" step="0.001" value="0" aria-label="播放位置">
+        <output id="position">0.000 / 10.000 s</output>
+      </div>
+      <audio id="player" preload="auto"></audio>
+      <div class="axis-tools">
+        <span id="readout">时间 0.000 s · MIDI --</span>
+        <label>水平缩放 <input id="zoom" type="range" min="1" max="5" value="1"></label>
+        <button type="button" id="undo" title="撤销上一步编辑">撤销</button>
+        <button type="button" id="redo" title="重做上一步编辑">重做</button>
+      </div>
+      <div id="timeline-scroll" class="timeline-scroll">
+        <div class="timeline-inner"><canvas id="wave" height="116" aria-label="音频波形与播放位置"></canvas><canvas id="piano" height="588" aria-label="频谱与音符标注区"></canvas></div>
+      </div>
+      <div class="editor-bar">
+        <span>音符</span>
+        <button type="button" id="split" title="在播放位置拆分选中音符">拆分</button>
+        <button type="button" id="merge" title="与下一同音音符合并">合并下一项</button>
+        <button type="button" id="delete" title="删除选中音符">删除</button>
+        <span class="divider"></span>
+        <button type="button" id="uncertain-mode" title="在波形上拖动标记不确定区域">标记不确定区</button>
+        <input id="uncertain-reason" placeholder="不确定原因" aria-label="不确定原因">
+      </div>
+      <div id="uncertain-list" class="uncertain-list"></div>
+      <div class="review-controls">
+        <label>本段结论 <select id="review-state"><option value="pending">待定</option><option value="uncertain">存在不确定</option><option value="complete">已核完</option></select></label>
+        <label><input id="all-notes-reviewed" type="checkbox"> 已核完本段全部可听音符</label>
+        <label><input id="silent-confirmed" type="checkbox"> 确认整段静音</label>
+        <label class="statement">本段原话 <textarea id="clip-statement" rows="2" placeholder="可记录切边、音区或不确定原因"></textarea></label>
+      </div>
+      <div class="note-heading"><h2>原唱音符</h2><span id="note-count"></span></div>
+      <div id="note-list" class="note-list"></div>
+      <label class="global-statement">总体原话 <textarea id="global-statement" rows="2" placeholder="整批审核的补充说明"></textarea></label>
+      <p id="notice" class="notice" role="status" aria-live="polite"></p>
+    </main>
+  </div>
+  <script id="packet" type="application/json">/* INLINE_PACKET */</script>
+  <script>/* INLINE_STATE */</script>
+  <script>/* INLINE_APP */</script>
+</body>
+</html>

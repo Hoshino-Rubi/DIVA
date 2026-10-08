@@ -1,0 +1,42 @@
+{
+  "format": "openutau_alias_inventory",
+  "aliases": [
+    "a",
+    "a ng",
+    "l",
+    "l a",
+    "ng"
+  ],
+  "alias_metadata": {
+    "a": {
+      "subbank": "main",
+      "color": "clear",
+      "style": "neutral",
+      "tags": ["lead", "plain", "nucleus"]
+    },
+    "a ng": {
+      "subbank": "soft",
+      "color": "soft",
+      "style": "airy",
+      "tags": ["vc", "coda"]
+    },
+    "l": {
+      "subbank": "main",
+      "color": "clear",
+      "style": "neutral",
+      "tags": ["lead", "plain", "onset"]
+    },
+    "l a": {
+      "subbank": "soft",
+      "color": "soft",
+      "style": "airy",
+      "tags": ["cv", "onset"]
+    },
+    "ng": {
+      "subbank": "main",
+      "color": "clear",
+      "style": "neutral",
+      "tags": ["tail", "plain", "coda"]
+    }
+  }
+}

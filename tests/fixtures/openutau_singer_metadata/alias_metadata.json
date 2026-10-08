@@ -1,0 +1,30 @@
+{
+  "alias_metadata": {
+    "-a ng power": {
+      "tags": ["power_alias"]
+    },
+    "-i ng power": {
+      "tags": ["power_alias"]
+    },
+    "a_cv": {
+      "style": "airy",
+      "tags": ["lead", "plain_cv", "nucleus"]
+    },
+    "i_cv": {
+      "style": "airy",
+      "tags": ["lead", "plain_cv", "nucleus"]
+    },
+    "l_cv": {
+      "style": "clear",
+      "tags": ["lead", "plain_cv", "onset"]
+    },
+    "ng_cv": {
+      "style": "airy",
+      "tags": ["tail", "plain_cv", "coda"]
+    },
+    "ts_cv": {
+      "style": "clear",
+      "tags": ["tail", "plain_cv", "onset"]
+    }
+  }
+}

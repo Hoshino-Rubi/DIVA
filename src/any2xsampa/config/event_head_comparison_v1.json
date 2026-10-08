@@ -1,0 +1,16 @@
+{
+  "schema_version": "event_head_comparison_v1",
+  "arms": ["H", "E"],
+  "songs": ["freedom-flower", "half-moon-night-song", "like-you", "promise", "queen-road-east"],
+  "data": {"original_windows": 20, "original_phones": 1235, "rendered_windows": 129, "original_input": "original_mix_only", "new_pairs": false},
+  "training": {"screen_seed": 17, "epochs": 20, "fixed_selection_epoch": 20, "learning_rate": 0.001, "weight_decay": 0.0001, "micro_batch": 1, "gradient_accumulation": 8, "original_repeats": 4, "rendered_repeats": 1, "rendered_loss_weight": 0.5, "kl_weight": 0.01, "temperature": 2.0, "gradient_clip": 1.0, "maximum_job_seconds": 1500, "validation_during_training": false, "dropout": 0.0, "loss_normalization": "sequence_negative_log_likelihood_divided_by_reference_length_for_both_H_and_E"},
+  "model": {"content_head": "independent_pretrained_1024_to_428_copy", "H": "greedy_CTC", "E": "exact_mean_logp_start_hold_v1", "E_boundary_initialization": "zero_weight_bias_on_final_feature_difference", "E_duration_cap": null, "labels": 428, "blank": 0, "encoder_updates": false, "shared_native_head_updates": false},
+  "exact_engine": {"tile_arcs": 8192, "neural_precision": "float32_cuda", "segment_score_precision": "float32_cuda", "dynamic_program_precision": "float64_cpu", "pruning": false, "gradient_absolute_tolerance": 0.001, "gradient_relative_tolerance": 0.002, "loss_absolute_tolerance": 0.005},
+  "screen_gates": {"maximum_errors": 564, "maximum_insertions": 32, "maximum_deletions": 248, "minimum_improved_songs_vs_endpoint": 3, "song_macro_not_worse_than_endpoint": true, "group_minimum_reference": 20, "maximum_group_per_increase": 0.03, "rendered_overall_and_group_maximum_per_increase": 0.03, "E_additionally_minimum_relative_improvement_vs_H": 0.05, "E_additionally_minimum_improved_songs_vs_H": 3, "E_insertions_deletions_not_worse_than_H": true},
+  "budget": {"preflight_process_attempts": 1, "preflight_max_cached_gradient_cases": 7, "screen_training_starts": 10, "conditional_final_training_starts": 3, "screen_epochs_per_arm": 100, "screen_optimizer_updates_per_arm": 2140, "full_acoustic_forwards_maximum": 16, "auto_retry": false},
+  "cost_gate": {"safety_factor": 1.5, "fixed_process_and_evaluation_allowance_seconds": 180, "reject_if_estimated_fold_seconds_over": 1500},
+  "final_selection": {"only_if_complete_screen_passes": true, "seeds": [17, 29, 43], "at_most_one_arm": true, "tie_break": "lowest_pooled_PER_then_H", "retain_existing_release_check": true},
+  "limits": {"cpu_threads": 4, "process_reserved_gib": 7, "card_used_gib": 14, "gpu_jobs_serial": true, "models_offline": true},
+  "automatic_default_replacement": false,
+  "final_test_predictions_allowed": false
+}

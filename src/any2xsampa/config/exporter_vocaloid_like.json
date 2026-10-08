@@ -1,0 +1,24 @@
+{
+  "format": "vocaloid_like",
+  "default_unmapped_phone": "UNMAPPED",
+  "mapping": {
+    "a": {"engine_phone": "a", "approximation_applied": false, "approximation_notes": []},
+    "e": {"engine_phone": "e", "approximation_applied": false, "approximation_notes": []},
+    "ɡ": {"engine_phone": "g", "approximation_applied": false, "approximation_notes": []},
+    "i": {"engine_phone": "i", "approximation_applied": false, "approximation_notes": []},
+    "k": {"engine_phone": "k", "approximation_applied": false, "approximation_notes": []},
+    "l": {"engine_phone": "4", "approximation_applied": true, "approximation_notes": ["mapped to flap-style liquid for broad VOCALOID-like compatibility"]},
+    "m": {"engine_phone": "m", "approximation_applied": false, "approximation_notes": []},
+    "n": {"engine_phone": "n", "approximation_applied": false, "approximation_notes": []},
+    "o": {"engine_phone": "o", "approximation_applied": false, "approximation_notes": []},
+    "p": {"engine_phone": "p", "approximation_applied": false, "approximation_notes": []},
+    "s": {"engine_phone": "s", "approximation_applied": false, "approximation_notes": []},
+    "t": {"engine_phone": "t", "approximation_applied": false, "approximation_notes": []},
+    "ts": {"engine_phone": "ts", "approximation_applied": false, "approximation_notes": []},
+    "ts_h": {"engine_phone": "ts", "approximation_applied": true, "approximation_notes": ["aspiration dropped in VOCALOID-like target profile"]},
+    "u": {"engine_phone": "u", "approximation_applied": false, "approximation_notes": []},
+    "@": {"engine_phone": "a", "approximation_applied": true, "approximation_notes": ["central vowel approximated as open vowel"]},
+    "N": {"engine_phone": "N", "approximation_applied": false, "approximation_notes": []},
+    "sil": {"engine_phone": "sil", "approximation_applied": false, "approximation_notes": []}
+  }
+}

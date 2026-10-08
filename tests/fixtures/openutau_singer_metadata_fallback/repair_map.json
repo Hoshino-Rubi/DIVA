@@ -1,0 +1,6 @@
+{
+  "repair_map": {
+    "-a N": ["-a ng", "-a ng power"],
+    "-i N": ["-i ng", "-i ng power"]
+  }
+}

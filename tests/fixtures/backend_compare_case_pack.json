@@ -1,0 +1,1220 @@
+{
+  "registry_version": "backend_compare_case_registry_v1",
+  "compare_fields": [
+    "aligned_note_id",
+    "aligner_v2_confidence",
+    "aligner_v2_fallback_used",
+    "ownership_stability_margin",
+    "top_acoustic_score",
+    "ownership_resolution_basis",
+    "ownership_conflict_candidates",
+    "alignment_competition_summary",
+    "release_explanation",
+    "release_risk_summary",
+    "selective_release_safety"
+  ],
+  "backend_order": [
+    "onnx-espeak",
+    "prototype-logit",
+    "heuristic-dsp"
+  ],
+  "cases": {
+    "weak_overlap_low_confidence": {
+      "description": "Low-confidence weak-overlap middle note that only the trained onnx path should reclaim confidently.",
+      "target_index": 1,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "posterior_json_fixture",
+          "fixture_name": "recognizer_real_adversarial_low_confidence_onnx.json"
+        },
+        "prototype-logit": {
+          "kind": "posterior_json_fixture",
+          "fixture_name": "recognizer_real_adversarial_low_confidence_prototype.json"
+        },
+        "heuristic-dsp": {
+          "kind": "posterior_json_fixture",
+          "fixture_name": "recognizer_real_adversarial_low_confidence_heuristic.json"
+        }
+      },
+      "expectations": {
+        "onnx-espeak": {
+          "aligned_note_id": "weak-note-001",
+          "aligner_v2_fallback_used": false,
+          "ownership_resolution_basis_contains": [
+            "weak_overlap_recovery"
+          ],
+          "alignment_competition_summary_contains": [
+            "conflict_threshold="
+          ]
+        },
+        "prototype-logit": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "guardrails=",
+            "approximation_only_backend"
+          ]
+        },
+        "heuristic-dsp": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "approximation_only_backend"
+          ]
+        }
+      },
+      "order_expectations": {
+        "aligner_v2_confidence_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ]
+      },
+      "live_producer_validation": {
+        "status": "evidence_only_live_signal",
+        "source": "captured_live_producer",
+        "validated_backend": "onnx-espeak",
+        "approximation_backends_blocked": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "notes": "Live/captured producer evidence is stronger here, but this case is not a phrase-boundary selective subclass."
+      }
+    },
+    "phrase_boundary_conflict": {
+      "description": "Strong phrase-boundary guardrails should keep all three backends conservative, while onnx still surfaces the sharpest boundary conflict evidence.",
+      "target_index": 1,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_conflict_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.77,
+              "candidate_distribution": {
+                "candidate_lead": 0.16,
+                "frame_vote_ratio": 0.6,
+                "temporal_consistency": 0.67,
+                "posterior_mean_margin": 0.14,
+                "logit_mean_margin": 0.2
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.47,
+                "same_note_stability": 0.41,
+                "continuation_friendliness": 0.38,
+                "score_alignment_friendly": 0.32,
+                "weak_overlap_support": 0.21,
+                "weak_overlap_recovery": 0.19,
+                "weak_overlap_friendliness": 0.25
+              },
+              "ownership": {
+                "same_note_stability": 0.41,
+                "weak_overlap_recovery": 0.19,
+                "part_note_span_reliability": 0.31,
+                "reassignment_resistance": 0.76,
+                "boundary_reassignment_risk": 0.82,
+                "ownership_conflict_risk": 0.84,
+                "boundary_conflict_likelihood": 0.92
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.38,
+                "weak_overlap_friendliness": 0.25
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.92,
+                "boundary_conflict_likelihood": 0.92
+              }
+            }
+          }
+        },
+        "prototype-logit": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_conflict_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.69,
+              "candidate_distribution": {
+                "candidate_lead": 0.1,
+                "frame_vote_ratio": 0.54,
+                "temporal_consistency": 0.58,
+                "posterior_mean_margin": 0.09,
+                "logit_mean_margin": 0.12
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.34,
+                "same_note_stability": 0.31,
+                "continuation_friendliness": 0.28,
+                "score_alignment_friendly": 0.24,
+                "weak_overlap_support": 0.12,
+                "weak_overlap_recovery": 0.11,
+                "weak_overlap_friendliness": 0.15
+              },
+              "ownership": {
+                "same_note_stability": 0.31,
+                "weak_overlap_recovery": 0.11,
+                "part_note_span_reliability": 0.24,
+                "reassignment_resistance": 0.71,
+                "boundary_reassignment_risk": 0.86,
+                "ownership_conflict_risk": 0.87,
+                "boundary_conflict_likelihood": 0.91
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.28,
+                "weak_overlap_friendliness": 0.15
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.9,
+                "boundary_conflict_likelihood": 0.91
+              }
+            }
+          }
+        },
+        "heuristic-dsp": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_conflict_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.63,
+              "candidate_distribution": {
+                "candidate_lead": 0.07,
+                "frame_vote_ratio": 0.51,
+                "temporal_consistency": 0.54,
+                "posterior_mean_margin": 0.06,
+                "logit_mean_margin": 0.08
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.27,
+                "same_note_stability": 0.24,
+                "continuation_friendliness": 0.22,
+                "score_alignment_friendly": 0.19,
+                "weak_overlap_support": 0.08,
+                "weak_overlap_recovery": 0.07,
+                "weak_overlap_friendliness": 0.1
+              },
+              "ownership": {
+                "same_note_stability": 0.24,
+                "weak_overlap_recovery": 0.07,
+                "part_note_span_reliability": 0.2,
+                "reassignment_resistance": 0.68,
+                "boundary_reassignment_risk": 0.89,
+                "ownership_conflict_risk": 0.9,
+                "boundary_conflict_likelihood": 0.93
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.22,
+                "weak_overlap_friendliness": 0.1
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.91,
+                "boundary_conflict_likelihood": 0.93
+              }
+            }
+          }
+        }
+      },
+      "expectations": {
+        "onnx-espeak": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "note_ownership_conflict": true,
+          "boundary_conflict_likely": true,
+          "ownership_resolution_basis_contains": [
+            "boundary_conflict"
+          ]
+        },
+        "prototype-logit": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "approximation_only_backend"
+          ]
+        },
+        "heuristic-dsp": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "approximation_only_backend"
+          ]
+        }
+      },
+      "order_expectations": {
+        "aligner_v2_confidence_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_conflict_candidates_0_acoustic_score_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ]
+      },
+      "live_producer_validation": {
+        "status": "fixture_primary",
+        "source": "fixture_primary",
+        "validated_backend": null,
+        "approximation_backends_blocked": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "notes": "This mirrored conflict case is still primarily demonstrated by the adversarial fixture pack."
+      }
+    },
+    "phrase_boundary_asymmetric_interior": {
+      "description": "A low-risk phrase-boundary asymmetric interior hold should become a trained-only selective win when the next-note interior is dominant but approximation backends still stay conservative.",
+      "target_index": 1,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_selective_fixture.json"
+        },
+        "prototype-logit": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_selective_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.69,
+              "candidate_distribution": {
+                "candidate_lead": 0.11,
+                "frame_vote_ratio": 0.58,
+                "temporal_consistency": 0.66,
+                "posterior_mean_margin": 0.1,
+                "logit_mean_margin": 0.13,
+                "competition_separation": 0.34
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.72,
+                "same_note_stability": 0.66,
+                "continuation_friendliness": 0.62,
+                "score_alignment_friendly": 0.58,
+                "weak_overlap_support": 0.46,
+                "weak_overlap_recovery": 0.48,
+                "weak_overlap_friendliness": 0.5,
+                "boundary_anchor_strength": 0.71,
+                "supports_note_span_extension": true,
+                "long_note_hold_bias": 0.64,
+                "part_note_span_reliability": 0.68,
+                "interior_hold_strength": 0.56,
+                "one_sided_continuation_strength": 0.41
+              },
+              "ownership": {
+                "same_note_stability": 0.66,
+                "weak_overlap_recovery": 0.48,
+                "part_note_span_reliability": 0.68,
+                "reassignment_resistance": 0.64,
+                "boundary_reassignment_risk": 0.74,
+                "ownership_conflict_risk": 0.79,
+                "boundary_conflict_likelihood": 0.8,
+                "competition_separation": 0.34,
+                "interior_hold_strength": 0.56,
+                "one_sided_continuation_strength": 0.41,
+                "boundary_pressure": 0.73
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.62,
+                "weak_overlap_friendliness": 0.5,
+                "interior_hold_strength": 0.56,
+                "one_sided_continuation_strength": 0.41
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.82,
+                "boundary_conflict_likelihood": 0.8,
+                "boundary_pressure": 0.73
+              }
+            }
+          }
+        },
+        "heuristic-dsp": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_selective_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.63,
+              "candidate_distribution": {
+                "candidate_lead": 0.08,
+                "frame_vote_ratio": 0.54,
+                "temporal_consistency": 0.61,
+                "posterior_mean_margin": 0.07,
+                "logit_mean_margin": 0.09,
+                "competition_separation": 0.26
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.64,
+                "same_note_stability": 0.58,
+                "continuation_friendliness": 0.54,
+                "score_alignment_friendly": 0.49,
+                "weak_overlap_support": 0.34,
+                "weak_overlap_recovery": 0.35,
+                "weak_overlap_friendliness": 0.38,
+                "boundary_anchor_strength": 0.72,
+                "supports_note_span_extension": true,
+                "long_note_hold_bias": 0.56,
+                "part_note_span_reliability": 0.62,
+                "interior_hold_strength": 0.48,
+                "one_sided_continuation_strength": 0.35
+              },
+              "ownership": {
+                "same_note_stability": 0.58,
+                "weak_overlap_recovery": 0.35,
+                "part_note_span_reliability": 0.62,
+                "reassignment_resistance": 0.67,
+                "boundary_reassignment_risk": 0.78,
+                "ownership_conflict_risk": 0.83,
+                "boundary_conflict_likelihood": 0.84,
+                "competition_separation": 0.26,
+                "interior_hold_strength": 0.48,
+                "one_sided_continuation_strength": 0.35,
+                "boundary_pressure": 0.75
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.54,
+                "weak_overlap_friendliness": 0.38,
+                "interior_hold_strength": 0.48,
+                "one_sided_continuation_strength": 0.35
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.84,
+                "boundary_conflict_likelihood": 0.84,
+                "boundary_pressure": 0.75
+              }
+            }
+          }
+        }
+      },
+      "expectations": {
+        "onnx-espeak": {
+          "aligned_note_id": "pb-note-002",
+          "aligner_v2_fallback_used": false,
+          "ownership_conflict_candidates_0_same_note_neighbors": 1,
+          "ownership_resolution_basis_contains": [
+            "phrase_boundary_asymmetric_interior",
+            "phrase_boundary_selective_release"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=asymmetric_interior_candidate",
+            "trained_phrase_boundary_release_ready"
+          ]
+        },
+        "prototype-logit": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "phrase_boundary_asymmetric_interior",
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=asymmetric_interior_candidate",
+            "approximation_only_backend"
+          ]
+        },
+        "heuristic-dsp": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "phrase_boundary_asymmetric_interior",
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=asymmetric_interior_candidate",
+            "approximation_only_backend"
+          ]
+        }
+      },
+      "order_expectations": {
+        "aligner_v2_confidence_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_conflict_candidates_0_acoustic_score_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ]
+      },
+      "live_producer_validation": {
+        "status": "validated_selective_win",
+        "source": "captured_live_producer",
+        "validated_backend": "onnx-espeak",
+        "approximation_backends_blocked": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "notes": "Captured live onnx-producer-derived posterior JSON still releases asymmetric interior, while approximation backends remain conservative."
+      }
+    },
+    "phrase_boundary_dual_touch": {
+      "description": "A non-mirrored dual-touch phrase-boundary case should only resolve for the trained backend when both notes still lightly overlap but the next-note interior has materially stronger trained evidence.",
+      "target_index": 1,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_dual_touch_fixture.json"
+        },
+        "prototype-logit": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_dual_touch_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.72,
+              "candidate_distribution": {
+                "candidate_lead": 0.13,
+                "frame_vote_ratio": 0.63,
+                "temporal_consistency": 0.71,
+                "posterior_mean_margin": 0.13,
+                "logit_mean_margin": 0.16,
+                "competition_separation": 0.31
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.77,
+                "same_note_stability": 0.72,
+                "continuation_friendliness": 0.63,
+                "score_alignment_friendly": 0.58,
+                "weak_overlap_support": 0.51,
+                "weak_overlap_recovery": 0.56,
+                "weak_overlap_friendliness": 0.59,
+                "boundary_anchor_strength": 0.7,
+                "supports_note_span_extension": true,
+                "long_note_hold_bias": 0.74,
+                "part_note_span_reliability": 0.73,
+                "interior_hold_strength": 0.59,
+                "one_sided_continuation_strength": 0.43
+              },
+              "ownership": {
+                "same_note_stability": 0.72,
+                "weak_overlap_recovery": 0.56,
+                "part_note_span_reliability": 0.73,
+                "reassignment_resistance": 0.58,
+                "boundary_reassignment_risk": 0.72,
+                "ownership_conflict_risk": 0.76,
+                "boundary_conflict_likelihood": 0.76,
+                "competition_separation": 0.31,
+                "interior_hold_strength": 0.59,
+                "one_sided_continuation_strength": 0.43,
+                "boundary_pressure": 0.7
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.63,
+                "weak_overlap_friendliness": 0.59,
+                "interior_hold_strength": 0.59,
+                "one_sided_continuation_strength": 0.43
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.79,
+                "boundary_conflict_likelihood": 0.76,
+                "boundary_pressure": 0.7
+              }
+            }
+          }
+        },
+        "heuristic-dsp": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_dual_touch_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.67,
+              "candidate_distribution": {
+                "candidate_lead": 0.09,
+                "frame_vote_ratio": 0.58,
+                "temporal_consistency": 0.66,
+                "posterior_mean_margin": 0.1,
+                "logit_mean_margin": 0.12,
+                "competition_separation": 0.25
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.71,
+                "same_note_stability": 0.65,
+                "continuation_friendliness": 0.56,
+                "score_alignment_friendly": 0.5,
+                "weak_overlap_support": 0.43,
+                "weak_overlap_recovery": 0.46,
+                "weak_overlap_friendliness": 0.49,
+                "boundary_anchor_strength": 0.68,
+                "supports_note_span_extension": true,
+                "long_note_hold_bias": 0.66,
+                "part_note_span_reliability": 0.67,
+                "interior_hold_strength": 0.51,
+                "one_sided_continuation_strength": 0.38
+              },
+              "ownership": {
+                "same_note_stability": 0.65,
+                "weak_overlap_recovery": 0.46,
+                "part_note_span_reliability": 0.67,
+                "reassignment_resistance": 0.61,
+                "boundary_reassignment_risk": 0.75,
+                "ownership_conflict_risk": 0.79,
+                "boundary_conflict_likelihood": 0.8,
+                "competition_separation": 0.25,
+                "interior_hold_strength": 0.51,
+                "one_sided_continuation_strength": 0.38,
+                "boundary_pressure": 0.71
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.56,
+                "weak_overlap_friendliness": 0.49,
+                "interior_hold_strength": 0.51,
+                "one_sided_continuation_strength": 0.38
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.8,
+                "boundary_conflict_likelihood": 0.8,
+                "boundary_pressure": 0.71
+              }
+            }
+          }
+        }
+      },
+      "expectations": {
+        "onnx-espeak": {
+          "aligned_note_id": "pbdt-note-002",
+          "aligner_v2_fallback_used": false,
+          "ownership_conflict_candidates_0_same_note_neighbors": 1,
+          "ownership_resolution_basis_contains": [
+            "phrase_boundary_dual_touch",
+            "phrase_boundary_selective_release"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=asymmetric_dual_touch_candidate",
+            "trained_phrase_boundary_release_ready"
+          ]
+        },
+        "prototype-logit": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "phrase_boundary_dual_touch",
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=asymmetric_dual_touch_candidate",
+            "approximation_only_backend"
+          ]
+        },
+        "heuristic-dsp": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "phrase_boundary_dual_touch",
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=asymmetric_dual_touch_candidate",
+            "approximation_only_backend"
+          ]
+        }
+      },
+      "order_expectations": {
+        "aligner_v2_confidence_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_conflict_candidates_0_acoustic_score_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ]
+      },
+      "live_producer_validation": {
+        "status": "candidate_but_blocked",
+        "source": "captured_live_producer",
+        "validated_backend": "onnx-espeak",
+        "approximation_backends_blocked": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "notes": "Captured live onnx-producer-derived posterior JSON still reaches the dual-touch candidate mode, but the trained path stays blocked because stability remains negative under boundary conflict pressure."
+      }
+    },
+    "one_sided_continuation": {
+      "description": "One-sided continuation should only convert into a trained selective win when the short-window continuation and note-span evidence clearly overpower the boundary guardrail.",
+      "target_index": 1,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_one_sided_continuation_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "candidate_distribution": {
+                "candidate_lead": 0.14,
+                "frame_vote_ratio": 0.61,
+                "temporal_consistency": 0.71,
+                "posterior_mean_margin": 0.16,
+                "logit_mean_margin": 0.2
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.86,
+                "same_note_stability": 0.78,
+                "continuation_friendliness": 0.74,
+                "score_alignment_friendly": 0.72,
+                "weak_overlap_support": 0.58,
+                "weak_overlap_recovery": 0.66,
+                "weak_overlap_friendliness": 0.7
+              },
+              "ownership": {
+                "same_note_stability": 0.78,
+                "weak_overlap_recovery": 0.66,
+                "part_note_span_reliability": 0.7,
+                "reassignment_resistance": 0.55,
+                "boundary_reassignment_risk": 0.76,
+                "ownership_conflict_risk": 0.79,
+                "boundary_conflict_likelihood": 0.81
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.74,
+                "weak_overlap_friendliness": 0.7
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.83,
+                "boundary_conflict_likelihood": 0.81
+              }
+            }
+          }
+        },
+        "prototype-logit": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_one_sided_continuation_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.61,
+              "candidate_distribution": {
+                "candidate_lead": 0.08,
+                "frame_vote_ratio": 0.55,
+                "temporal_consistency": 0.61,
+                "posterior_mean_margin": 0.09,
+                "logit_mean_margin": 0.11
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.73,
+                "same_note_stability": 0.64,
+                "continuation_friendliness": 0.59,
+                "score_alignment_friendly": 0.54,
+                "weak_overlap_support": 0.42,
+                "weak_overlap_recovery": 0.46,
+                "weak_overlap_friendliness": 0.5
+              },
+              "ownership": {
+                "same_note_stability": 0.64,
+                "weak_overlap_recovery": 0.46,
+                "part_note_span_reliability": 0.61,
+                "reassignment_resistance": 0.5,
+                "boundary_reassignment_risk": 0.79,
+                "ownership_conflict_risk": 0.82,
+                "boundary_conflict_likelihood": 0.84
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.59,
+                "weak_overlap_friendliness": 0.5
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.84,
+                "boundary_conflict_likelihood": 0.84
+              }
+            }
+          }
+        },
+        "heuristic-dsp": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_one_sided_continuation_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.57,
+              "candidate_distribution": {
+                "candidate_lead": 0.05,
+                "frame_vote_ratio": 0.52,
+                "temporal_consistency": 0.56,
+                "posterior_mean_margin": 0.06,
+                "logit_mean_margin": 0.07
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.66,
+                "same_note_stability": 0.56,
+                "continuation_friendliness": 0.5,
+                "score_alignment_friendly": 0.46,
+                "weak_overlap_support": 0.31,
+                "weak_overlap_recovery": 0.34,
+                "weak_overlap_friendliness": 0.38
+              },
+              "ownership": {
+                "same_note_stability": 0.56,
+                "weak_overlap_recovery": 0.34,
+                "part_note_span_reliability": 0.56,
+                "reassignment_resistance": 0.47,
+                "boundary_reassignment_risk": 0.83,
+                "ownership_conflict_risk": 0.86,
+                "boundary_conflict_likelihood": 0.88
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.5,
+                "weak_overlap_friendliness": 0.38
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.85,
+                "boundary_conflict_likelihood": 0.88
+              }
+            }
+          }
+        }
+      },
+      "expectations": {
+        "onnx-espeak": {
+          "aligned_note_id": "oneside-note-001",
+          "aligner_v2_fallback_used": false,
+          "ownership_conflict_candidates_0_same_note_neighbors": 1,
+          "ownership_resolution_basis_contains": [
+            "acoustic_continuation",
+            "one_sided_selective_release"
+          ],
+          "alignment_competition_summary_contains": [
+            "one_sided_competition",
+            "trained_one_sided_release_ready"
+          ]
+        },
+        "prototype-logit": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ]
+        },
+        "heuristic-dsp": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "approximation_only_backend"
+          ]
+        }
+      },
+      "order_expectations": {
+        "ownership_conflict_candidates_0_acoustic_score_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ]
+      },
+      "live_producer_validation": {
+        "status": "fixture_primary",
+        "source": "fixture_primary",
+        "validated_backend": null,
+        "approximation_backends_blocked": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "notes": "One-sided continuation is not a phrase-boundary live-validation target in this pass."
+      }
+    },
+    "long_same_note_chain": {
+      "description": "Long same-note chains should reward strong interior continuation evidence; onnx should be the most stable and heuristic should stay the most conservative.",
+      "target_index": 2,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_long_same_note_chain_fixture.json",
+          "segment_overrides": {
+            "2": {
+              "acoustic_confidence": 0.63,
+              "candidate_distribution": {
+                "candidate_lead": 0.24,
+                "frame_vote_ratio": 0.7,
+                "temporal_consistency": 0.8,
+                "posterior_mean_margin": 0.18,
+                "logit_mean_margin": 0.22,
+                "interior_mean_margin": 0.24,
+                "interior_vote_ratio": 0.84,
+                "edge_competition_ratio": 0.28
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.94,
+                "same_note_stability": 0.92,
+                "continuation_friendliness": 0.91,
+                "score_alignment_friendly": 0.87,
+                "weak_overlap_support": 0.8,
+                "weak_overlap_recovery": 0.83,
+                "weak_overlap_friendliness": 0.86,
+                "long_note_hold_bias": 0.94,
+                "part_note_span_reliability": 0.9
+              },
+              "ownership": {
+                "same_note_stability": 0.92,
+                "weak_overlap_recovery": 0.83,
+                "part_note_span_reliability": 0.9,
+                "reassignment_resistance": 0.36,
+                "boundary_reassignment_risk": 0.4,
+                "ownership_conflict_risk": 0.48,
+                "boundary_conflict_likelihood": 0.44
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.91,
+                "weak_overlap_friendliness": 0.86,
+                "long_note_hold_bias": 0.94
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.52,
+                "boundary_conflict_likelihood": 0.44
+              }
+            }
+          }
+        },
+        "prototype-logit": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_long_same_note_chain_fixture.json",
+          "segment_overrides": {
+            "2": {
+              "acoustic_confidence": 0.6,
+              "candidate_distribution": {
+                "candidate_lead": 0.17,
+                "frame_vote_ratio": 0.63,
+                "temporal_consistency": 0.72,
+                "posterior_mean_margin": 0.12,
+                "logit_mean_margin": 0.15,
+                "interior_mean_margin": 0.16,
+                "interior_vote_ratio": 0.71,
+                "edge_competition_ratio": 0.36
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.86,
+                "same_note_stability": 0.82,
+                "continuation_friendliness": 0.8,
+                "score_alignment_friendly": 0.76,
+                "weak_overlap_support": 0.67,
+                "weak_overlap_recovery": 0.69,
+                "weak_overlap_friendliness": 0.72,
+                "long_note_hold_bias": 0.83,
+                "part_note_span_reliability": 0.8
+              },
+              "ownership": {
+                "same_note_stability": 0.82,
+                "weak_overlap_recovery": 0.69,
+                "part_note_span_reliability": 0.8,
+                "reassignment_resistance": 0.34,
+                "boundary_reassignment_risk": 0.46,
+                "ownership_conflict_risk": 0.56,
+                "boundary_conflict_likelihood": 0.52
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.8,
+                "weak_overlap_friendliness": 0.72,
+                "long_note_hold_bias": 0.83
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.56,
+                "boundary_conflict_likelihood": 0.52
+              }
+            }
+          }
+        },
+        "heuristic-dsp": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_long_same_note_chain_fixture.json",
+          "segment_overrides": {
+            "2": {
+              "acoustic_confidence": 0.54,
+              "candidate_distribution": {
+                "candidate_lead": 0.09,
+                "frame_vote_ratio": 0.56,
+                "temporal_consistency": 0.61,
+                "posterior_mean_margin": 0.07,
+                "logit_mean_margin": 0.08,
+                "interior_mean_margin": 0.09,
+                "interior_vote_ratio": 0.58,
+                "edge_competition_ratio": 0.48
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.74,
+                "same_note_stability": 0.67,
+                "continuation_friendliness": 0.64,
+                "score_alignment_friendly": 0.58,
+                "weak_overlap_support": 0.49,
+                "weak_overlap_recovery": 0.5,
+                "weak_overlap_friendliness": 0.54,
+                "long_note_hold_bias": 0.66,
+                "part_note_span_reliability": 0.69
+              },
+              "ownership": {
+                "same_note_stability": 0.67,
+                "weak_overlap_recovery": 0.5,
+                "part_note_span_reliability": 0.69,
+                "reassignment_resistance": 0.28,
+                "boundary_reassignment_risk": 0.58,
+                "ownership_conflict_risk": 0.67,
+                "boundary_conflict_likelihood": 0.64
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.64,
+                "weak_overlap_friendliness": 0.54,
+                "long_note_hold_bias": 0.66
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.62,
+                "boundary_conflict_likelihood": 0.64
+              }
+            }
+          }
+        }
+      },
+      "expectations": {
+        "onnx-espeak": {
+          "aligned_note_id": "chain-note-001",
+          "aligner_v2_fallback_used": false,
+          "ownership_resolution_basis_contains": [
+            "part_note_span",
+            "long_note_interior",
+            "acoustic_continuation"
+          ]
+        },
+        "prototype-logit": {
+          "aligned_note_id": "chain-note-001",
+          "aligner_v2_fallback_used": false,
+          "ownership_resolution_basis_contains": [
+            "part_note_span",
+            "acoustic_continuation"
+          ]
+        },
+        "heuristic-dsp": {
+          "aligned_note_id": "chain-note-001",
+          "aligner_v2_fallback_used": false,
+          "ownership_resolution_basis_contains": [
+            "part_note_span",
+            "acoustic_continuation"
+          ]
+        }
+      },
+      "order_expectations": {
+        "aligner_v2_confidence_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ]
+      }
+    },
+    "phrase_boundary_chain_anchor": {
+      "description": "A chain-anchor phrase-boundary subclass should become the third trained-only selective win when the next note owns the full overlap but approximation backends still remain conservative.",
+      "target_index": 1,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_chain_anchor_fixture.json"
+        },
+        "prototype-logit": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_chain_anchor_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.69,
+              "candidate_distribution": {
+                "candidate_lead": 0.11,
+                "frame_vote_ratio": 0.58,
+                "temporal_consistency": 0.66,
+                "posterior_mean_margin": 0.1,
+                "logit_mean_margin": 0.13,
+                "competition_separation": 0.34
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.72,
+                "same_note_stability": 0.66,
+                "continuation_friendliness": 0.62,
+                "score_alignment_friendly": 0.58,
+                "weak_overlap_support": 0.46,
+                "weak_overlap_recovery": 0.48,
+                "weak_overlap_friendliness": 0.5,
+                "boundary_anchor_strength": 0.71,
+                "supports_note_span_extension": true,
+                "long_note_hold_bias": 0.64,
+                "part_note_span_reliability": 0.68,
+                "interior_hold_strength": 0.56,
+                "one_sided_continuation_strength": 0.41
+              },
+              "ownership": {
+                "same_note_stability": 0.66,
+                "weak_overlap_recovery": 0.48,
+                "part_note_span_reliability": 0.68,
+                "reassignment_resistance": 0.64,
+                "boundary_reassignment_risk": 0.74,
+                "ownership_conflict_risk": 0.79,
+                "boundary_conflict_likelihood": 0.8,
+                "competition_separation": 0.34,
+                "interior_hold_strength": 0.56,
+                "one_sided_continuation_strength": 0.41,
+                "boundary_pressure": 0.73
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.62,
+                "weak_overlap_friendliness": 0.5,
+                "interior_hold_strength": 0.56,
+                "one_sided_continuation_strength": 0.41
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.82,
+                "boundary_conflict_likelihood": 0.8,
+                "boundary_pressure": 0.73
+              }
+            }
+          }
+        },
+        "heuristic-dsp": {
+          "kind": "fixture_pack",
+          "template_fixture": "aligner_v2_phrase_boundary_chain_anchor_fixture.json",
+          "segment_overrides": {
+            "1": {
+              "acoustic_confidence": 0.63,
+              "candidate_distribution": {
+                "candidate_lead": 0.08,
+                "frame_vote_ratio": 0.54,
+                "temporal_consistency": 0.61,
+                "posterior_mean_margin": 0.07,
+                "logit_mean_margin": 0.09,
+                "competition_separation": 0.26
+              },
+              "note_alignment": {
+                "same_note_continuation_bias": 0.64,
+                "same_note_stability": 0.58,
+                "continuation_friendliness": 0.54,
+                "score_alignment_friendly": 0.49,
+                "weak_overlap_support": 0.34,
+                "weak_overlap_recovery": 0.35,
+                "weak_overlap_friendliness": 0.38,
+                "boundary_anchor_strength": 0.72,
+                "supports_note_span_extension": true,
+                "long_note_hold_bias": 0.56,
+                "part_note_span_reliability": 0.62,
+                "interior_hold_strength": 0.48,
+                "one_sided_continuation_strength": 0.35
+              },
+              "ownership": {
+                "same_note_stability": 0.58,
+                "weak_overlap_recovery": 0.35,
+                "part_note_span_reliability": 0.62,
+                "reassignment_resistance": 0.67,
+                "boundary_reassignment_risk": 0.78,
+                "ownership_conflict_risk": 0.83,
+                "boundary_conflict_likelihood": 0.84,
+                "competition_separation": 0.26,
+                "interior_hold_strength": 0.48,
+                "one_sided_continuation_strength": 0.35,
+                "boundary_pressure": 0.75
+              },
+              "continuation_profile": {
+                "continuation_friendliness": 0.54,
+                "weak_overlap_friendliness": 0.38,
+                "interior_hold_strength": 0.48,
+                "one_sided_continuation_strength": 0.35
+              },
+              "boundary_profile": {
+                "boundary_transition_strength": 0.84,
+                "boundary_conflict_likelihood": 0.84,
+                "boundary_pressure": 0.75
+              }
+            }
+          }
+        }
+      },
+      "expectations": {
+        "onnx-espeak": {
+          "aligned_note_id": "pb-note-002",
+          "aligner_v2_fallback_used": false,
+          "ownership_conflict_candidates_0_same_note_neighbors": 2,
+          "ownership_resolution_basis_contains": [
+            "phrase_boundary_chain_anchor",
+            "phrase_boundary_selective_release"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=asymmetric_chain_anchor_candidate",
+            "trained_phrase_boundary_release_ready"
+          ],
+          "release_explanation_contains": [
+            "trained-only",
+            "naturally stable",
+            "asymmetric_chain_anchor_candidate"
+          ],
+          "release_risk_summary_contains": [
+            "mode=asymmetric_chain_anchor_candidate",
+            "released=yes",
+            "natural_stability=yes",
+            "approximation_backend_blocked=yes"
+          ]
+        },
+        "prototype-logit": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=edge_competition"
+          ],
+          "release_explanation_contains": [
+            "approximation_backend"
+          ]
+        },
+        "heuristic-dsp": {
+          "aligned_note_id": null,
+          "aligner_v2_fallback_used": true,
+          "ownership_resolution_basis_contains": [
+            "conservative_fallback"
+          ],
+          "alignment_competition_summary_contains": [
+            "phrase_boundary_mode=window_guarded",
+            "approximation_only_backend"
+          ],
+          "release_explanation_contains": [
+            "phrase_window_guardrail",
+            "approximation_backend"
+          ]
+        }
+      },
+      "order_expectations": {
+        "ownership_conflict_candidates_0_acoustic_score_descending": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ]
+      },
+      "live_producer_validation": {
+        "status": "validated_selective_win",
+        "source": "captured_live_producer",
+        "validated_backend": "onnx-espeak",
+        "approximation_backends_blocked": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "notes": "Captured live onnx-producer-derived posterior JSON still releases chain-anchor, while approximation backends remain conservative."
+      }
+    }
+  },
+  "non_gating_attach_cases": {
+    "producer_identity_json_single_segment": {
+      "description": "Carrier-only producer-output triad using note_context_identity_json that surfaces a stable leading first-mismatch across backends while all three aligner rows stay fallback/no_candidates.",
+      "target_index": 0,
+      "sources": {
+        "onnx-espeak": {
+          "kind": "producer_output",
+          "path": "tmp_validation/producer_onnx.json"
+        },
+        "prototype-logit": {
+          "kind": "producer_output",
+          "path": "tmp_validation/producer_prototype.json"
+        },
+        "heuristic-dsp": {
+          "kind": "producer_output",
+          "path": "tmp_validation/producer_heuristic.json"
+        }
+      }
+    }
+  }
+}

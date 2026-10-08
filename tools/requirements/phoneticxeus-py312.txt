@@ -1,0 +1,11 @@
+# Isolated PhoneticXeus runtime. Install the matched CUDA Torch pair separately.
+# Full transitive packages and wheel hashes are captured with pip --report.
+transformers==4.57.6
+huggingface-hub==0.36.2
+safetensors==0.8.0
+numpy==2.2.6
+scipy==1.15.3
+soundfile==0.13.1
+PyYAML==6.0.3
+typeguard==4.4.4
+packaging==25.0

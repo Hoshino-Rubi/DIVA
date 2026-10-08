@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>训练片段 · 段落对应复核</title><style>
+:root{font:16px/1.6 system-ui,'Microsoft YaHei',sans-serif;color:#203238;background:#f2f5f5}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1080px;margin:auto;padding:24px}h1{font-size:27px}h2{font-size:21px}h3{font-size:17px}button,input,textarea{font:inherit}button{padding:9px 15px;border:1px solid #257568;border-radius:5px;background:white;color:#164a43;cursor:pointer}button.primary{background:#196b5e;color:white}button:disabled{opacity:.5;cursor:default}input,textarea{padding:8px;border:1px solid #899ca0;border-radius:4px}textarea{display:block;width:100%;min-height:76px}.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.summary{border-left:4px solid #b48821;padding:10px 16px;background:#fff8df}nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}nav a{color:#165f54;padding:6px}article{border-top:2px solid #b7cdca;padding-top:20px;margin-bottom:42px;scroll-margin-top:12px}.audio-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}.original{grid-column:1/-1;background:#e5f1ed;padding:16px;border-left:4px solid #196b5e}.choice{background:white;border:1px solid #bdced0;border-radius:6px;padding:16px;min-width:0}.choice:has(input:checked){border:2px solid #196b5e;padding:15px}.choice label{display:block;font-weight:600}.choice input{width:20px;height:20px;vertical-align:middle}audio{display:block;width:100%;margin:10px 0}img{width:100%;height:88px;object-fit:fill;background:#f3f6f6}small{color:#566c72}.lyrics{overflow-wrap:anywhere}.judgment{display:flex;gap:24px;flex-wrap:wrap;margin:18px 0}.judgment input{width:19px;height:19px;vertical-align:middle}.done{color:#196b5e}#notice{min-height:26px;color:#8b4220}details{margin:8px 0}summary{cursor:pointer}footer{color:#52666b;font-size:14px}@media(max-width:700px){header,main,footer{padding:16px}.audio-row{grid-template-columns:minmax(0,1fr)}h1{font-size:23px}.toolbar label{width:100%}}
+</style></head><body><header><h1>训练片段：哪一段与原唱对应？</h1>
+<p class="summary">本轮仅定位段落，不填音素。旧错位结论保留；这些备选尚未通过自动检查，不会进入训练。</p>
+<p>选择整段对应的 A／B／C；只有一部分相同选“都不对应”，多个备选听起来一样或无法判断时选“不确定”。合成声音不同、速度稍有不同，不等于段落错位。</p>
+<div class="toolbar"><label>复核人 <input id="reviewer" autocomplete="name"></label><button class="primary" id="export">导出回答 JSON</button><label>导入回答 <input id="import" type="file" accept="application/json,.json"></label></div>
+<p id="notice" role="status"></p><nav id="navigation"></nav></header><main id="items"></main><footer>没有默认选择。选项和原话仅保存在当前浏览器；导出后发回。确认段落不等于确认音素边缘，也不会自动开始训练。</footer>
+<script id="packet" type="application/json">__PACKET_JSON__</script><script>
+'use strict';
+const packet=JSON.parse(document.getElementById('packet').textContent);
+const key='replacement-location:'+packet.packet_sha256;
+const state={answers:{},reviewer:''};
+const $=id=>document.getElementById(id);
+function el(tag,text){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;}
+function validate(payload){
+ if(payload.schema_version!=='replacement_location_answers_v1'||payload.packet_sha256!==packet.packet_sha256)throw Error('问卷版本不匹配');
+ if(typeof payload.reviewer!=='string'||!payload.reviewer.trim())throw Error('请填写复核人');
+ if(!Array.isArray(payload.answers))throw Error('回答列表无效');
+ const seen=new Set();
+ for(const a of payload.answers){const item=packet.items.find(i=>i.review_id===a.review_id);
+  if(!item||seen.has(a.review_id))throw Error('未知或重复题号');seen.add(a.review_id);
+  if(![...item.alternatives.map(c=>c.choice_id),'none','uncertain'].includes(a.choice)||typeof a.comment!=='string')throw Error('答案格式无效');
+ }return payload;
+}
+function save(){try{localStorage.setItem(key,JSON.stringify(state));}catch(e){$('notice').textContent='本机保存不可用，请及时导出回答。';}}
+function answer(item){return state.answers[item.review_id]||{review_id:item.review_id,choice:'',comment:''};}
+function choose(item,value){state.answers[item.review_id]={...answer(item),choice:value};save();$('status-'+item.review_id).textContent='已记录';}
+function player(media,parent){
+ const wave=el('img');wave.src='media/'+media.waveform_file;wave.alt='音频波形';parent.append(wave);
+ const a=el('audio');a.controls=true;a.preload='none';a.src='media/'+media.audio_file;
+ a.addEventListener('play',()=>document.querySelectorAll('audio').forEach(other=>{if(other!==a)other.pause();}));parent.append(a);
+}
+function render(){
+ $('reviewer').value=state.reviewer;$('items').replaceChildren();$('navigation').replaceChildren();
+ const names={'freedom-flower':'自由花','queen-road-east':'皇后大道東','half-moon-night-song':'月半小夜曲','promise':'约定','like-you':'喜欢你'};
+ for(const item of packet.items){
+  const link=el('a',item.review_id+' · '+names[item.song_id]);link.href='#'+item.review_id;$('navigation').append(link);
+  const art=el('article');art.id=item.review_id;art.append(el('h2',item.review_id+' · '+names[item.song_id]));
+  art.append(el('small','原唱 '+item.start_sec.toFixed(3)+'–'+item.end_sec.toFixed(3)+' 秒；旧否决未撤销。'));
+  const grid=el('div');grid.className='audio-row';const orig=el('div');orig.className='original';orig.append(el('h3','原唱 · 判断依据'));player(item.original,orig);grid.append(orig);
+  for(const choice of item.alternatives){const card=el('div');card.className='choice';const label=el('label');const radio=el('input');radio.type='radio';radio.name=item.review_id;radio.value=choice.choice_id;radio.checked=answer(item).choice===choice.choice_id;
+   radio.addEventListener('change',()=>choose(item,choice.choice_id));label.append(radio,document.createTextNode(' '+choice.choice_id+' · 这段整段对应'));card.append(label);
+   card.append(el('small','合成辅助 '+choice.start_sec.toFixed(2)+'–'+choice.end_sec.toFixed(2)+' 秒'));player(choice.preview,card);
+   const detail=el('details');detail.append(el('summary','候选字序（只作辅助）'));const lyrics=el('p',choice.notes.map(n=>n.raw_lyric).join(''));lyrics.className='lyrics';detail.append(lyrics);card.append(detail);
+   if(!choice.mapping_complete)card.append(el('small','此备选含未解决映射：即使对应，也不能直接训练。'));grid.append(card);
+  }art.append(grid);
+  const judgment=el('div');judgment.className='judgment';for(const [value,text] of [['none','都不对应（含仅部分对应）'],['uncertain','不确定']]){const label=el('label');const input=el('input');input.type='radio';input.name=item.review_id;input.checked=answer(item).choice===value;input.addEventListener('change',()=>choose(item,value));label.append(input,document.createTextNode(' '+text));judgment.append(label);}art.append(judgment);
+  const comment=el('textarea');comment.placeholder='补充原话（可选）';comment.setAttribute('aria-label',item.review_id+' 补充原话');comment.value=answer(item).comment;comment.addEventListener('input',()=>{state.answers[item.review_id]={...answer(item),comment:comment.value};save();});art.append(comment);
+  const status=el('p',answer(item).choice?'已记录':'尚未选择');status.id='status-'+item.review_id;status.className='done';art.append(status);$('items').append(art);
+ }
+}
+try{const stored=JSON.parse(localStorage.getItem(key)||'null');if(stored){const answered=Object.values(stored.answers||{}).filter(a=>a.choice);validate({schema_version:'replacement_location_answers_v1',packet_sha256:packet.packet_sha256,reviewer:stored.reviewer||'draft',answers:answered});state.answers=stored.answers||{};state.reviewer=stored.reviewer||'';}}catch(e){$('notice').textContent='未读取无效的本机进度；可导入已导出的 JSON。';}
+$('reviewer').addEventListener('input',()=>{state.reviewer=$('reviewer').value;save();});
+$('export').addEventListener('click',()=>{try{const p=validate({schema_version:'replacement_location_answers_v1',packet_sha256:packet.packet_sha256,reviewer:state.reviewer,exported_at:new Date().toISOString(),answers:Object.values(state.answers).filter(a=>a.choice),scope:'correspondence_only',training_started:false});if(!p.answers.length)throw Error('尚未选择任何答案');const link=el('a');link.href=URL.createObjectURL(new Blob([JSON.stringify(p,null,2)],{type:'application/json'}));link.download='replacement-location-answers.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),30000);$('notice').textContent='已导出 '+p.answers.length+' / '+packet.items.length+' 项；未启动训练。';}catch(e){$('notice').textContent=e.message;}});
+$('import').addEventListener('change',async e=>{try{const file=e.target.files[0];if(!file)return;const p=validate(JSON.parse(await file.text()));if(!window.confirm('导入回答并覆盖相同题号？'))return;for(const a of p.answers)state.answers[a.review_id]=a;state.reviewer=p.reviewer;save();render();$('notice').textContent='已导入回答。';}catch(error){$('notice').textContent=error.message;}finally{e.target.value='';}});
+render();
+</script></body></html>

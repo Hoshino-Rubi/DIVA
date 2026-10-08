@@ -1,0 +1,35 @@
+{
+  "spans": [
+    {
+      "segment_index": 0,
+      "track_id": "json-track-main",
+      "part_id": "json-part-verse",
+      "note_id": "json-note-001",
+      "note_midi": 60,
+      "note_name": "C4",
+      "duration_ms": 120,
+      "tick": 0
+    },
+    {
+      "segment_index": 1,
+      "track_id": "json-track-main",
+      "part_id": "json-part-verse",
+      "note_id": "json-note-002",
+      "note_midi": 64,
+      "note_name": "E4",
+      "duration_ms": 120,
+      "tick": 480
+    },
+    {
+      "segment_index": 2,
+      "track_id": "json-track-main",
+      "part_id": "json-part-verse",
+      "note_id": "json-note-002",
+      "note_midi": 64,
+      "note_name": "E4",
+      "duration_ms": 120,
+      "tick": 600,
+      "release": "short"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "demo project",
+  "resolution": 480,
+  "tempos": [
+    {
+      "position": 0,
+      "bpm": 100.0
+    }
+  ],
+  "tracks": [
+    {
+      "track_id": "lead-track",
+      "name": "Lead",
+      "parts": [
+        {
+          "part_id": "verse-part",
+          "name": "Verse",
+          "position": 0,
+          "notes": [
+            {
+              "note_id": "note-001",
+              "position": 0,
+              "duration": 960,
+              "tone": 64,
+              "lyric": "laa",
+              "release": "long"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

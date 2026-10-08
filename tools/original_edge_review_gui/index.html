@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>沙龙 · 正式切点音素听审</title><style>/* INLINE_CSS */</style></head>
+<body><header><span class="eyebrow">离线人工窗口 · 最多六项</span><h1>只听正式切点内侧的音素</h1>
+<p>已有原唱/合成对应审计保留，不再重复问对应关系。现在只判断中线 1.25 秒处，正式片段内侧可听到哪个 note 的哪些 IPA。</p>
+<p class="warning">IPA 是候选代理映射，不代表真人音素已验证。不得按歌词猜选；音符和音素初始全空。不显示模型预测或 PER，不自动生成训练数据。</p>
+<p class="warning">新版：完全听不到与部分可听分开记录。旧“截断”按原含义保留为部分可听；如果你当时指整个音没有，请改选“完全听不到”并重新提交该项。未判断不会自动算作缺失。</p>
+<div class="toolbar"><label>审核人 <input id="reviewer" autocomplete="name" placeholder="确认前填写"></label><button id="save">保存本机进度</button><button id="export">导出已提交答案 JSON</button><label class="file-button">导入答案 JSON<input id="import" type="file" accept="application/json,.json"></label></div>
+<p id="notice" role="status" aria-live="polite"></p></header>
+<main><nav id="items" aria-label="审核项目"></nav><section id="review"></section></main>
+<footer>草稿仅存在当前浏览器，file:// 的本机存储可能不可用；请提交后导出 JSON 备份。导入仅接受同一 packet 的有效答案。既有原话审计不会被修改。</footer>
+<script id="packet" type="application/json">/* INLINE_PACKET */</script>
+<script id="audio-data" type="application/json">/* INLINE_AUDIO */</script>
+<script>/* INLINE_STATE */</script><script>/* INLINE_APP */</script></body></html>

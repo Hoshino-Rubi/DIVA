@@ -1,0 +1,510 @@
+{
+  "schema_version": "external_posterior_json_v1",
+  "producer": {
+    "backend_kind": "heuristic-dsp",
+    "requested_backend_kind": "heuristic-dsp",
+    "approximation_only": true
+  },
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 0.36,
+      "confidence": 0.92,
+      "candidate_phones": [
+        {
+          "symbol": "l",
+          "confidence": 0.92
+        },
+        {
+          "symbol": "n",
+          "confidence": 0.08
+        }
+      ],
+      "segment_summary": {
+        "acoustic_confidence": 0.92,
+        "timing_reliability": 0.82,
+        "boundary_uncertainty": {
+          "start_ms": 12.0,
+          "end_ms": 12.0,
+          "uncertain": false
+        }
+      },
+      "continuation_profile": {
+        "continuation_friendliness": 0.61,
+        "weak_overlap_friendliness": 0.29
+      },
+      "boundary_profile": {
+        "boundary_transition_strength": 0.42,
+        "boundary_conflict_likelihood": 0.24
+      },
+      "ownership": {
+        "same_note_stability": 0.63,
+        "weak_overlap_recovery": 0.27,
+        "part_note_span_reliability": 0.54,
+        "reassignment_resistance": 0.72,
+        "boundary_reassignment_risk": 0.31,
+        "ownership_conflict_risk": 0.22,
+        "boundary_conflict_likelihood": 0.24
+      },
+      "adapter_diagnostics": {
+        "backend_kind": "heuristic-dsp",
+        "adapter_kind": "score-aware-heuristic-producer",
+        "evidence_kind": "posterior_and_logit_adapter_like",
+        "posterior_like_available": true,
+        "logit_like_available": true,
+        "approximation_only": true,
+        "candidate_aggregation": "mean_frame_confidence",
+        "aggregation": "mean_frame_confidence",
+        "source": "backend-compare:heuristic-dsp",
+        "candidate_source": "backend-compare:heuristic-posteriors"
+      },
+      "metadata": {
+        "score_hint": {
+          "normalized_track_id": "phrase-selective-track",
+          "normalized_part_id": "phrase-selective-part",
+          "normalized_note_id": "pb-note-001",
+          "part_local_note_rank": 1,
+          "start_sec": 0.0,
+          "end_sec": 0.42,
+          "duration_ms": 420.0,
+          "note_binding_strategy": "identity",
+          "note_identity_match": true,
+          "score_bridge_strategy": "time_overlap_bridge",
+          "score_hint_confidence": 0.93,
+          "score_hint_notes": [
+            "left phrase anchor"
+          ]
+        },
+        "acoustic_evidence": {
+          "acoustic_confidence": 0.92,
+          "timing_reliability": 0.82,
+          "boundary_uncertainty": {
+            "start_ms": 12.0,
+            "end_ms": 12.0,
+            "uncertain": false
+          },
+          "candidate_distribution": {
+            "candidate_lead": 0.83,
+            "frame_vote_ratio": 0.95,
+            "temporal_consistency": 0.93,
+            "posterior_mean_margin": 0.22,
+            "logit_mean_margin": 0.26
+          },
+          "note_alignment": {
+            "same_note_continuation_bias": 0.64,
+            "same_note_stability": 0.63,
+            "continuation_friendliness": 0.61,
+            "score_alignment_friendly": 0.54,
+            "weak_overlap_support": 0.26,
+            "weak_overlap_recovery": 0.27,
+            "weak_overlap_friendliness": 0.29,
+            "boundary_anchor_strength": 0.77,
+            "supports_note_span_extension": true,
+            "long_note_hold_bias": 0.42,
+            "part_note_span_reliability": 0.54
+          },
+          "ownership": {
+            "same_note_stability": 0.63,
+            "weak_overlap_recovery": 0.27,
+            "part_note_span_reliability": 0.54,
+            "reassignment_resistance": 0.72,
+            "boundary_reassignment_risk": 0.31,
+            "ownership_conflict_risk": 0.22,
+            "boundary_conflict_likelihood": 0.24
+          },
+          "continuation_profile": {
+            "continuation_friendliness": 0.61,
+            "weak_overlap_friendliness": 0.29
+          },
+          "boundary_profile": {
+            "boundary_transition_strength": 0.42,
+            "boundary_conflict_likelihood": 0.24
+          },
+          "notes": [
+            "left phrase anchor stayed stable"
+          ]
+        }
+      }
+    },
+    {
+      "start_sec": 0.38,
+      "end_sec": 0.56,
+      "confidence": 0.66,
+      "candidate_phones": [
+        {
+          "symbol": "aa",
+          "confidence": 0.66
+        },
+        {
+          "symbol": "@",
+          "confidence": 0.58
+        }
+      ],
+      "segment_summary": {
+        "acoustic_confidence": 0.79,
+        "timing_reliability": 0.84,
+        "boundary_uncertainty": {
+          "start_ms": 16.0,
+          "end_ms": 20.0,
+          "uncertain": false
+        }
+      },
+      "continuation_profile": {
+        "continuation_friendliness": 0.78,
+        "weak_overlap_friendliness": 0.74,
+        "interior_hold_strength": 0.82,
+        "one_sided_continuation_strength": 0.58
+      },
+      "boundary_profile": {
+        "boundary_transition_strength": 0.79,
+        "boundary_conflict_likelihood": 0.74,
+        "boundary_pressure": 0.71
+      },
+      "ownership": {
+        "same_note_stability": 0.79,
+        "weak_overlap_recovery": 0.72,
+        "part_note_span_reliability": 0.79,
+        "reassignment_resistance": 0.58,
+        "boundary_reassignment_risk": 0.69,
+        "ownership_conflict_risk": 0.71,
+        "boundary_conflict_likelihood": 0.74,
+        "competition_separation": 0.61,
+        "interior_hold_strength": 0.82,
+        "one_sided_continuation_strength": 0.58,
+        "boundary_pressure": 0.71
+      },
+      "adapter_diagnostics": {
+        "backend_kind": "heuristic-dsp",
+        "adapter_kind": "score-aware-heuristic-producer",
+        "evidence_kind": "posterior_and_logit_adapter_like",
+        "posterior_like_available": true,
+        "logit_like_available": true,
+        "approximation_only": true,
+        "candidate_aggregation": "mean_frame_confidence",
+        "aggregation": "mean_frame_confidence",
+        "source": "backend-compare:heuristic-dsp",
+        "candidate_source": "backend-compare:heuristic-posteriors"
+      },
+      "metadata": {
+        "score_hint": {
+          "normalized_track_id": "phrase-selective-track",
+          "normalized_part_id": "phrase-selective-part",
+          "normalized_note_id": "pb-note-001",
+          "part_local_note_rank": 1,
+          "start_sec": 0.0,
+          "end_sec": 0.42,
+          "duration_ms": 420.0,
+          "note_binding_strategy": "time_overlap",
+          "note_identity_match": false,
+          "score_bridge_strategy": "time_overlap_fallback",
+          "score_hint_confidence": 0.22,
+          "score_hint_notes": [
+            "middle segment still points at the old phrase note even though the interior leans into the next note"
+          ]
+        },
+        "acoustic_evidence": {
+          "acoustic_confidence": 0.79,
+          "timing_reliability": 0.84,
+          "boundary_transition_strength": 0.79,
+          "boundary_softness": 0.31,
+          "ownership_ambiguity": 0.68,
+          "boundary_uncertainty": {
+            "start_ms": 16.0,
+            "end_ms": 20.0,
+            "uncertain": false
+          },
+          "candidate_distribution": {
+            "candidate_lead": 0.18,
+            "frame_vote_ratio": 0.67,
+            "temporal_consistency": 0.76,
+            "posterior_mean_margin": 0.19,
+            "logit_mean_margin": 0.24,
+            "competition_separation": 0.61
+          },
+          "note_alignment": {
+            "same_note_continuation_bias": 0.84,
+            "same_note_stability": 0.79,
+            "continuation_friendliness": 0.78,
+            "score_alignment_friendly": 0.74,
+            "weak_overlap_support": 0.63,
+            "weak_overlap_recovery": 0.72,
+            "weak_overlap_friendliness": 0.74,
+            "boundary_anchor_strength": 0.71,
+            "supports_note_span_extension": true,
+            "long_note_hold_bias": 0.83,
+            "part_note_span_reliability": 0.79,
+            "interior_hold_strength": 0.82,
+            "one_sided_continuation_strength": 0.58
+          },
+          "ownership": {
+            "same_note_stability": 0.79,
+            "weak_overlap_recovery": 0.72,
+            "part_note_span_reliability": 0.79,
+            "reassignment_resistance": 0.58,
+            "boundary_reassignment_risk": 0.69,
+            "ownership_conflict_risk": 0.71,
+            "boundary_conflict_likelihood": 0.74,
+            "competition_separation": 0.61,
+            "interior_hold_strength": 0.82,
+            "one_sided_continuation_strength": 0.58,
+            "boundary_pressure": 0.71
+          },
+          "continuation_profile": {
+            "continuation_friendliness": 0.78,
+            "weak_overlap_friendliness": 0.74,
+            "interior_hold_strength": 0.82,
+            "one_sided_continuation_strength": 0.58
+          },
+          "boundary_profile": {
+            "boundary_transition_strength": 0.79,
+            "boundary_conflict_likelihood": 0.74,
+            "boundary_pressure": 0.71
+          },
+          "notes": [
+            "phrase boundary is real, but most of this segment sits inside the next note span"
+          ]
+        }
+      }
+    },
+    {
+      "start_sec": 0.56,
+      "end_sec": 0.8,
+      "confidence": 0.9,
+      "candidate_phones": [
+        {
+          "symbol": "N",
+          "confidence": 0.9
+        },
+        {
+          "symbol": "n",
+          "confidence": 0.1
+        }
+      ],
+      "segment_summary": {
+        "acoustic_confidence": 0.9,
+        "timing_reliability": 0.8,
+        "boundary_uncertainty": {
+          "start_ms": 12.0,
+          "end_ms": 12.0,
+          "uncertain": false
+        }
+      },
+      "continuation_profile": {
+        "continuation_friendliness": 0.6,
+        "weak_overlap_friendliness": 0.28
+      },
+      "boundary_profile": {
+        "boundary_transition_strength": 0.41,
+        "boundary_conflict_likelihood": 0.21
+      },
+      "ownership": {
+        "same_note_stability": 0.61,
+        "weak_overlap_recovery": 0.27,
+        "part_note_span_reliability": 0.55,
+        "reassignment_resistance": 0.69,
+        "boundary_reassignment_risk": 0.28,
+        "ownership_conflict_risk": 0.24,
+        "boundary_conflict_likelihood": 0.21
+      },
+      "adapter_diagnostics": {
+        "backend_kind": "heuristic-dsp",
+        "adapter_kind": "score-aware-heuristic-producer",
+        "evidence_kind": "posterior_and_logit_adapter_like",
+        "posterior_like_available": true,
+        "logit_like_available": true,
+        "approximation_only": true,
+        "candidate_aggregation": "mean_frame_confidence",
+        "aggregation": "mean_frame_confidence",
+        "source": "backend-compare:heuristic-dsp",
+        "candidate_source": "backend-compare:heuristic-posteriors"
+      },
+      "metadata": {
+        "score_hint": {
+          "normalized_track_id": "phrase-selective-track",
+          "normalized_part_id": "phrase-selective-part",
+          "normalized_note_id": "pb-note-002",
+          "part_local_note_rank": 2,
+          "start_sec": 0.32,
+          "end_sec": 1.02,
+          "duration_ms": 700.0,
+          "note_binding_strategy": "identity",
+          "note_identity_match": true,
+          "score_bridge_strategy": "time_overlap_bridge",
+          "score_hint_confidence": 0.91,
+          "score_hint_notes": [
+            "right phrase anchor for the next note with extended chain support"
+          ]
+        },
+        "acoustic_evidence": {
+          "acoustic_confidence": 0.9,
+          "timing_reliability": 0.8,
+          "boundary_uncertainty": {
+            "start_ms": 12.0,
+            "end_ms": 12.0,
+            "uncertain": false
+          },
+          "candidate_distribution": {
+            "candidate_lead": 0.8,
+            "frame_vote_ratio": 0.94,
+            "temporal_consistency": 0.92,
+            "posterior_mean_margin": 0.2,
+            "logit_mean_margin": 0.24
+          },
+          "note_alignment": {
+            "same_note_continuation_bias": 0.62,
+            "same_note_stability": 0.61,
+            "continuation_friendliness": 0.6,
+            "score_alignment_friendly": 0.5,
+            "weak_overlap_support": 0.25,
+            "weak_overlap_recovery": 0.27,
+            "weak_overlap_friendliness": 0.28,
+            "boundary_anchor_strength": 0.74,
+            "supports_note_span_extension": true,
+            "long_note_hold_bias": 0.43,
+            "part_note_span_reliability": 0.55
+          },
+          "ownership": {
+            "same_note_stability": 0.61,
+            "weak_overlap_recovery": 0.27,
+            "part_note_span_reliability": 0.55,
+            "reassignment_resistance": 0.69,
+            "boundary_reassignment_risk": 0.28,
+            "ownership_conflict_risk": 0.24,
+            "boundary_conflict_likelihood": 0.21
+          },
+          "continuation_profile": {
+            "continuation_friendliness": 0.6,
+            "weak_overlap_friendliness": 0.28
+          },
+          "boundary_profile": {
+            "boundary_transition_strength": 0.41,
+            "boundary_conflict_likelihood": 0.21
+          },
+          "notes": [
+            "right phrase anchor stayed stable"
+          ]
+        }
+      }
+    },
+    {
+      "start_sec": 0.8,
+      "end_sec": 1.02,
+      "confidence": 0.9,
+      "candidate_phones": [
+        {
+          "symbol": "N",
+          "confidence": 0.9
+        },
+        {
+          "symbol": "n",
+          "confidence": 0.1
+        }
+      ],
+      "segment_summary": {
+        "acoustic_confidence": 0.9,
+        "timing_reliability": 0.8,
+        "boundary_uncertainty": {
+          "start_ms": 12.0,
+          "end_ms": 12.0,
+          "uncertain": false
+        }
+      },
+      "continuation_profile": {
+        "continuation_friendliness": 0.6,
+        "weak_overlap_friendliness": 0.28
+      },
+      "boundary_profile": {
+        "boundary_transition_strength": 0.41,
+        "boundary_conflict_likelihood": 0.21
+      },
+      "ownership": {
+        "same_note_stability": 0.61,
+        "weak_overlap_recovery": 0.27,
+        "part_note_span_reliability": 0.55,
+        "reassignment_resistance": 0.69,
+        "boundary_reassignment_risk": 0.28,
+        "ownership_conflict_risk": 0.24,
+        "boundary_conflict_likelihood": 0.21
+      },
+      "adapter_diagnostics": {
+        "backend_kind": "heuristic-dsp",
+        "adapter_kind": "score-aware-heuristic-producer",
+        "evidence_kind": "posterior_and_logit_adapter_like",
+        "posterior_like_available": true,
+        "logit_like_available": true,
+        "approximation_only": true,
+        "candidate_aggregation": "mean_frame_confidence",
+        "aggregation": "mean_frame_confidence",
+        "source": "backend-compare:heuristic-dsp",
+        "candidate_source": "backend-compare:heuristic-posteriors"
+      },
+      "metadata": {
+        "score_hint": {
+          "normalized_track_id": "phrase-selective-track",
+          "normalized_part_id": "phrase-selective-part",
+          "normalized_note_id": "pb-note-002",
+          "part_local_note_rank": 2,
+          "start_sec": 0.32,
+          "end_sec": 1.02,
+          "duration_ms": 700.0,
+          "note_binding_strategy": "identity",
+          "note_identity_match": true,
+          "score_bridge_strategy": "time_overlap_bridge",
+          "score_hint_confidence": 0.91,
+          "score_hint_notes": [
+            "extended right phrase anchor kept the next note stable"
+          ]
+        },
+        "acoustic_evidence": {
+          "acoustic_confidence": 0.9,
+          "timing_reliability": 0.8,
+          "boundary_uncertainty": {
+            "start_ms": 12.0,
+            "end_ms": 12.0,
+            "uncertain": false
+          },
+          "candidate_distribution": {
+            "candidate_lead": 0.8,
+            "frame_vote_ratio": 0.94,
+            "temporal_consistency": 0.92,
+            "posterior_mean_margin": 0.2,
+            "logit_mean_margin": 0.24
+          },
+          "note_alignment": {
+            "same_note_continuation_bias": 0.62,
+            "same_note_stability": 0.61,
+            "continuation_friendliness": 0.6,
+            "score_alignment_friendly": 0.5,
+            "weak_overlap_support": 0.25,
+            "weak_overlap_recovery": 0.27,
+            "weak_overlap_friendliness": 0.28,
+            "boundary_anchor_strength": 0.74,
+            "supports_note_span_extension": true,
+            "long_note_hold_bias": 0.43,
+            "part_note_span_reliability": 0.55
+          },
+          "ownership": {
+            "same_note_stability": 0.61,
+            "weak_overlap_recovery": 0.27,
+            "part_note_span_reliability": 0.55,
+            "reassignment_resistance": 0.69,
+            "boundary_reassignment_risk": 0.28,
+            "ownership_conflict_risk": 0.24,
+            "boundary_conflict_likelihood": 0.21
+          },
+          "continuation_profile": {
+            "continuation_friendliness": 0.6,
+            "weak_overlap_friendliness": 0.28
+          },
+          "boundary_profile": {
+            "boundary_transition_strength": 0.41,
+            "boundary_conflict_likelihood": 0.21
+          },
+          "notes": [
+            "extended right phrase anchor kept the next note stable"
+          ]
+        }
+      }
+    }
+  ]
+}

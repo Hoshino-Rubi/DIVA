@@ -1,0 +1,154 @@
+{
+  "format": "openutau_alias_inventory",
+  "aliases": [
+    "a",
+    "l a",
+    "a ng",
+    "ng",
+    "l i",
+    "i",
+    "i ng",
+    "-a",
+    "-l a",
+    "-ts",
+    "-a ng bank_a",
+    "-a ng bank_z",
+    "-i ng bank_a",
+    "-i ng bank_z",
+    "pau",
+    "SP",
+    "a_cv",
+    "i_cv",
+    "l_cv",
+    "ng_cv",
+    "ts_cv",
+    "SP_cv"
+  ],
+  "repair_map": {
+    "-a N": ["-a ng bank_a", "-a ng bank_z"],
+    "-i N": ["-i ng bank_a", "-i ng bank_z"],
+    "pau_cv": ["SP_cv"]
+  },
+  "alias_metadata": {
+    "a": {
+      "color": "clear",
+      "subbank": "main",
+      "style": "neutral",
+      "tags": ["plain", "nucleus"]
+    },
+    "l a": {
+      "color": "bright",
+      "subbank": "front",
+      "style": "clear",
+      "tags": ["onset", "cv"]
+    },
+    "a ng": {
+      "color": "clear",
+      "subbank": "main",
+      "style": "neutral",
+      "tags": ["nucleus", "coda", "vc"]
+    },
+    "ng": {
+      "color": "soft",
+      "subbank": "soft",
+      "style": "airy",
+      "tags": ["coda", "plain"]
+    },
+    "l i": {
+      "color": "bright",
+      "subbank": "front",
+      "style": "clear",
+      "tags": ["onset", "cv"]
+    },
+    "i": {
+      "color": "soft",
+      "subbank": "main",
+      "style": "neutral",
+      "tags": ["plain", "nucleus"]
+    },
+    "i ng": {
+      "color": "soft",
+      "subbank": "main",
+      "style": "airy",
+      "tags": ["nucleus", "coda", "vc"]
+    },
+    "-a": {
+      "color": "clear",
+      "subbank": "main",
+      "style": "neutral",
+      "tags": ["plain", "nucleus"]
+    },
+    "-l a": {
+      "color": "bright",
+      "subbank": "front",
+      "style": "clear",
+      "tags": ["onset", "cv"]
+    },
+    "-ts": {
+      "color": "bright",
+      "subbank": "front",
+      "style": "clear",
+      "tags": ["plain", "onset"]
+    },
+    "-a ng bank_a": {
+      "color": "soft",
+      "subbank": "soft",
+      "style": "airy",
+      "tags": ["coda", "vc", "gentle"]
+    },
+    "-a ng bank_z": {
+      "color": "power",
+      "subbank": "power",
+      "style": "strong",
+      "tags": ["coda", "vc", "belt"]
+    },
+    "-i ng bank_a": {
+      "color": "soft",
+      "subbank": "soft",
+      "style": "airy",
+      "tags": ["coda", "vc", "gentle"]
+    },
+    "-i ng bank_z": {
+      "color": "power",
+      "subbank": "power",
+      "style": "strong",
+      "tags": ["coda", "vc", "belt"]
+    },
+    "a_cv": {
+      "color": "soft",
+      "subbank": "main",
+      "style": "airy",
+      "tags": ["lead", "plain_cv", "nucleus"]
+    },
+    "i_cv": {
+      "color": "soft",
+      "subbank": "main",
+      "style": "airy",
+      "tags": ["lead", "plain_cv", "nucleus"]
+    },
+    "l_cv": {
+      "color": "bright",
+      "subbank": "front",
+      "style": "clear",
+      "tags": ["lead", "plain_cv", "onset"]
+    },
+    "ng_cv": {
+      "color": "soft",
+      "subbank": "soft",
+      "style": "airy",
+      "tags": ["tail", "plain_cv", "coda"]
+    },
+    "ts_cv": {
+      "color": "bright",
+      "subbank": "front",
+      "style": "clear",
+      "tags": ["tail", "plain_cv", "onset"]
+    },
+    "SP_cv": {
+      "color": "clear",
+      "subbank": "main",
+      "style": "neutral",
+      "tags": ["pause"]
+    }
+  }
+}

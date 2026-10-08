@@ -1,0 +1,4 @@
+name: Test Singer
+subbanks:
+  - color: Power
+    dir: Power

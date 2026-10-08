@@ -1,0 +1,26 @@
+{
+  "schema_version": "cantonese_jyutping_lexicon_recovered_v1",
+  "entries": {
+    "喜": ["hei2"],
+    "歡": ["fun1"],
+    "你": ["nei5"],
+    "真": ["zan1"],
+    "的": ["dik1"],
+    "愛": ["oi3"],
+    "海": ["hoi2"],
+    "闊": ["fut3"],
+    "天": ["tin1"],
+    "空": ["hung1"],
+    "光": ["gwong1"],
+    "輝": ["fai1"],
+    "歲": ["seoi3"],
+    "月": ["jyut6"],
+    "浮": ["fau4"],
+    "誇": ["kwaa1"],
+    "知": ["zi1"],
+    "唔": ["m4"],
+    "我": ["ngo5"],
+    "向": ["hoeng3"]
+  },
+  "provenance_note": "Functional reconstruction from readable tests and phrase fixtures; not a byte-exact original lexicon."
+}

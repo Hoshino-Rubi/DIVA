@@ -1,0 +1,9 @@
+{
+  "dialect": "cantonese",
+  "entries": {
+    "laa": ["l", "a"],
+    "ng": ["N"],
+    "ngo": ["N", "o"],
+    "si": ["s", "i"]
+  }
+}

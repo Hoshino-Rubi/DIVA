@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "any2xsampa"
+version = "0.1.0"
+description = "Universal dialect singing-to-phones frontend MVP"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+grpc = ["grpcio>=1.64", "grpcio-tools>=1.64"]
+cantonese-g2p = ["pycantonese==5.0.0", "rustling==0.9.0"]
+
+[project.scripts]
+any2xsampa = "any2xsampa.cli:main"
+any2xsampa-api = "any2xsampa.api.server:main"
+any2xsampa-gui = "any2xsampa.gui.app:main"
+any2xsampa-grpc = "any2xsampa.grpc.server:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"any2xsampa" = [
+    "config/*.json",
+    "recognizer_fixtures/*.json",
+    "cantonese/resources/*.json",
+    "vocaloid/resources/*.json",
+    "vocaloid/resources/*.vsqx",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

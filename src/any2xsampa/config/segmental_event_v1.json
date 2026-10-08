@@ -1,0 +1,20 @@
+{
+  "schema_version": "segmental_event_policy_v1",
+  "evidence_schema": "segmental_event_evidence_v1",
+  "blank_id": 0,
+  "labels": 428,
+  "null_arc_duration_frames": 1,
+  "phone_duration_cap": null,
+  "phone_segment_score": "mean(frame_log_probs[s:e,k]) + logsigmoid(boundary[s]) + sum(logsigmoid(-boundary[s+1:e]))",
+  "null_arc_score": "frame_log_probs[t,0]",
+  "normalizer": "all full-covering paths over all nonblank labels and all positive durations",
+  "target_partition": "all full-covering paths whose nonblank event labels equal target exactly",
+  "decode": "exact_viterbi_without_reference_or_length_hint",
+  "repeated_same_label_segments": "not_collapsed",
+  "content_initialization": "independent_copy_of_pretrained_1024x428_head",
+  "boundary_initialization": "zero_weight_and_bias_on_local_final_feature_difference",
+  "prototype_only": true,
+  "quality_training_authorized": false,
+  "phone_times_are_ground_truth": false,
+  "old_ctc_codec_modified": false
+}

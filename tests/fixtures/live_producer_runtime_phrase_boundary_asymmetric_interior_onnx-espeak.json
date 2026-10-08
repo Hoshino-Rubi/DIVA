@@ -1,0 +1,1681 @@
+{
+  "schema_version": "external_posterior_json_v1",
+  "producer": {
+    "name": "score-aware-onnx-espeak-posterior-json",
+    "version": "v1",
+    "backend_kind": "onnx-espeak",
+    "requested_backend_kind": "onnx-espeak",
+    "approximation_only": false,
+    "dispatch": {
+      "requested_backend_kind": "onnx-espeak",
+      "resolved_backend_kind": "onnx-espeak",
+      "auto_fallback_used": false,
+      "onnx_espeak_ready": true,
+      "onnx_espeak_bundle_status": "bundle_missing_runtime",
+      "onnx_espeak_runtime_status": "in_process_ready",
+      "onnx_espeak_failure_category": null,
+      "onnx_espeak_failure_reason": null
+    },
+    "backend_registry_entry": {
+      "canonical_name": "onnx-espeak",
+      "aliases": [
+        "onnx-espeak",
+        "onnx_espeak",
+        "trained-onnx"
+      ],
+      "adapter_kind": "score-aware-onnx-espeak-producer"
+    },
+    "backend_capability": {
+      "backend_kind": "onnx-espeak",
+      "posterior_like_available": true,
+      "logit_like_available": true,
+      "approximation_only": false,
+      "source": "producer:onnx-espeak",
+      "aggregation": "sum_mapped_posterior_mass"
+    },
+    "audio_path": "tmp/phrase_probe.wav",
+    "note_context_path": "tmp/phrase_probe_note_context.json",
+    "note_context_format": "json",
+    "lyrics_guided": false,
+    "raw_model_output": "trained_onnx_ctc_model",
+    "onnx_espeak_runtime": {
+      "backend_kind": "onnx-espeak",
+      "bundle_status": "bundle_missing_runtime",
+      "runtime_status": "in_process_ready",
+      "ready": true,
+      "dispatch_mode": "in_process",
+      "failure_category": null,
+      "failure_reason": null,
+      "failure_message": null,
+      "remediation_message": null,
+      "in_process": {
+        "command": [
+          "/opt/pyvenv/bin/python"
+        ],
+        "available": true,
+        "ready": true,
+        "python_version": "3.13.5",
+        "python_version_info": [
+          3,
+          13,
+          5
+        ],
+        "python_version_matches": true,
+        "dependencies": {
+          "numpy": {
+            "available": true,
+            "version": null,
+            "error": null,
+            "module": "numpy"
+          },
+          "onnxruntime": {
+            "available": true,
+            "version": null,
+            "error": null,
+            "module": "onnxruntime"
+          },
+          "huggingface_hub": {
+            "available": true,
+            "version": null,
+            "error": null,
+            "module": "huggingface_hub"
+          }
+        },
+        "missing_dependencies": [],
+        "failure_reason": null,
+        "stderr": null,
+        "error": null
+      },
+      "external_worker": {
+        "worker_available": false,
+        "ready": false,
+        "selected_command": null,
+        "selected_source": null,
+        "selected_label": null,
+        "selected_runtime_root": null,
+        "selected_python_path": null,
+        "selected_worker_entrypoint": null,
+        "selected_env_overrides": {},
+        "bundle_layout_hit": false,
+        "bundle_layout": null,
+        "runtime_status": "in_process_ready",
+        "python_version": null,
+        "python_version_matches": false,
+        "missing_dependencies": [],
+        "failure_reason": "worker_not_found",
+        "candidates": [
+          {
+            "command": [
+              "python3.11"
+            ],
+            "available": false,
+            "ready": false,
+            "python_version": null,
+            "python_version_info": null,
+            "python_version_matches": false,
+            "dependencies": {
+              "numpy": {
+                "available": false,
+                "version": null,
+                "error": null,
+                "module": "numpy"
+              },
+              "onnxruntime": {
+                "available": false,
+                "version": null,
+                "error": null,
+                "module": "onnxruntime"
+              },
+              "huggingface_hub": {
+                "available": false,
+                "version": null,
+                "error": null,
+                "module": "huggingface_hub"
+              }
+            },
+            "missing_dependencies": [
+              "numpy",
+              "onnxruntime",
+              "huggingface_hub"
+            ],
+            "failure_reason": "worker_not_found",
+            "stderr": null,
+            "error": "FileNotFoundError: [Errno 2] No such file or directory: 'python3.11'",
+            "source": "external_worker_fallback",
+            "label": "external runtime fallback for bundle under /work/repo/runtime/onnx-espeak",
+            "python_path": null,
+            "runtime_root": "/work/repo/runtime/onnx-espeak",
+            "worker_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+            "env_overrides": {
+              "ANY2XSAMPA_ONNX_ESPEAK_RUNTIME": "/work/repo/runtime/onnx-espeak",
+              "HF_HOME": "/work/repo/runtime/onnx-espeak/cache/huggingface"
+            },
+            "bundle_layout": {
+              "runtime_root": "/work/repo/runtime/onnx-espeak",
+              "detected": true,
+              "bundle_ready": false,
+              "status": "bundle_missing_runtime",
+              "bundle_status": "bundle_missing_runtime",
+              "failure_category": "missing_worker",
+              "ready_components": [
+                "manifest",
+                "worker",
+                "cache_dir",
+                "model_dir"
+              ],
+              "missing_components": [
+                "runtime_python"
+              ],
+              "manifest_path": "/work/repo/runtime/onnx-espeak/manifest.json",
+              "manifest_present": true,
+              "manifest_valid": true,
+              "manifest_error": null,
+              "manifest_schema_version": "onnx_espeak_runtime_bundle_v1",
+              "worker_dir": "/work/repo/runtime/onnx-espeak/worker",
+              "worker_dir_present": true,
+              "worker_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+              "worker_entrypoint_present": true,
+              "dependency_probe_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+              "cache_dir": "/work/repo/runtime/onnx-espeak/cache/huggingface",
+              "cache_dir_present": true,
+              "model_dir": "/work/repo/runtime/onnx-espeak/models/onnx-espeak",
+              "model_dir_present": true,
+              "status_file": "/work/repo/runtime/onnx-espeak/bundle_state.json",
+              "status_file_present": true,
+              "python_required_version": "3.11",
+              "python_relative_paths": [
+                "Scripts/python.exe",
+                "bin/python",
+                "python.exe",
+                "python"
+              ],
+              "python_candidates": [
+                {
+                  "relative_path": "Scripts/python.exe",
+                  "path": "/work/repo/runtime/onnx-espeak/Scripts/python.exe",
+                  "exists": false
+                },
+                {
+                  "relative_path": "bin/python",
+                  "path": "/work/repo/runtime/onnx-espeak/bin/python",
+                  "exists": false
+                },
+                {
+                  "relative_path": "python.exe",
+                  "path": "/work/repo/runtime/onnx-espeak/python.exe",
+                  "exists": false
+                },
+                {
+                  "relative_path": "python",
+                  "path": "/work/repo/runtime/onnx-espeak/python",
+                  "exists": false
+                }
+              ],
+              "runtime_python_present": false,
+              "selected_python_candidate": null,
+              "required_dependencies": [
+                "numpy",
+                "onnxruntime",
+                "huggingface_hub"
+              ],
+              "manifest_summary": {
+                "bundle_name": "onnx-espeak-runtime",
+                "backend_kind": "onnx-espeak",
+                "worker_entrypoint": "worker/posterior_json_producer.py",
+                "cache_root": "cache/huggingface",
+                "model_root": "models/onnx-espeak",
+                "status_file": "bundle_state.json"
+              }
+            }
+          },
+          {
+            "command": [
+              "py",
+              "-3.11"
+            ],
+            "available": false,
+            "ready": false,
+            "python_version": null,
+            "python_version_info": null,
+            "python_version_matches": false,
+            "dependencies": {
+              "numpy": {
+                "available": false,
+                "version": null,
+                "error": null,
+                "module": "numpy"
+              },
+              "onnxruntime": {
+                "available": false,
+                "version": null,
+                "error": null,
+                "module": "onnxruntime"
+              },
+              "huggingface_hub": {
+                "available": false,
+                "version": null,
+                "error": null,
+                "module": "huggingface_hub"
+              }
+            },
+            "missing_dependencies": [
+              "numpy",
+              "onnxruntime",
+              "huggingface_hub"
+            ],
+            "failure_reason": "worker_not_found",
+            "stderr": null,
+            "error": "FileNotFoundError: [Errno 2] No such file or directory: 'py'",
+            "source": "external_worker_fallback",
+            "label": "external runtime fallback for bundle under /work/repo/runtime/onnx-espeak",
+            "python_path": null,
+            "runtime_root": "/work/repo/runtime/onnx-espeak",
+            "worker_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+            "env_overrides": {
+              "ANY2XSAMPA_ONNX_ESPEAK_RUNTIME": "/work/repo/runtime/onnx-espeak",
+              "HF_HOME": "/work/repo/runtime/onnx-espeak/cache/huggingface"
+            },
+            "bundle_layout": {
+              "runtime_root": "/work/repo/runtime/onnx-espeak",
+              "detected": true,
+              "bundle_ready": false,
+              "status": "bundle_missing_runtime",
+              "bundle_status": "bundle_missing_runtime",
+              "failure_category": "missing_worker",
+              "ready_components": [
+                "manifest",
+                "worker",
+                "cache_dir",
+                "model_dir"
+              ],
+              "missing_components": [
+                "runtime_python"
+              ],
+              "manifest_path": "/work/repo/runtime/onnx-espeak/manifest.json",
+              "manifest_present": true,
+              "manifest_valid": true,
+              "manifest_error": null,
+              "manifest_schema_version": "onnx_espeak_runtime_bundle_v1",
+              "worker_dir": "/work/repo/runtime/onnx-espeak/worker",
+              "worker_dir_present": true,
+              "worker_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+              "worker_entrypoint_present": true,
+              "dependency_probe_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+              "cache_dir": "/work/repo/runtime/onnx-espeak/cache/huggingface",
+              "cache_dir_present": true,
+              "model_dir": "/work/repo/runtime/onnx-espeak/models/onnx-espeak",
+              "model_dir_present": true,
+              "status_file": "/work/repo/runtime/onnx-espeak/bundle_state.json",
+              "status_file_present": true,
+              "python_required_version": "3.11",
+              "python_relative_paths": [
+                "Scripts/python.exe",
+                "bin/python",
+                "python.exe",
+                "python"
+              ],
+              "python_candidates": [
+                {
+                  "relative_path": "Scripts/python.exe",
+                  "path": "/work/repo/runtime/onnx-espeak/Scripts/python.exe",
+                  "exists": false
+                },
+                {
+                  "relative_path": "bin/python",
+                  "path": "/work/repo/runtime/onnx-espeak/bin/python",
+                  "exists": false
+                },
+                {
+                  "relative_path": "python.exe",
+                  "path": "/work/repo/runtime/onnx-espeak/python.exe",
+                  "exists": false
+                },
+                {
+                  "relative_path": "python",
+                  "path": "/work/repo/runtime/onnx-espeak/python",
+                  "exists": false
+                }
+              ],
+              "runtime_python_present": false,
+              "selected_python_candidate": null,
+              "required_dependencies": [
+                "numpy",
+                "onnxruntime",
+                "huggingface_hub"
+              ],
+              "manifest_summary": {
+                "bundle_name": "onnx-espeak-runtime",
+                "backend_kind": "onnx-espeak",
+                "worker_entrypoint": "worker/posterior_json_producer.py",
+                "cache_root": "cache/huggingface",
+                "model_root": "models/onnx-espeak",
+                "status_file": "bundle_state.json"
+              }
+            }
+          }
+        ]
+      },
+      "model_resources": {
+        "status": "ready",
+        "ready": true,
+        "failure_category": null,
+        "failure_reason": null,
+        "failure_message": "onnx-espeak model resources are cached locally.",
+        "remediation_message": null,
+        "cached": true,
+        "fetchable": true,
+        "prefetch_requested": false,
+        "prefetch_performed": false,
+        "checked_via": "in_process",
+        "checked_with_command": [
+          "/opt/pyvenv/bin/python"
+        ],
+        "local_files": [
+          {
+            "resource": "model",
+            "repo_id": "onnx-community/wav2vec2-lv-60-espeak-cv-ft-ONNX",
+            "filename": "onnx/model_int8.onnx",
+            "local_path": "/work/repo/runtime/onnx-espeak/cache/huggingface/hub/models--onnx-community--wav2vec2-lv-60-espeak-cv-ft-ONNX/snapshots/0c57084ff1713c6ab2edd62ff710176c705f2a27/onnx/model_int8.onnx",
+            "cache_state": "cached"
+          },
+          {
+            "resource": "vocab",
+            "repo_id": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+            "filename": "vocab.json",
+            "local_path": "/work/repo/runtime/onnx-espeak/cache/huggingface/hub/models--facebook--wav2vec2-lv-60-espeak-cv-ft/snapshots/ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4/vocab.json",
+            "cache_state": "cached"
+          },
+          {
+            "resource": "preprocessor_config",
+            "repo_id": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+            "filename": "preprocessor_config.json",
+            "local_path": "/work/repo/runtime/onnx-espeak/cache/huggingface/hub/models--facebook--wav2vec2-lv-60-espeak-cv-ft/snapshots/ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4/preprocessor_config.json",
+            "cache_state": "cached"
+          }
+        ],
+        "missing_files": [],
+        "fetchable_files": [],
+        "unavailable_files": [],
+        "unknown_files": [],
+        "resources": [
+          {
+            "resource": "model",
+            "repo_id": "onnx-community/wav2vec2-lv-60-espeak-cv-ft-ONNX",
+            "filename": "onnx/model_int8.onnx",
+            "cache_state": "cached",
+            "local_path": "/work/repo/runtime/onnx-espeak/cache/huggingface/hub/models--onnx-community--wav2vec2-lv-60-espeak-cv-ft-ONNX/snapshots/0c57084ff1713c6ab2edd62ff710176c705f2a27/onnx/model_int8.onnx",
+            "cache_error": null,
+            "prefetch_error": null,
+            "remote_state": null,
+            "remote_http_status": null,
+            "remote_url": null,
+            "remote_error": null
+          },
+          {
+            "resource": "vocab",
+            "repo_id": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+            "filename": "vocab.json",
+            "cache_state": "cached",
+            "local_path": "/work/repo/runtime/onnx-espeak/cache/huggingface/hub/models--facebook--wav2vec2-lv-60-espeak-cv-ft/snapshots/ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4/vocab.json",
+            "cache_error": null,
+            "prefetch_error": null,
+            "remote_state": null,
+            "remote_http_status": null,
+            "remote_url": null,
+            "remote_error": null
+          },
+          {
+            "resource": "preprocessor_config",
+            "repo_id": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+            "filename": "preprocessor_config.json",
+            "cache_state": "cached",
+            "local_path": "/work/repo/runtime/onnx-espeak/cache/huggingface/hub/models--facebook--wav2vec2-lv-60-espeak-cv-ft/snapshots/ae45363bf3413b374fecd9dc8bc1df0e24c3b7f4/preprocessor_config.json",
+            "cache_error": null,
+            "prefetch_error": null,
+            "remote_state": null,
+            "remote_http_status": null,
+            "remote_url": null,
+            "remote_error": null
+          }
+        ],
+        "model_repo": "onnx-community/wav2vec2-lv-60-espeak-cv-ft-ONNX",
+        "model_file": "onnx/model_int8.onnx",
+        "vocab_repo": "facebook/wav2vec2-lv-60-espeak-cv-ft"
+      },
+      "runtime_path": {
+        "repo_root": "/work/repo",
+        "worker_entrypoint": "/work/repo/tools/posterior_json_producer.py",
+        "worker_cwd": "/work/repo",
+        "worker_pythonpath_entry": "/work/repo/src",
+        "python_env_var": "ANY2XSAMPA_ONNX_ESPEAK_PYTHON",
+        "runtime_root_env_var": "ANY2XSAMPA_ONNX_ESPEAK_RUNTIME",
+        "configured_python": null,
+        "configured_runtime_root": null,
+        "preferred_runtime_roots": [
+          "/work/repo/runtime/onnx-espeak",
+          "/work/repo/.runtime/onnx-espeak"
+        ],
+        "preferred_bundle_layouts": [
+          {
+            "runtime_root": "/work/repo/runtime/onnx-espeak",
+            "detected": true,
+            "bundle_ready": false,
+            "status": "bundle_missing_runtime",
+            "bundle_status": "bundle_missing_runtime",
+            "failure_category": "missing_worker",
+            "ready_components": [
+              "manifest",
+              "worker",
+              "cache_dir",
+              "model_dir"
+            ],
+            "missing_components": [
+              "runtime_python"
+            ],
+            "manifest_path": "/work/repo/runtime/onnx-espeak/manifest.json",
+            "manifest_present": true,
+            "manifest_valid": true,
+            "manifest_error": null,
+            "manifest_schema_version": "onnx_espeak_runtime_bundle_v1",
+            "worker_dir": "/work/repo/runtime/onnx-espeak/worker",
+            "worker_dir_present": true,
+            "worker_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+            "worker_entrypoint_present": true,
+            "dependency_probe_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+            "cache_dir": "/work/repo/runtime/onnx-espeak/cache/huggingface",
+            "cache_dir_present": true,
+            "model_dir": "/work/repo/runtime/onnx-espeak/models/onnx-espeak",
+            "model_dir_present": true,
+            "status_file": "/work/repo/runtime/onnx-espeak/bundle_state.json",
+            "status_file_present": true,
+            "python_required_version": "3.11",
+            "python_relative_paths": [
+              "Scripts/python.exe",
+              "bin/python",
+              "python.exe",
+              "python"
+            ],
+            "python_candidates": [
+              {
+                "relative_path": "Scripts/python.exe",
+                "path": "/work/repo/runtime/onnx-espeak/Scripts/python.exe",
+                "exists": false
+              },
+              {
+                "relative_path": "bin/python",
+                "path": "/work/repo/runtime/onnx-espeak/bin/python",
+                "exists": false
+              },
+              {
+                "relative_path": "python.exe",
+                "path": "/work/repo/runtime/onnx-espeak/python.exe",
+                "exists": false
+              },
+              {
+                "relative_path": "python",
+                "path": "/work/repo/runtime/onnx-espeak/python",
+                "exists": false
+              }
+            ],
+            "runtime_python_present": false,
+            "selected_python_candidate": null,
+            "required_dependencies": [
+              "numpy",
+              "onnxruntime",
+              "huggingface_hub"
+            ],
+            "manifest_summary": {
+              "bundle_name": "onnx-espeak-runtime",
+              "backend_kind": "onnx-espeak",
+              "worker_entrypoint": "worker/posterior_json_producer.py",
+              "cache_root": "cache/huggingface",
+              "model_root": "models/onnx-espeak",
+              "status_file": "bundle_state.json"
+            }
+          },
+          {
+            "runtime_root": "/work/repo/.runtime/onnx-espeak",
+            "detected": false,
+            "bundle_ready": false,
+            "status": "not_bundle_layout",
+            "bundle_status": "not_bundle_layout",
+            "failure_category": null,
+            "ready_components": [],
+            "missing_components": [],
+            "manifest_path": "/work/repo/.runtime/onnx-espeak/manifest.json",
+            "manifest_present": false,
+            "manifest_valid": false,
+            "manifest_error": null,
+            "manifest_schema_version": null,
+            "worker_dir": "/work/repo/.runtime/onnx-espeak/worker",
+            "worker_dir_present": false,
+            "worker_entrypoint": "/work/repo/.runtime/onnx-espeak/worker/posterior_json_producer.py",
+            "worker_entrypoint_present": false,
+            "dependency_probe_entrypoint": "/work/repo/.runtime/onnx-espeak/worker/posterior_json_producer.py",
+            "cache_dir": "/work/repo/.runtime/onnx-espeak/cache/huggingface",
+            "cache_dir_present": false,
+            "model_dir": "/work/repo/.runtime/onnx-espeak/models/onnx-espeak",
+            "model_dir_present": false,
+            "status_file": "/work/repo/.runtime/onnx-espeak/bundle_state.json",
+            "status_file_present": false,
+            "python_required_version": "3.11",
+            "python_relative_paths": [
+              "Scripts/python.exe",
+              "bin/python",
+              "python.exe",
+              "python"
+            ],
+            "python_candidates": [
+              {
+                "relative_path": "Scripts/python.exe",
+                "path": "/work/repo/.runtime/onnx-espeak/Scripts/python.exe",
+                "exists": false
+              },
+              {
+                "relative_path": "bin/python",
+                "path": "/work/repo/.runtime/onnx-espeak/bin/python",
+                "exists": false
+              },
+              {
+                "relative_path": "python.exe",
+                "path": "/work/repo/.runtime/onnx-espeak/python.exe",
+                "exists": false
+              },
+              {
+                "relative_path": "python",
+                "path": "/work/repo/.runtime/onnx-espeak/python",
+                "exists": false
+              }
+            ],
+            "runtime_python_present": false,
+            "selected_python_candidate": null,
+            "required_dependencies": [
+              "numpy",
+              "onnxruntime",
+              "huggingface_hub"
+            ],
+            "manifest_summary": {
+              "bundle_name": "onnx-espeak-runtime",
+              "backend_kind": "onnx-espeak",
+              "worker_entrypoint": "worker/posterior_json_producer.py",
+              "cache_root": "cache/huggingface",
+              "model_root": "models/onnx-espeak",
+              "status_file": "bundle_state.json"
+            }
+          }
+        ],
+        "primary_bundle_layout": {
+          "runtime_root": "/work/repo/runtime/onnx-espeak",
+          "detected": true,
+          "bundle_ready": false,
+          "status": "bundle_missing_runtime",
+          "bundle_status": "bundle_missing_runtime",
+          "failure_category": "missing_worker",
+          "ready_components": [
+            "manifest",
+            "worker",
+            "cache_dir",
+            "model_dir"
+          ],
+          "missing_components": [
+            "runtime_python"
+          ],
+          "manifest_path": "/work/repo/runtime/onnx-espeak/manifest.json",
+          "manifest_present": true,
+          "manifest_valid": true,
+          "manifest_error": null,
+          "manifest_schema_version": "onnx_espeak_runtime_bundle_v1",
+          "worker_dir": "/work/repo/runtime/onnx-espeak/worker",
+          "worker_dir_present": true,
+          "worker_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+          "worker_entrypoint_present": true,
+          "dependency_probe_entrypoint": "/work/repo/runtime/onnx-espeak/worker/posterior_json_producer.py",
+          "cache_dir": "/work/repo/runtime/onnx-espeak/cache/huggingface",
+          "cache_dir_present": true,
+          "model_dir": "/work/repo/runtime/onnx-espeak/models/onnx-espeak",
+          "model_dir_present": true,
+          "status_file": "/work/repo/runtime/onnx-espeak/bundle_state.json",
+          "status_file_present": true,
+          "python_required_version": "3.11",
+          "python_relative_paths": [
+            "Scripts/python.exe",
+            "bin/python",
+            "python.exe",
+            "python"
+          ],
+          "python_candidates": [
+            {
+              "relative_path": "Scripts/python.exe",
+              "path": "/work/repo/runtime/onnx-espeak/Scripts/python.exe",
+              "exists": false
+            },
+            {
+              "relative_path": "bin/python",
+              "path": "/work/repo/runtime/onnx-espeak/bin/python",
+              "exists": false
+            },
+            {
+              "relative_path": "python.exe",
+              "path": "/work/repo/runtime/onnx-espeak/python.exe",
+              "exists": false
+            },
+            {
+              "relative_path": "python",
+              "path": "/work/repo/runtime/onnx-espeak/python",
+              "exists": false
+            }
+          ],
+          "runtime_python_present": false,
+          "selected_python_candidate": null,
+          "required_dependencies": [
+            "numpy",
+            "onnxruntime",
+            "huggingface_hub"
+          ],
+          "manifest_summary": {
+            "bundle_name": "onnx-espeak-runtime",
+            "backend_kind": "onnx-espeak",
+            "worker_entrypoint": "worker/posterior_json_producer.py",
+            "cache_root": "cache/huggingface",
+            "model_root": "models/onnx-espeak",
+            "status_file": "bundle_state.json"
+          }
+        },
+        "primary_bundle_status": "bundle_missing_runtime",
+        "bundle_layout_hit": false,
+        "selected_bundle_layout": null,
+        "selected_bundle_status": null,
+        "selected_runtime_source": null,
+        "selected_runtime_root": null,
+        "selected_python_path": null,
+        "selected_command": null,
+        "selected_worker_entrypoint": "/work/repo/tools/posterior_json_producer.py",
+        "selected_env_overrides": {}
+      }
+    },
+    "contract_layers": {
+      "raw_model_output": [
+        "posterior_trace",
+        "logit_trace",
+        "metadata.producer_raw_model_output"
+      ],
+      "producer_derived_fields": [
+        "segment_summary",
+        "continuation_profile",
+        "boundary_profile",
+        "ownership",
+        "adapter_diagnostics"
+      ],
+      "adapter_normalized_fields": [
+        "metadata.acoustic_evidence"
+      ]
+    },
+    "derived_fields": [
+      "segment_summary",
+      "continuation_profile",
+      "boundary_profile",
+      "ownership",
+      "adapter_diagnostics"
+    ]
+  },
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 0.021,
+      "confidence": 0.34,
+      "candidate_phones": [
+        {
+          "symbol": "N",
+          "confidence": 0.34
+        },
+        {
+          "symbol": "a",
+          "confidence": 0.336
+        },
+        {
+          "symbol": "l",
+          "confidence": 0.23
+        }
+      ],
+      "posterior_trace": {
+        "source": "producer:onnx_mapped_frame_posteriors",
+        "frame_hop_sec": 0.02,
+        "frame_span_sec": 0.0206,
+        "frames": [
+          {
+            "frame_index": 0,
+            "candidates": [
+              {
+                "symbol": "N",
+                "confidence": 0.277
+              },
+              {
+                "symbol": "a",
+                "confidence": 0.274
+              },
+              {
+                "symbol": "l",
+                "confidence": 0.187
+              },
+              {
+                "symbol": "u",
+                "confidence": 0.077
+              }
+            ]
+          }
+        ]
+      },
+      "logit_trace": {
+        "source": "producer:onnx_mapped_frame_logits",
+        "frame_hop_sec": 0.02,
+        "frame_span_sec": 0.0206,
+        "frames": [
+          {
+            "frame_index": 0,
+            "candidates": [
+              {
+                "symbol": "N",
+                "logit": 3.472
+              },
+              {
+                "symbol": "a",
+                "logit": 3.462
+              },
+              {
+                "symbol": "l",
+                "logit": 3.081
+              },
+              {
+                "symbol": "u",
+                "logit": 2.189
+              }
+            ]
+          }
+        ]
+      },
+      "posterior_summary": {
+        "available": true,
+        "source": "producer:onnx_mapped_frame_posteriors",
+        "frame_count": 1,
+        "frame_hop_sec": 0.02,
+        "top_phone_mean_posterior": 0.277,
+        "top_phone_peak_posterior": 0.277,
+        "runner_up_mean_posterior": 0.274,
+        "mean_margin": 0.003,
+        "peak_margin": 0.003,
+        "frame_vote_ratio": 1.0,
+        "temporal_consistency": 1.0,
+        "interior_mean_margin": 0.003,
+        "interior_vote_ratio": 1.0,
+        "entry_margin": 0.003,
+        "exit_margin": 0.003,
+        "edge_competition_ratio": 0.997
+      },
+      "logit_summary": {
+        "available": true,
+        "source": "producer:onnx_mapped_frame_logits",
+        "frame_count": 1,
+        "top_phone_mean_logit": 3.472,
+        "top_phone_peak_logit": 3.472,
+        "runner_up_mean_logit": 3.462,
+        "mean_margin": 0.01,
+        "peak_margin": 0.01,
+        "interior_mean_margin": 0.01,
+        "entry_margin": 0.01,
+        "exit_margin": 0.01
+      },
+      "segment_summary": {
+        "acoustic_confidence": 0.34,
+        "timing_reliability": 0.48,
+        "frame_consistency": 0.53,
+        "evidence_quality": 0.456,
+        "segment_likelihood": 0.418,
+        "boundary_uncertainty": {
+          "start_ms": 53.0,
+          "end_ms": 53.0,
+          "window_ms": 106.0,
+          "severity": 0.52,
+          "uncertain": true
+        },
+        "posterior_summary": {
+          "available": true,
+          "source": "producer:onnx_mapped_frame_posteriors",
+          "frame_count": 1,
+          "frame_hop_sec": 0.02,
+          "top_phone_mean_posterior": 0.277,
+          "top_phone_peak_posterior": 0.277,
+          "runner_up_mean_posterior": 0.274,
+          "mean_margin": 0.003,
+          "peak_margin": 0.003,
+          "frame_vote_ratio": 1.0,
+          "temporal_consistency": 1.0,
+          "interior_mean_margin": 0.003,
+          "interior_vote_ratio": 1.0,
+          "entry_margin": 0.003,
+          "exit_margin": 0.003,
+          "edge_competition_ratio": 0.997
+        },
+        "logit_summary": {
+          "available": true,
+          "source": "producer:onnx_mapped_frame_logits",
+          "frame_count": 1,
+          "top_phone_mean_logit": 3.472,
+          "top_phone_peak_logit": 3.472,
+          "runner_up_mean_logit": 3.462,
+          "mean_margin": 0.01,
+          "peak_margin": 0.01,
+          "interior_mean_margin": 0.01,
+          "entry_margin": 0.01,
+          "exit_margin": 0.01
+        }
+      },
+      "continuation_profile": {
+        "same_note_continuation_bias": 0.988,
+        "same_note_stability": 0.891,
+        "continuation_friendliness": 0.948,
+        "score_alignment_friendly": 0.787,
+        "weak_overlap_support": 0.831,
+        "weak_overlap_recovery": 0.796,
+        "weak_overlap_friendliness": 0.829,
+        "long_note_hold_bias": 1.0,
+        "supports_note_span_extension": true,
+        "interior_hold_strength": 0.665,
+        "competition_separation": 0.364,
+        "one_sided_continuation_strength": 0.99
+      },
+      "boundary_profile": {
+        "boundary_uncertain": true,
+        "boundary_transition_strength": 0.873,
+        "boundary_softness": 0.798,
+        "boundary_anchor_strength": 0.88,
+        "boundary_conflict_likelihood": 0.232,
+        "boundary_reassignment_risk": 0.295,
+        "ownership_conflict_risk": 0.215,
+        "reassignment_resistance": 0.851,
+        "boundary_pressure": 0.865
+      },
+      "ownership": {
+        "same_note_stability": 0.891,
+        "weak_overlap_recovery": 0.796,
+        "long_note_support": 1.0,
+        "part_note_span_reliability": 0.773,
+        "reassignment_resistance": 0.851,
+        "boundary_reassignment_risk": 0.295,
+        "ownership_conflict_risk": 0.215,
+        "anchor_preference": 0.76,
+        "boundary_conflict_likelihood": 0.232,
+        "candidate_lead": 0.38,
+        "competition_separation": 0.364,
+        "interior_hold_strength": 0.665,
+        "one_sided_continuation_strength": 0.99,
+        "boundary_pressure": 0.865
+      },
+      "adapter_diagnostics": {
+        "adapter_kind": "score-aware-onnx-espeak-producer",
+        "backend_kind": "onnx-espeak",
+        "evidence_kind": "posterior_and_logit_adapter_like",
+        "candidate_source": "producer:onnx_mapped_frame_posteriors",
+        "posterior_like_available": true,
+        "logit_like_available": true,
+        "posterior_source": "producer:onnx_mapped_frame_posteriors",
+        "logit_source": "producer:onnx_mapped_frame_logits",
+        "candidate_aggregation": "sum_mapped_posterior_mass",
+        "aggregation": "sum_mapped_posterior_mass",
+        "approximation_only": false,
+        "source": "producer:onnx-espeak",
+        "frame_count": 1,
+        "frame_hop_sec": 0.02
+      },
+      "metadata": {
+        "producer_name": "score-aware-onnx-espeak-posterior-json",
+        "producer_version": "v1",
+        "producer_backend_kind": "onnx-espeak",
+        "producer_raw_model_output": {
+          "backend_kind": "onnx-espeak",
+          "frame_count": 1,
+          "frame_hop_sec": 0.02,
+          "frame_span_sec": 0.0206,
+          "dominant_symbol": "N",
+          "dominant_confidence": 0.34,
+          "raw_model_output_kind": "trained_onnx_ctc_model",
+          "frame_feature_means": {
+            "blank_posterior": 0.9298,
+            "top_nonblank_posterior": 0.277,
+            "frame_rms": 0.141
+          },
+          "mean_frame_logits": {
+            "<pad>": 7.3347,
+            "a": 3.3269,
+            "n": 3.0141,
+            "l": 2.5395
+          },
+          "model_backend": "onnxruntime",
+          "model_repo": "onnx-community/wav2vec2-lv-60-espeak-cv-ft-ONNX",
+          "model_file": "onnx/model_int8.onnx",
+          "vocab_repo": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+          "mean_raw_label_posteriors": {
+            "<pad>": 0.9251,
+            "a": 0.0168,
+            "n": 0.0123,
+            "l": 0.0077,
+            "m": 0.007,
+            "i": 0.0044
+          },
+          "segment_evidence_summary": {
+            "frame_vote_ratio": 1.0,
+            "temporal_consistency": 1.0,
+            "interior_mean_margin": 0.003,
+            "interior_vote_ratio": 1.0,
+            "interior_peak_ratio": 0.277,
+            "interior_hold_ratio": 0.1138,
+            "edge_competition_ratio": 0.997,
+            "entry_margin": 0.003,
+            "exit_margin": 0.003,
+            "entry_exit_balance": 1.0,
+            "boundary_pressure": 0.7976,
+            "combined_margin": 0.0036,
+            "combined_top_confidence": 0.3398
+          }
+        },
+        "producer_derivation_notes": [
+          "producer emitted posterior-json-compatible evidence from frame-level audio analysis",
+          "producer used frame feature prototypes to score posterior/logit evidence",
+          "producer aggregated frame competition into segment ownership evidence",
+          "producer strengthened continuation using neighboring note-context continuity",
+          "producer separated one-sided continuation evidence from boundary-conflict evidence",
+          "producer emphasized long-note interior hold evidence for trained backend"
+        ],
+        "producer_generated_fields": [
+          "segment_summary",
+          "continuation_profile",
+          "boundary_profile",
+          "ownership",
+          "adapter_diagnostics"
+        ],
+        "producer_contract_layers": {
+          "raw_model_output": [
+            "posterior_trace",
+            "logit_trace",
+            "metadata.producer_raw_model_output"
+          ],
+          "producer_derived_fields": [
+            "segment_summary",
+            "continuation_profile",
+            "boundary_profile",
+            "ownership",
+            "adapter_diagnostics"
+          ],
+          "adapter_normalized_fields": [
+            "metadata.acoustic_evidence"
+          ]
+        },
+        "producer_context": {
+          "note_context_path": "tmp/phrase_probe_note_context.json",
+          "note_context_format": "json",
+          "lyrics_guided": false,
+          "matched_note_id": "probe-note-001",
+          "matched_track_id": "phrase-probe-track",
+          "matched_part_id": "phrase-probe-part",
+          "matched_note_overlap_ratio": 1.0,
+          "matched_note_interior_ratio": 1.0,
+          "competing_note_id": null,
+          "competing_overlap_ratio": 0.0
+        },
+        "score_hint": {
+          "normalized_track_id": "pb-track",
+          "normalized_part_id": "pb-part",
+          "normalized_note_id": "pb-note-001",
+          "part_local_note_rank": 1,
+          "duration_ms": 360.0,
+          "start_sec": 0.0,
+          "end_sec": 0.36,
+          "note_binding_strategy": "identity",
+          "note_identity_match": true,
+          "score_bridge_strategy": "time_overlap_bridge",
+          "score_hint_confidence": 0.93,
+          "score_hint_notes": [
+            "left phrase anchor"
+          ]
+        }
+      }
+    },
+    {
+      "start_sec": 0.206,
+      "end_sec": 0.226,
+      "confidence": 0.292,
+      "candidate_phones": [
+        {
+          "symbol": "a",
+          "confidence": 0.292
+        },
+        {
+          "symbol": "l",
+          "confidence": 0.292
+        },
+        {
+          "symbol": "ts_h",
+          "confidence": 0.212
+        }
+      ],
+      "posterior_trace": {
+        "source": "producer:onnx_mapped_frame_posteriors",
+        "frame_hop_sec": 0.02,
+        "frame_span_sec": 0.0206,
+        "frames": [
+          {
+            "frame_index": 0,
+            "candidates": [
+              {
+                "symbol": "l",
+                "confidence": 0.24
+              },
+              {
+                "symbol": "a",
+                "confidence": 0.24
+              },
+              {
+                "symbol": "ts_h",
+                "confidence": 0.174
+              },
+              {
+                "symbol": "N",
+                "confidence": 0.168
+              }
+            ]
+          }
+        ]
+      },
+      "logit_trace": {
+        "source": "producer:onnx_mapped_frame_logits",
+        "frame_hop_sec": 0.02,
+        "frame_span_sec": 0.0206,
+        "frames": [
+          {
+            "frame_index": 0,
+            "candidates": [
+              {
+                "symbol": "l",
+                "logit": 3.232
+              },
+              {
+                "symbol": "a",
+                "logit": 3.232
+              },
+              {
+                "symbol": "ts_h",
+                "logit": 2.914
+              },
+              {
+                "symbol": "N",
+                "logit": 2.879
+              }
+            ]
+          }
+        ]
+      },
+      "posterior_summary": {
+        "available": true,
+        "source": "producer:onnx_mapped_frame_posteriors",
+        "frame_count": 1,
+        "frame_hop_sec": 0.02,
+        "top_phone_mean_posterior": 0.24,
+        "top_phone_peak_posterior": 0.24,
+        "runner_up_mean_posterior": 0.24,
+        "mean_margin": 0.0,
+        "peak_margin": 0.0,
+        "frame_vote_ratio": 0.0,
+        "temporal_consistency": 0.0,
+        "interior_mean_margin": 0.0,
+        "interior_vote_ratio": 0.0,
+        "entry_margin": 0.0,
+        "exit_margin": 0.0,
+        "edge_competition_ratio": 1.0
+      },
+      "logit_summary": {
+        "available": true,
+        "source": "producer:onnx_mapped_frame_logits",
+        "frame_count": 1,
+        "top_phone_mean_logit": 3.232,
+        "top_phone_peak_logit": 3.232,
+        "runner_up_mean_logit": 3.232,
+        "mean_margin": 0.0,
+        "peak_margin": 0.0,
+        "interior_mean_margin": 0.0,
+        "entry_margin": 0.0,
+        "exit_margin": 0.0
+      },
+      "segment_summary": {
+        "acoustic_confidence": 0.292,
+        "timing_reliability": 0.48,
+        "frame_consistency": 0.53,
+        "evidence_quality": 0.439,
+        "segment_likelihood": 0.384,
+        "boundary_uncertainty": {
+          "start_ms": 53.0,
+          "end_ms": 53.0,
+          "window_ms": 106.0,
+          "severity": 0.52,
+          "uncertain": true
+        },
+        "posterior_summary": {
+          "available": true,
+          "source": "producer:onnx_mapped_frame_posteriors",
+          "frame_count": 1,
+          "frame_hop_sec": 0.02,
+          "top_phone_mean_posterior": 0.24,
+          "top_phone_peak_posterior": 0.24,
+          "runner_up_mean_posterior": 0.24,
+          "mean_margin": 0.0,
+          "peak_margin": 0.0,
+          "frame_vote_ratio": 0.0,
+          "temporal_consistency": 0.0,
+          "interior_mean_margin": 0.0,
+          "interior_vote_ratio": 0.0,
+          "entry_margin": 0.0,
+          "exit_margin": 0.0,
+          "edge_competition_ratio": 1.0
+        },
+        "logit_summary": {
+          "available": true,
+          "source": "producer:onnx_mapped_frame_logits",
+          "frame_count": 1,
+          "top_phone_mean_logit": 3.232,
+          "top_phone_peak_logit": 3.232,
+          "runner_up_mean_logit": 3.232,
+          "mean_margin": 0.0,
+          "peak_margin": 0.0,
+          "interior_mean_margin": 0.0,
+          "entry_margin": 0.0,
+          "exit_margin": 0.0
+        }
+      },
+      "continuation_profile": {
+        "same_note_continuation_bias": 1.0,
+        "same_note_stability": 1.0,
+        "continuation_friendliness": 1.0,
+        "score_alignment_friendly": 0.787,
+        "weak_overlap_support": 0.961,
+        "weak_overlap_recovery": 0.917,
+        "weak_overlap_friendliness": 0.93,
+        "long_note_hold_bias": 1.0,
+        "supports_note_span_extension": true,
+        "interior_hold_strength": 0.671,
+        "competition_separation": 0.371,
+        "one_sided_continuation_strength": 0.703
+      },
+      "boundary_profile": {
+        "boundary_uncertain": true,
+        "boundary_transition_strength": 1.0,
+        "boundary_softness": 0.82,
+        "boundary_anchor_strength": 0.88,
+        "boundary_conflict_likelihood": 0.232,
+        "boundary_reassignment_risk": 0.295,
+        "ownership_conflict_risk": 0.215,
+        "reassignment_resistance": 0.931,
+        "boundary_pressure": 0.871
+      },
+      "ownership": {
+        "same_note_stability": 1.0,
+        "weak_overlap_recovery": 0.917,
+        "long_note_support": 1.0,
+        "part_note_span_reliability": 0.774,
+        "reassignment_resistance": 0.931,
+        "boundary_reassignment_risk": 0.295,
+        "ownership_conflict_risk": 0.215,
+        "anchor_preference": 0.76,
+        "boundary_conflict_likelihood": 0.232,
+        "candidate_lead": 0.205,
+        "competition_separation": 0.371,
+        "interior_hold_strength": 0.671,
+        "one_sided_continuation_strength": 0.703,
+        "boundary_pressure": 0.871
+      },
+      "adapter_diagnostics": {
+        "adapter_kind": "score-aware-onnx-espeak-producer",
+        "backend_kind": "onnx-espeak",
+        "evidence_kind": "posterior_and_logit_adapter_like",
+        "candidate_source": "producer:onnx_mapped_frame_posteriors",
+        "posterior_like_available": true,
+        "logit_like_available": true,
+        "posterior_source": "producer:onnx_mapped_frame_posteriors",
+        "logit_source": "producer:onnx_mapped_frame_logits",
+        "candidate_aggregation": "sum_mapped_posterior_mass",
+        "aggregation": "sum_mapped_posterior_mass",
+        "approximation_only": false,
+        "source": "producer:onnx-espeak",
+        "frame_count": 1,
+        "frame_hop_sec": 0.02
+      },
+      "metadata": {
+        "producer_name": "score-aware-onnx-espeak-posterior-json",
+        "producer_version": "v1",
+        "producer_backend_kind": "onnx-espeak",
+        "producer_raw_model_output": {
+          "backend_kind": "onnx-espeak",
+          "frame_count": 1,
+          "frame_hop_sec": 0.02,
+          "frame_span_sec": 0.0206,
+          "dominant_symbol": "l",
+          "dominant_confidence": 0.292,
+          "raw_model_output_kind": "trained_onnx_ctc_model",
+          "frame_feature_means": {
+            "blank_posterior": 0.9032,
+            "top_nonblank_posterior": 0.2396,
+            "frame_rms": 0.12
+          },
+          "mean_frame_logits": {
+            "<pad>": 6.8785,
+            "a": 3.0989,
+            "l": 2.6501,
+            "ʔ": 2.1861
+          },
+          "model_backend": "onnxruntime",
+          "model_repo": "onnx-community/wav2vec2-lv-60-espeak-cv-ft-ONNX",
+          "model_file": "onnx/model_int8.onnx",
+          "vocab_repo": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+          "mean_raw_label_posteriors": {
+            "<pad>": 0.889,
+            "a": 0.0203,
+            "l": 0.013,
+            "ʔ": 0.0081,
+            "n": 0.0081,
+            "m": 0.008
+          },
+          "segment_evidence_summary": {
+            "frame_vote_ratio": 0.0,
+            "temporal_consistency": 0.0,
+            "interior_mean_margin": 0.0,
+            "interior_vote_ratio": 0.0,
+            "interior_peak_ratio": 0.24,
+            "interior_hold_ratio": 0.096,
+            "edge_competition_ratio": 1.0,
+            "entry_margin": 0.0,
+            "exit_margin": 0.0,
+            "entry_exit_balance": 1.0,
+            "boundary_pressure": 1.0,
+            "combined_margin": 0.0,
+            "combined_top_confidence": 0.2919
+          }
+        },
+        "producer_derivation_notes": [
+          "producer emitted posterior-json-compatible evidence from frame-level audio analysis",
+          "producer used frame feature prototypes to score posterior/logit evidence",
+          "producer aggregated frame competition into segment ownership evidence",
+          "producer strengthened weak middle continuation using note-context span continuity",
+          "producer emphasized long-note interior hold evidence for trained backend"
+        ],
+        "producer_generated_fields": [
+          "segment_summary",
+          "continuation_profile",
+          "boundary_profile",
+          "ownership",
+          "adapter_diagnostics"
+        ],
+        "producer_contract_layers": {
+          "raw_model_output": [
+            "posterior_trace",
+            "logit_trace",
+            "metadata.producer_raw_model_output"
+          ],
+          "producer_derived_fields": [
+            "segment_summary",
+            "continuation_profile",
+            "boundary_profile",
+            "ownership",
+            "adapter_diagnostics"
+          ],
+          "adapter_normalized_fields": [
+            "metadata.acoustic_evidence"
+          ]
+        },
+        "producer_context": {
+          "note_context_path": "tmp/phrase_probe_note_context.json",
+          "note_context_format": "json",
+          "lyrics_guided": false,
+          "matched_note_id": "probe-note-001",
+          "matched_track_id": "phrase-probe-track",
+          "matched_part_id": "phrase-probe-part",
+          "matched_note_overlap_ratio": 1.0,
+          "matched_note_interior_ratio": 1.0,
+          "competing_note_id": null,
+          "competing_overlap_ratio": 0.0
+        },
+        "score_hint": {
+          "normalized_track_id": "pb-track",
+          "normalized_part_id": "pb-part",
+          "normalized_note_id": "pb-note-001",
+          "part_local_note_rank": 1,
+          "duration_ms": 180.0,
+          "start_sec": 0.38,
+          "end_sec": 0.56,
+          "note_binding_strategy": "time_overlap",
+          "note_identity_match": false,
+          "score_bridge_strategy": "time_overlap_fallback",
+          "score_hint_confidence": 0.24,
+          "score_hint_notes": [
+            "middle segment still points at the old phrase note even though the interior leans into the next note"
+          ]
+        }
+      }
+    },
+    {
+      "start_sec": 0.288,
+      "end_sec": 0.309,
+      "confidence": 0.346,
+      "candidate_phones": [
+        {
+          "symbol": "s",
+          "confidence": 0.346
+        },
+        {
+          "symbol": "a",
+          "confidence": 0.345
+        },
+        {
+          "symbol": "u",
+          "confidence": 0.184
+        }
+      ],
+      "posterior_trace": {
+        "source": "producer:onnx_mapped_frame_posteriors",
+        "frame_hop_sec": 0.02,
+        "frame_span_sec": 0.0206,
+        "frames": [
+          {
+            "frame_index": 0,
+            "candidates": [
+              {
+                "symbol": "s",
+                "confidence": 0.289
+              },
+              {
+                "symbol": "a",
+                "confidence": 0.288
+              },
+              {
+                "symbol": "u",
+                "confidence": 0.154
+              },
+              {
+                "symbol": "ts_h",
+                "confidence": 0.104
+              }
+            ]
+          }
+        ]
+      },
+      "logit_trace": {
+        "source": "producer:onnx_mapped_frame_logits",
+        "frame_hop_sec": 0.02,
+        "frame_span_sec": 0.0206,
+        "frames": [
+          {
+            "frame_index": 0,
+            "candidates": [
+              {
+                "symbol": "s",
+                "logit": 3.193
+              },
+              {
+                "symbol": "a",
+                "logit": 3.19
+              },
+              {
+                "symbol": "u",
+                "logit": 2.563
+              },
+              {
+                "symbol": "ts_h",
+                "logit": 2.173
+              }
+            ]
+          }
+        ]
+      },
+      "posterior_summary": {
+        "available": true,
+        "source": "producer:onnx_mapped_frame_posteriors",
+        "frame_count": 1,
+        "frame_hop_sec": 0.02,
+        "top_phone_mean_posterior": 0.289,
+        "top_phone_peak_posterior": 0.289,
+        "runner_up_mean_posterior": 0.288,
+        "mean_margin": 0.001,
+        "peak_margin": 0.001,
+        "frame_vote_ratio": 1.0,
+        "temporal_consistency": 1.0,
+        "interior_mean_margin": 0.001,
+        "interior_vote_ratio": 1.0,
+        "entry_margin": 0.001,
+        "exit_margin": 0.001,
+        "edge_competition_ratio": 0.999
+      },
+      "logit_summary": {
+        "available": true,
+        "source": "producer:onnx_mapped_frame_logits",
+        "frame_count": 1,
+        "top_phone_mean_logit": 3.193,
+        "top_phone_peak_logit": 3.193,
+        "runner_up_mean_logit": 3.19,
+        "mean_margin": 0.003,
+        "peak_margin": 0.003,
+        "interior_mean_margin": 0.003,
+        "entry_margin": 0.003,
+        "exit_margin": 0.003
+      },
+      "segment_summary": {
+        "acoustic_confidence": 0.346,
+        "timing_reliability": 0.48,
+        "frame_consistency": 0.53,
+        "evidence_quality": 0.458,
+        "segment_likelihood": 0.422,
+        "boundary_uncertainty": {
+          "start_ms": 53.0,
+          "end_ms": 53.0,
+          "window_ms": 106.0,
+          "severity": 0.52,
+          "uncertain": true
+        },
+        "posterior_summary": {
+          "available": true,
+          "source": "producer:onnx_mapped_frame_posteriors",
+          "frame_count": 1,
+          "frame_hop_sec": 0.02,
+          "top_phone_mean_posterior": 0.289,
+          "top_phone_peak_posterior": 0.289,
+          "runner_up_mean_posterior": 0.288,
+          "mean_margin": 0.001,
+          "peak_margin": 0.001,
+          "frame_vote_ratio": 1.0,
+          "temporal_consistency": 1.0,
+          "interior_mean_margin": 0.001,
+          "interior_vote_ratio": 1.0,
+          "entry_margin": 0.001,
+          "exit_margin": 0.001,
+          "edge_competition_ratio": 0.999
+        },
+        "logit_summary": {
+          "available": true,
+          "source": "producer:onnx_mapped_frame_logits",
+          "frame_count": 1,
+          "top_phone_mean_logit": 3.193,
+          "top_phone_peak_logit": 3.193,
+          "runner_up_mean_logit": 3.19,
+          "mean_margin": 0.003,
+          "peak_margin": 0.003,
+          "interior_mean_margin": 0.003,
+          "entry_margin": 0.003,
+          "exit_margin": 0.003
+        }
+      },
+      "continuation_profile": {
+        "same_note_continuation_bias": 1.0,
+        "same_note_stability": 1.0,
+        "continuation_friendliness": 1.0,
+        "score_alignment_friendly": 0.787,
+        "weak_overlap_support": 0.962,
+        "weak_overlap_recovery": 0.916,
+        "weak_overlap_friendliness": 0.93,
+        "long_note_hold_bias": 1.0,
+        "supports_note_span_extension": true,
+        "interior_hold_strength": 0.672,
+        "competition_separation": 0.374,
+        "one_sided_continuation_strength": 0.711
+      },
+      "boundary_profile": {
+        "boundary_uncertain": true,
+        "boundary_transition_strength": 0.874,
+        "boundary_softness": 0.799,
+        "boundary_anchor_strength": 0.88,
+        "boundary_conflict_likelihood": 0.232,
+        "boundary_reassignment_risk": 0.295,
+        "ownership_conflict_risk": 0.215,
+        "reassignment_resistance": 0.931,
+        "boundary_pressure": 0.867
+      },
+      "ownership": {
+        "same_note_stability": 1.0,
+        "weak_overlap_recovery": 0.916,
+        "long_note_support": 1.0,
+        "part_note_span_reliability": 0.774,
+        "reassignment_resistance": 0.931,
+        "boundary_reassignment_risk": 0.295,
+        "ownership_conflict_risk": 0.215,
+        "anchor_preference": 0.76,
+        "boundary_conflict_likelihood": 0.232,
+        "candidate_lead": 0.383,
+        "competition_separation": 0.374,
+        "interior_hold_strength": 0.672,
+        "one_sided_continuation_strength": 0.711,
+        "boundary_pressure": 0.867
+      },
+      "adapter_diagnostics": {
+        "adapter_kind": "score-aware-onnx-espeak-producer",
+        "backend_kind": "onnx-espeak",
+        "evidence_kind": "posterior_and_logit_adapter_like",
+        "candidate_source": "producer:onnx_mapped_frame_posteriors",
+        "posterior_like_available": true,
+        "logit_like_available": true,
+        "posterior_source": "producer:onnx_mapped_frame_posteriors",
+        "logit_source": "producer:onnx_mapped_frame_logits",
+        "candidate_aggregation": "sum_mapped_posterior_mass",
+        "aggregation": "sum_mapped_posterior_mass",
+        "approximation_only": false,
+        "source": "producer:onnx-espeak",
+        "frame_count": 1,
+        "frame_hop_sec": 0.02
+      },
+      "metadata": {
+        "producer_name": "score-aware-onnx-espeak-posterior-json",
+        "producer_version": "v1",
+        "producer_backend_kind": "onnx-espeak",
+        "producer_raw_model_output": {
+          "backend_kind": "onnx-espeak",
+          "frame_count": 1,
+          "frame_hop_sec": 0.02,
+          "frame_span_sec": 0.0206,
+          "dominant_symbol": "s",
+          "dominant_confidence": 0.346,
+          "raw_model_output_kind": "trained_onnx_ctc_model",
+          "frame_feature_means": {
+            "blank_posterior": 0.96,
+            "top_nonblank_posterior": 0.2889,
+            "frame_rms": 0.0227
+          },
+          "mean_frame_logits": {
+            "<pad>": 7.6102,
+            "a": 3.0015,
+            "s": 2.3196,
+            "u": 2.2788
+          },
+          "model_backend": "onnxruntime",
+          "model_repo": "onnx-community/wav2vec2-lv-60-espeak-cv-ft-ONNX",
+          "model_file": "onnx/model_int8.onnx",
+          "vocab_repo": "facebook/wav2vec2-lv-60-espeak-cv-ft",
+          "mean_raw_label_posteriors": {
+            "<pad>": 0.9563,
+            "a": 0.0095,
+            "s": 0.0048,
+            "u": 0.0046,
+            "f": 0.0042,
+            "ʃ": 0.0019
+          },
+          "segment_evidence_summary": {
+            "frame_vote_ratio": 1.0,
+            "temporal_consistency": 1.0,
+            "interior_mean_margin": 0.001,
+            "interior_vote_ratio": 1.0,
+            "interior_peak_ratio": 0.289,
+            "interior_hold_ratio": 0.1166,
+            "edge_competition_ratio": 0.999,
+            "entry_margin": 0.001,
+            "exit_margin": 0.001,
+            "entry_exit_balance": 1.0,
+            "boundary_pressure": 0.7992,
+            "combined_margin": 0.0012,
+            "combined_top_confidence": 0.3461
+          }
+        },
+        "producer_derivation_notes": [
+          "producer emitted posterior-json-compatible evidence from frame-level audio analysis",
+          "producer used frame feature prototypes to score posterior/logit evidence",
+          "producer aggregated frame competition into segment ownership evidence",
+          "producer strengthened weak middle continuation using note-context span continuity",
+          "producer emphasized long-note interior hold evidence for trained backend"
+        ],
+        "producer_generated_fields": [
+          "segment_summary",
+          "continuation_profile",
+          "boundary_profile",
+          "ownership",
+          "adapter_diagnostics"
+        ],
+        "producer_contract_layers": {
+          "raw_model_output": [
+            "posterior_trace",
+            "logit_trace",
+            "metadata.producer_raw_model_output"
+          ],
+          "producer_derived_fields": [
+            "segment_summary",
+            "continuation_profile",
+            "boundary_profile",
+            "ownership",
+            "adapter_diagnostics"
+          ],
+          "adapter_normalized_fields": [
+            "metadata.acoustic_evidence"
+          ]
+        },
+        "producer_context": {
+          "note_context_path": "tmp/phrase_probe_note_context.json",
+          "note_context_format": "json",
+          "lyrics_guided": false,
+          "matched_note_id": "probe-note-001",
+          "matched_track_id": "phrase-probe-track",
+          "matched_part_id": "phrase-probe-part",
+          "matched_note_overlap_ratio": 1.0,
+          "matched_note_interior_ratio": 1.0,
+          "competing_note_id": null,
+          "competing_overlap_ratio": 0.0
+        },
+        "score_hint": {
+          "normalized_track_id": "pb-track",
+          "normalized_part_id": "pb-part",
+          "normalized_note_id": "pb-note-002",
+          "part_local_note_rank": 2,
+          "duration_ms": 240.0,
+          "start_sec": 0.56,
+          "end_sec": 0.8,
+          "note_binding_strategy": "identity",
+          "note_identity_match": true,
+          "score_bridge_strategy": "time_overlap_bridge",
+          "score_hint_confidence": 0.91,
+          "score_hint_notes": [
+            "right phrase anchor for the next note"
+          ]
+        }
+      }
+    }
+  ]
+}

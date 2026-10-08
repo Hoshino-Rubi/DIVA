@@ -1,0 +1,13 @@
+{
+  "schema_version": "dual_input_ctc_policy_v1",
+  "decoder": {"beam_width": 8, "nbest_per_stream": 8, "include_each_greedy": true, "maximum_unique_candidates": 18, "label_count": 428, "blank_id": 0, "score": "0.5*exact_log_ctc_mix+0.5*exact_log_ctc_vocal", "token_pruning": false, "length_reward": 0.0, "blank_bias": 0.0, "language_model": false, "reference_conditioning": false, "tie_break": "lexicographic_token_ids", "training": false},
+  "audio": {"context_padding_sec": 6.0, "max_context_sec": 30.0, "max_recognizer_sec": 20.0, "sample_rate": 44100, "channels": 2, "subtype": "PCM_32", "shared_gain": true, "cache_policy": "matching_source_hash_and_interval_with_six_seconds_context_then_nearest_center_then_id", "new_context_policy": "requested_crop_plus_six_seconds_clamped_to_source", "sample_clock_tolerance": 1.0},
+  "cohort": {"original_train_windows": 20, "original_train_songs": 5, "original_dev_windows": 3, "original_dev_reference_phones": 214},
+  "acceptance": {"maximum_dev_errors": 87, "maximum_dev_insertions": 11, "maximum_dev_deletions": 25, "maximum_dev_aspirated_errors": 1, "maximum_dev_h_errors": 2, "minimum_group_reference_count": 20, "maximum_group_per_increase": 0.03},
+  "resources": {"cpu_threads": 4, "model_jobs_serial": true, "offline": true, "process_reserved_gib": 7, "card_used_gib": 14, "cpu_model_fallback": false},
+  "test_predictions_allowed": false,
+  "development_already_observed": true,
+  "new_models_or_dependencies": false,
+  "default_replacement": false,
+  "max_human_review_items": 12
+}

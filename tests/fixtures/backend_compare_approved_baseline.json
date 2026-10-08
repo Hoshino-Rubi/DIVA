@@ -1,0 +1,564 @@
+{
+  "snapshot_schema_version": "backend_compare_snapshot_v1",
+  "generated_at_utc": "2026-03-15T12:05:39Z",
+  "registry_version": "backend_compare_case_registry_v1",
+  "backend_order": [
+    "onnx-espeak",
+    "prototype-logit",
+    "heuristic-dsp"
+  ],
+  "case_order": [
+    "phrase_boundary_conflict",
+    "phrase_boundary_asymmetric_interior",
+    "phrase_boundary_dual_touch",
+    "phrase_boundary_chain_anchor",
+    "one_sided_continuation",
+    "weak_overlap_low_confidence"
+  ],
+  "compare_fields": [
+    "case",
+    "backend",
+    "aligned_note_id",
+    "aligner_v2_confidence",
+    "aligner_v2_fallback_used",
+    "ownership_stability_margin",
+    "top_acoustic_score",
+    "ownership_resolution_basis",
+    "alignment_competition_summary",
+    "release_explanation",
+    "release_risk_summary"
+  ],
+  "registry_compare_fields": [
+    "aligned_note_id",
+    "aligner_v2_confidence",
+    "aligner_v2_fallback_used",
+    "ownership_stability_margin",
+    "top_acoustic_score",
+    "ownership_resolution_basis",
+    "ownership_conflict_candidates",
+    "alignment_competition_summary",
+    "release_explanation",
+    "release_risk_summary",
+    "selective_release_safety"
+  ],
+  "case_metadata": {
+    "phrase_boundary_conflict": {
+      "description": "Strong phrase-boundary guardrails should keep all three backends conservative, while onnx still surfaces the sharpest boundary conflict evidence.",
+      "target_index": 1
+    },
+    "phrase_boundary_asymmetric_interior": {
+      "description": "A low-risk phrase-boundary asymmetric interior hold should become a trained-only selective win when the next-note interior is dominant but approximation backends still stay conservative.",
+      "target_index": 1
+    },
+    "phrase_boundary_dual_touch": {
+      "description": "A non-mirrored dual-touch phrase-boundary case should only resolve for the trained backend when both notes still lightly overlap but the next-note interior has materially stronger trained evidence.",
+      "target_index": 1
+    },
+    "phrase_boundary_chain_anchor": {
+      "description": "A chain-anchor phrase-boundary subclass should become the third trained-only selective win when the next note owns the full overlap but approximation backends still remain conservative.",
+      "target_index": 1
+    },
+    "one_sided_continuation": {
+      "description": "One-sided continuation should only convert into a trained selective win when the short-window continuation and note-span evidence clearly overpower the boundary guardrail.",
+      "target_index": 1
+    },
+    "weak_overlap_low_confidence": {
+      "description": "Low-confidence weak-overlap middle note that only the trained onnx path should reclaim confidently.",
+      "target_index": 1
+    }
+  },
+  "conclusions": {
+    "case_summaries": [
+      {
+        "case": "phrase_boundary_conflict",
+        "strongest_backend": "onnx-espeak",
+        "stability_leader": "onnx-espeak",
+        "stability_margin": 1.015,
+        "runner_up_stability_backend": "prototype-logit",
+        "onnx_stability_delta": 0.166,
+        "most_conservative_backend": "heuristic-dsp",
+        "stable_backends": [],
+        "selective_win_backends": [],
+        "fallback_backends": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "must_fallback_backends": [
+          "onnx-espeak",
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_stability_improved": false,
+        "focus_backend_status": "still_fallback",
+        "focus_backend_release_basis": "conservative_fallback"
+      },
+      {
+        "case": "phrase_boundary_asymmetric_interior",
+        "strongest_backend": "onnx-espeak",
+        "stability_leader": "onnx-espeak",
+        "stability_margin": 0.222,
+        "runner_up_stability_backend": "prototype-logit",
+        "onnx_stability_delta": -0.082,
+        "most_conservative_backend": "heuristic-dsp",
+        "stable_backends": [
+          "onnx-espeak"
+        ],
+        "selective_win_backends": [
+          "onnx-espeak"
+        ],
+        "fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "must_fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_stability_improved": true,
+        "focus_backend_status": "selective_win",
+        "focus_backend_release_basis": "phrase_boundary_selective_release"
+      },
+      {
+        "case": "phrase_boundary_dual_touch",
+        "strongest_backend": "onnx-espeak",
+        "stability_leader": "onnx-espeak",
+        "stability_margin": -0.021,
+        "runner_up_stability_backend": "prototype-logit",
+        "onnx_stability_delta": -0.065,
+        "most_conservative_backend": "heuristic-dsp",
+        "stable_backends": [
+          "onnx-espeak"
+        ],
+        "selective_win_backends": [
+          "onnx-espeak"
+        ],
+        "fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "must_fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_stability_improved": true,
+        "focus_backend_status": "selective_win",
+        "focus_backend_release_basis": "phrase_boundary_selective_release"
+      },
+      {
+        "case": "phrase_boundary_chain_anchor",
+        "strongest_backend": "onnx-espeak",
+        "stability_leader": "onnx-espeak",
+        "stability_margin": 0.465,
+        "runner_up_stability_backend": "prototype-logit",
+        "onnx_stability_delta": -0.194,
+        "most_conservative_backend": "heuristic-dsp",
+        "stable_backends": [
+          "onnx-espeak"
+        ],
+        "selective_win_backends": [
+          "onnx-espeak"
+        ],
+        "fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "must_fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_stability_improved": true,
+        "focus_backend_status": "selective_win",
+        "focus_backend_release_basis": "phrase_boundary_selective_release"
+      },
+      {
+        "case": "one_sided_continuation",
+        "strongest_backend": "onnx-espeak",
+        "stability_leader": "onnx-espeak",
+        "stability_margin": 1.265,
+        "runner_up_stability_backend": "prototype-logit",
+        "onnx_stability_delta": 0.237,
+        "most_conservative_backend": "heuristic-dsp",
+        "stable_backends": [
+          "onnx-espeak"
+        ],
+        "selective_win_backends": [
+          "onnx-espeak"
+        ],
+        "fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "must_fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_stability_improved": true,
+        "focus_backend_status": "selective_win",
+        "focus_backend_release_basis": "one_sided_selective_release"
+      },
+      {
+        "case": "weak_overlap_low_confidence",
+        "strongest_backend": "onnx-espeak",
+        "stability_leader": "onnx-espeak",
+        "stability_margin": 0.196,
+        "runner_up_stability_backend": "heuristic-dsp",
+        "onnx_stability_delta": 0.0,
+        "most_conservative_backend": "heuristic-dsp",
+        "stable_backends": [
+          "onnx-espeak"
+        ],
+        "selective_win_backends": [
+          "onnx-espeak"
+        ],
+        "fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "must_fallback_backends": [
+          "prototype-logit",
+          "heuristic-dsp"
+        ],
+        "ownership_stability_improved": true,
+        "focus_backend_status": "selective_win",
+        "focus_backend_release_basis": "shared_stable_release"
+      }
+    ],
+    "backend_summaries": [
+      {
+        "backend": "onnx-espeak",
+        "stable_case_count": 5,
+        "fallback_case_count": 1,
+        "stable_without_fallback_case_count": 5,
+        "conservative_case_count": 0,
+        "avg_confidence": 0.898,
+        "avg_stability_margin": 0.524,
+        "stable_cases": [
+          "phrase_boundary_asymmetric_interior",
+          "phrase_boundary_dual_touch",
+          "phrase_boundary_chain_anchor",
+          "one_sided_continuation",
+          "weak_overlap_low_confidence"
+        ],
+        "fallback_cases": [
+          "phrase_boundary_conflict"
+        ],
+        "stable_without_fallback_cases": [
+          "phrase_boundary_asymmetric_interior",
+          "phrase_boundary_dual_touch",
+          "phrase_boundary_chain_anchor",
+          "one_sided_continuation",
+          "weak_overlap_low_confidence"
+        ]
+      },
+      {
+        "backend": "prototype-logit",
+        "stable_case_count": 0,
+        "fallback_case_count": 6,
+        "stable_without_fallback_case_count": 0,
+        "conservative_case_count": 0,
+        "avg_confidence": 0.245,
+        "avg_stability_margin": 0.513,
+        "stable_cases": [],
+        "fallback_cases": [
+          "phrase_boundary_conflict",
+          "phrase_boundary_asymmetric_interior",
+          "phrase_boundary_dual_touch",
+          "phrase_boundary_chain_anchor",
+          "one_sided_continuation",
+          "weak_overlap_low_confidence"
+        ],
+        "stable_without_fallback_cases": []
+      },
+      {
+        "backend": "heuristic-dsp",
+        "stable_case_count": 0,
+        "fallback_case_count": 6,
+        "stable_without_fallback_case_count": 0,
+        "conservative_case_count": 6,
+        "avg_confidence": 0.245,
+        "avg_stability_margin": 0.482,
+        "stable_cases": [],
+        "fallback_cases": [
+          "phrase_boundary_conflict",
+          "phrase_boundary_asymmetric_interior",
+          "phrase_boundary_dual_touch",
+          "phrase_boundary_chain_anchor",
+          "one_sided_continuation",
+          "weak_overlap_low_confidence"
+        ],
+        "stable_without_fallback_cases": []
+      }
+    ],
+    "performance_summary": {
+      "overall_stability_leader_backend": "onnx-espeak",
+      "overall_most_conservative_backend": "heuristic-dsp",
+      "improved_cases": [
+        "phrase_boundary_asymmetric_interior",
+        "phrase_boundary_dual_touch",
+        "phrase_boundary_chain_anchor",
+        "one_sided_continuation",
+        "weak_overlap_low_confidence"
+      ],
+      "selective_win_cases": [
+        "phrase_boundary_asymmetric_interior",
+        "phrase_boundary_dual_touch",
+        "phrase_boundary_chain_anchor",
+        "one_sided_continuation",
+        "weak_overlap_low_confidence"
+      ],
+      "evidence_only_cases": [
+        "phrase_boundary_conflict"
+      ],
+      "evidence_only_improved_cases": [
+        "phrase_boundary_conflict"
+      ],
+      "unchanged_cases": [],
+      "still_fallback_cases": [
+        "phrase_boundary_conflict"
+      ],
+      "all_backend_fallback_cases": [
+        "phrase_boundary_conflict"
+      ],
+      "onnx_must_fallback_cases": [
+        "phrase_boundary_conflict"
+      ]
+    }
+  },
+  "rows": [
+    {
+      "case": "phrase_boundary_conflict",
+      "backend": "onnx-espeak",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.39,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 1.015,
+      "top_acoustic_score": 0.425,
+      "ownership_resolution_basis": "part_note_span+stable_boundary_resistance+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_mirrored_conflict+phrase_window_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=phrase-note-002:score=2.324,runner_up=phrase-note-001:score=1.009,gap=1.315,conflict_threshold=0.300,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.300+span_overlap_competition+one_sided_competition+phrase_boundary_mirrored_conflict+phrase_window_guardrail+boundary_conflict_guardrail+ownership_conflict_guardrail,phrase_window_pressure=0.824,phrase_boundary_mode=mirrored_conflict_guarded,phrase_boundary_interior_advantage=0.000,phrase_boundary_overlap_advantage=0.000,acoustic_separation=0.374,acoustic_interior_hold=0.555,acoustic_boundary_pressure=0.611,one_sided_strength=0.396,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=0.667,runner_up_overlap=0.667,winner_interior=0.095,runner_up_interior=0.095,winner_continuity=0.170,winner_acoustic=0.425,winner_note_span=0.638",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because mirrored_conflict_guardrail, phrase_window_guardrail, ownership_conflict, boundary_conflict, already_on_current_note (stability_margin=1.015).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=mirrored_conflict_guardrail+phrase_window_guardrail+ownership_conflict+boundary_conflict+already_on_current_note;stability_margin=1.015"
+    },
+    {
+      "case": "phrase_boundary_conflict",
+      "backend": "prototype-logit",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.39,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.849,
+      "top_acoustic_score": 0.229,
+      "ownership_resolution_basis": "part_note_span+stable_boundary_resistance+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_mirrored_conflict+phrase_window_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=phrase-note-002:score=2.041,runner_up=phrase-note-001:score=0.892,gap=1.149,conflict_threshold=0.300,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.300+span_overlap_competition+one_sided_competition+phrase_boundary_mirrored_conflict+phrase_window_guardrail+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.816,phrase_boundary_mode=mirrored_conflict_guarded,phrase_boundary_interior_advantage=0.000,phrase_boundary_overlap_advantage=0.000,acoustic_separation=0.225,acoustic_interior_hold=0.409,acoustic_boundary_pressure=0.626,one_sided_strength=0.267,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=0.667,runner_up_overlap=0.667,winner_interior=0.095,runner_up_interior=0.095,winner_continuity=0.170,winner_acoustic=0.229,winner_note_span=0.552",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because mirrored_conflict_guardrail, phrase_window_guardrail, approximation_backend, ownership_conflict, boundary_conflict, already_on_current_note (stability_margin=0.849).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=mirrored_conflict_guardrail+phrase_window_guardrail+approximation_backend+ownership_conflict+boundary_conflict+already_on_current_note;stability_margin=0.849"
+    },
+    {
+      "case": "phrase_boundary_conflict",
+      "backend": "heuristic-dsp",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.39,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.818,
+      "top_acoustic_score": 0.191,
+      "ownership_resolution_basis": "part_note_span+stable_boundary_resistance+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_mirrored_conflict+phrase_window_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=phrase-note-002:score=1.983,runner_up=phrase-note-001:score=0.865,gap=1.118,conflict_threshold=0.300,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.300+span_overlap_competition+one_sided_competition+phrase_boundary_mirrored_conflict+phrase_window_guardrail+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.821,phrase_boundary_mode=mirrored_conflict_guarded,phrase_boundary_interior_advantage=0.000,phrase_boundary_overlap_advantage=0.000,acoustic_separation=0.225,acoustic_interior_hold=0.401,acoustic_boundary_pressure=0.626,one_sided_strength=0.244,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=0.667,runner_up_overlap=0.667,winner_interior=0.095,runner_up_interior=0.095,winner_continuity=0.170,winner_acoustic=0.191,winner_note_span=0.531",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because mirrored_conflict_guardrail, phrase_window_guardrail, approximation_backend, ownership_conflict, boundary_conflict, already_on_current_note (stability_margin=0.818).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=mirrored_conflict_guardrail+phrase_window_guardrail+approximation_backend+ownership_conflict+boundary_conflict+already_on_current_note;stability_margin=0.818"
+    },
+    {
+      "case": "phrase_boundary_asymmetric_interior",
+      "backend": "onnx-espeak",
+      "aligned_note_id": "pb-note-002",
+      "aligner_v2_confidence": 1.0,
+      "aligner_v2_fallback_used": false,
+      "ownership_stability_margin": 0.222,
+      "top_acoustic_score": 0.321,
+      "ownership_resolution_basis": "same_note_continuity+part_note_span+long_note_interior+acoustic_continuation+weak_overlap_recovery+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_asymmetric_interior+phrase_boundary_selective_release",
+      "alignment_competition_summary": "winner=pb-note-002:score=2.684,runner_up=pb-note-001:score=2.272,gap=0.412,conflict_threshold=0.190,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.190+one_sided_competition+phrase_boundary_asymmetric_candidate+trained_phrase_boundary_release_ready+boundary_conflict_guardrail,phrase_window_pressure=0.708,phrase_boundary_mode=asymmetric_interior_candidate,phrase_boundary_interior_advantage=0.536,phrase_boundary_overlap_advantage=0.778,acoustic_separation=0.431,acoustic_interior_hold=0.649,acoustic_boundary_pressure=0.612,one_sided_strength=0.641,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.222,winner_interior=0.536,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.321,winner_note_span=1.365",
+      "release_explanation": "phrase_boundary_selective_release accepted for asymmetric_interior_candidate because trained posterior/logit evidence kept the winner clear over the current note; this is trained-only, approximation backends stay blocked, and the release used naturally stable (stability_margin=0.222, threshold=0.190).",
+      "release_risk_summary": "mode=asymmetric_interior_candidate;released=yes;trained_only=yes;natural_stability=yes;subclass_specific_gate=no;approximation_backend_blocked=yes;blockers=none;stability_margin=0.222"
+    },
+    {
+      "case": "phrase_boundary_asymmetric_interior",
+      "backend": "prototype-logit",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.22,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.304,
+      "top_acoustic_score": 0.141,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+acoustic_continuation+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_asymmetric_interior+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=pb-note-002:score=2.336,runner_up=pb-note-001:score=1.792,gap=0.544,conflict_threshold=0.240,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.240+one_sided_competition+phrase_boundary_asymmetric_candidate+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.720,phrase_boundary_mode=asymmetric_interior_candidate,phrase_boundary_interior_advantage=0.536,phrase_boundary_overlap_advantage=0.778,acoustic_separation=0.224,acoustic_interior_hold=0.425,acoustic_boundary_pressure=0.629,one_sided_strength=0.375,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.222,winner_interior=0.536,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.141,winner_note_span=1.197",
+      "release_explanation": "phrase-boundary release stayed blocked for asymmetric_interior_candidate because approximation_backend, boundary_conflict; the guardrail remained conservative at stability_margin=0.304.",
+      "release_risk_summary": "mode=asymmetric_interior_candidate;released=no;trained_only=yes;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=yes;blockers=approximation_backend+boundary_conflict;stability_margin=0.304"
+    },
+    {
+      "case": "phrase_boundary_asymmetric_interior",
+      "backend": "heuristic-dsp",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.22,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.293,
+      "top_acoustic_score": 0.087,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+stable_boundary_resistance+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_asymmetric_interior+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=pb-note-002:score=2.239,runner_up=pb-note-001:score=1.706,gap=0.533,conflict_threshold=0.240,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.240+one_sided_competition+phrase_boundary_asymmetric_candidate+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.732,phrase_boundary_mode=asymmetric_interior_candidate,phrase_boundary_interior_advantage=0.536,phrase_boundary_overlap_advantage=0.778,acoustic_separation=0.224,acoustic_interior_hold=0.415,acoustic_boundary_pressure=0.629,one_sided_strength=0.315,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.222,winner_interior=0.536,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.087,winner_note_span=1.154",
+      "release_explanation": "phrase-boundary release stayed blocked for asymmetric_interior_candidate because approximation_backend, boundary_conflict; the guardrail remained conservative at stability_margin=0.293.",
+      "release_risk_summary": "mode=asymmetric_interior_candidate;released=no;trained_only=yes;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=yes;blockers=approximation_backend+boundary_conflict;stability_margin=0.293"
+    },
+    {
+      "case": "phrase_boundary_dual_touch",
+      "backend": "onnx-espeak",
+      "aligned_note_id": "pbdt-note-002",
+      "aligner_v2_confidence": 1.0,
+      "aligner_v2_fallback_used": false,
+      "ownership_stability_margin": -0.021,
+      "top_acoustic_score": 0.359,
+      "ownership_resolution_basis": "same_note_continuity+part_note_span+long_note_interior+acoustic_continuation+weak_overlap_recovery+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_dual_touch+phrase_boundary_selective_release",
+      "alignment_competition_summary": "winner=pbdt-note-002:score=2.741,runner_up=pbdt-note-001:score=2.572,gap=0.169,conflict_threshold=0.190,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.190+one_sided_competition+phrase_boundary_dual_touch_candidate+trained_phrase_boundary_release_ready+boundary_conflict_guardrail,phrase_window_pressure=0.676,phrase_boundary_mode=asymmetric_dual_touch_candidate,phrase_boundary_interior_advantage=0.536,phrase_boundary_overlap_advantage=0.556,acoustic_separation=0.509,acoustic_interior_hold=0.706,acoustic_boundary_pressure=0.570,one_sided_strength=0.594,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.444,winner_interior=0.536,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.359,winner_note_span=1.384",
+      "release_explanation": "phrase_boundary_selective_release accepted for asymmetric_dual_touch_candidate because trained posterior/logit evidence kept the winner clear over the current note; this is trained-only, approximation backends stay blocked, and the release used subclass-specific gate (stability_margin=-0.021, threshold=0.190).",
+      "release_risk_summary": "mode=asymmetric_dual_touch_candidate;released=yes;trained_only=yes;natural_stability=no;subclass_specific_gate=yes;approximation_backend_blocked=yes;blockers=none;stability_margin=-0.021"
+    },
+    {
+      "case": "phrase_boundary_dual_touch",
+      "backend": "prototype-logit",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.2,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.044,
+      "top_acoustic_score": 0.179,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+acoustic_continuation+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_dual_touch+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=pbdt-note-002:score=2.397,runner_up=pbdt-note-001:score=2.113,gap=0.284,conflict_threshold=0.240,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.240+one_sided_competition+phrase_boundary_dual_touch_candidate+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.693,phrase_boundary_mode=asymmetric_dual_touch_candidate,phrase_boundary_interior_advantage=0.536,phrase_boundary_overlap_advantage=0.556,acoustic_separation=0.295,acoustic_interior_hold=0.468,acoustic_boundary_pressure=0.590,one_sided_strength=0.397,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.444,winner_interior=0.536,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.179,winner_note_span=1.220",
+      "release_explanation": "phrase-boundary release stayed blocked for asymmetric_dual_touch_candidate because approximation_backend, boundary_conflict, thin_stability_margin; the guardrail remained conservative at stability_margin=0.044.",
+      "release_risk_summary": "mode=asymmetric_dual_touch_candidate;released=no;trained_only=yes;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=yes;blockers=approximation_backend+boundary_conflict+thin_stability_margin;stability_margin=0.044"
+    },
+    {
+      "case": "phrase_boundary_dual_touch",
+      "backend": "heuristic-dsp",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.2,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": -0.004,
+      "top_acoustic_score": 0.134,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+acoustic_continuation+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_dual_touch+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=pbdt-note-002:score=2.314,runner_up=pbdt-note-001:score=2.078,gap=0.236,conflict_threshold=0.240,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.240+one_sided_competition+phrase_boundary_dual_touch_candidate+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.704,phrase_boundary_mode=asymmetric_dual_touch_candidate,phrase_boundary_interior_advantage=0.536,phrase_boundary_overlap_advantage=0.556,acoustic_separation=0.295,acoustic_interior_hold=0.458,acoustic_boundary_pressure=0.590,one_sided_strength=0.347,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.444,winner_interior=0.536,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.134,winner_note_span=1.182",
+      "release_explanation": "phrase-boundary release stayed blocked for asymmetric_dual_touch_candidate because approximation_backend, ownership_conflict, boundary_conflict, negative_stability_margin; the guardrail remained conservative at stability_margin=-0.004.",
+      "release_risk_summary": "mode=asymmetric_dual_touch_candidate;released=no;trained_only=yes;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=yes;blockers=approximation_backend+ownership_conflict+boundary_conflict+negative_stability_margin;stability_margin=-0.004"
+    },
+    {
+      "case": "phrase_boundary_chain_anchor",
+      "backend": "onnx-espeak",
+      "aligned_note_id": "pb-note-002",
+      "aligner_v2_confidence": 1.0,
+      "aligner_v2_fallback_used": false,
+      "ownership_stability_margin": 0.465,
+      "top_acoustic_score": 0.344,
+      "ownership_resolution_basis": "same_note_continuity+part_note_span+acoustic_continuation+weak_overlap_recovery+ownership_conflict_risk+boundary_conflict_guardrail+phrase_boundary_chain_anchor+phrase_boundary_selective_release",
+      "alignment_competition_summary": "winner=pb-note-002:score=2.927,runner_up=pb-note-001:score=2.272,gap=0.655,conflict_threshold=0.190,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.190+phrase_boundary_chain_anchor_candidate+trained_phrase_boundary_release_ready+boundary_conflict_guardrail,phrase_window_pressure=0.719,phrase_boundary_mode=asymmetric_chain_anchor_candidate,phrase_boundary_interior_advantage=0.429,phrase_boundary_overlap_advantage=0.778,acoustic_separation=0.431,acoustic_interior_hold=0.649,acoustic_boundary_pressure=0.612,one_sided_strength=0.641,winner_same_note_neighbors=2,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.222,winner_interior=0.429,runner_up_interior=0.000,winner_continuity=0.200,winner_acoustic=0.344,winner_note_span=1.019",
+      "release_explanation": "phrase_boundary_selective_release accepted for asymmetric_chain_anchor_candidate because trained posterior/logit evidence kept the winner clear over the current note; this is trained-only, approximation backends stay blocked, and the release used naturally stable (stability_margin=0.465, threshold=0.190).",
+      "release_risk_summary": "mode=asymmetric_chain_anchor_candidate;released=yes;trained_only=yes;natural_stability=yes;subclass_specific_gate=no;approximation_backend_blocked=yes;blockers=none;stability_margin=0.465"
+    },
+    {
+      "case": "phrase_boundary_chain_anchor",
+      "backend": "prototype-logit",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.22,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.659,
+      "top_acoustic_score": 0.158,
+      "ownership_resolution_basis": "part_note_span+acoustic_continuation+ownership_conflict_risk+boundary_conflict_guardrail+conservative_fallback",
+      "alignment_competition_summary": "winner=pb-note-002:score=2.691,runner_up=pb-note-001:score=1.792,gap=0.899,conflict_threshold=0.240,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.240+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.731,phrase_boundary_mode=edge_competition,phrase_boundary_interior_advantage=0.429,phrase_boundary_overlap_advantage=0.778,acoustic_separation=0.224,acoustic_interior_hold=0.425,acoustic_boundary_pressure=0.629,one_sided_strength=0.375,winner_same_note_neighbors=2,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.222,winner_interior=0.429,runner_up_interior=0.000,winner_continuity=0.200,winner_acoustic=0.158,winner_note_span=0.970",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because approximation_backend (stability_margin=0.659).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=approximation_backend;stability_margin=0.659"
+    },
+    {
+      "case": "phrase_boundary_chain_anchor",
+      "backend": "heuristic-dsp",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.22,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.609,
+      "top_acoustic_score": 0.101,
+      "ownership_resolution_basis": "part_note_span+stable_boundary_resistance+ownership_conflict_risk+boundary_conflict_guardrail+phrase_window_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=pb-note-002:score=2.614,runner_up=pb-note-001:score=1.706,gap=0.909,conflict_threshold=0.300,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.300+phrase_window_guardrail+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.742,phrase_boundary_mode=window_guarded,phrase_boundary_interior_advantage=0.429,phrase_boundary_overlap_advantage=0.778,acoustic_separation=0.224,acoustic_interior_hold=0.415,acoustic_boundary_pressure=0.629,one_sided_strength=0.315,winner_same_note_neighbors=2,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.222,winner_interior=0.429,runner_up_interior=0.000,winner_continuity=0.200,winner_acoustic=0.101,winner_note_span=0.950",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because phrase_window_guardrail, approximation_backend, boundary_conflict (stability_margin=0.609).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=phrase_window_guardrail+approximation_backend+boundary_conflict;stability_margin=0.609"
+    },
+    {
+      "case": "one_sided_continuation",
+      "backend": "onnx-espeak",
+      "aligned_note_id": "oneside-note-001",
+      "aligner_v2_confidence": 1.0,
+      "aligner_v2_fallback_used": false,
+      "ownership_stability_margin": 1.265,
+      "top_acoustic_score": 0.41,
+      "ownership_resolution_basis": "same_note_continuity+part_note_span+long_note_interior+acoustic_continuation+weak_overlap_recovery+boundary_pressure_guardrail+ownership_conflict_risk+boundary_conflict_guardrail+one_sided_selective_release",
+      "alignment_competition_summary": "winner=oneside-note-001:score=2.644,runner_up=oneside-note-002:score=1.158,gap=1.485,conflict_threshold=0.220,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.220+span_overlap_competition+one_sided_competition+trained_one_sided_release_ready+uncertain_boundary+boundary_conflict_guardrail+ownership_conflict_guardrail,phrase_window_pressure=0.585,phrase_boundary_mode=none,phrase_boundary_interior_advantage=0.185,phrase_boundary_overlap_advantage=0.200,acoustic_separation=0.426,acoustic_interior_hold=0.632,acoustic_boundary_pressure=0.765,one_sided_strength=0.533,winner_same_note_neighbors=1,runner_up_same_note_neighbors=0,winner_overlap=1.000,runner_up_overlap=0.800,winner_interior=0.560,runner_up_interior=0.375,winner_continuity=0.170,winner_acoustic=0.410,winner_note_span=1.279",
+      "release_explanation": "one_sided_selective_release accepted for one_sided_continuation because trained posterior/logit evidence kept the winner clear over the current note; this is trained-only, approximation backends stay blocked, and the release used naturally stable (stability_margin=1.265, threshold=0.220).",
+      "release_risk_summary": "mode=one_sided_continuation;released=yes;trained_only=yes;natural_stability=yes;subclass_specific_gate=no;approximation_backend_blocked=yes;blockers=none;stability_margin=1.265"
+    },
+    {
+      "case": "one_sided_continuation",
+      "backend": "prototype-logit",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.24,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 1.028,
+      "top_acoustic_score": 0.212,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+acoustic_continuation+boundary_pressure_guardrail+ownership_conflict_risk+boundary_conflict_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=oneside-note-001:score=2.302,runner_up=oneside-note-002:score=0.994,gap=1.308,conflict_threshold=0.280,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.280+span_overlap_competition+one_sided_competition+uncertain_boundary+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.580,phrase_boundary_mode=none,phrase_boundary_interior_advantage=0.185,phrase_boundary_overlap_advantage=0.200,acoustic_separation=0.223,acoustic_interior_hold=0.415,acoustic_boundary_pressure=0.765,one_sided_strength=0.387,winner_same_note_neighbors=1,runner_up_same_note_neighbors=0,winner_overlap=1.000,runner_up_overlap=0.800,winner_interior=0.560,runner_up_interior=0.375,winner_continuity=0.170,winner_acoustic=0.212,winner_note_span=1.136",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because approximation_backend, ownership_conflict, boundary_conflict (stability_margin=1.028).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=approximation_backend+ownership_conflict+boundary_conflict;stability_margin=1.028"
+    },
+    {
+      "case": "one_sided_continuation",
+      "backend": "heuristic-dsp",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.24,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.983,
+      "top_acoustic_score": 0.147,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+boundary_pressure_guardrail+ownership_conflict_risk+boundary_conflict_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=oneside-note-001:score=2.203,runner_up=oneside-note-002:score=0.940,gap=1.263,conflict_threshold=0.280,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.280+span_overlap_competition+one_sided_competition+uncertain_boundary+boundary_conflict_guardrail+ownership_conflict_guardrail+approximation_only_backend,phrase_window_pressure=0.591,phrase_boundary_mode=none,phrase_boundary_interior_advantage=0.185,phrase_boundary_overlap_advantage=0.200,acoustic_separation=0.223,acoustic_interior_hold=0.405,acoustic_boundary_pressure=0.765,one_sided_strength=0.352,winner_same_note_neighbors=1,runner_up_same_note_neighbors=0,winner_overlap=1.000,runner_up_overlap=0.800,winner_interior=0.560,runner_up_interior=0.375,winner_continuity=0.170,winner_acoustic=0.147,winner_note_span=1.101",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because approximation_backend, ownership_conflict, boundary_conflict (stability_margin=0.983).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=approximation_backend+ownership_conflict+boundary_conflict;stability_margin=0.983"
+    },
+    {
+      "case": "weak_overlap_low_confidence",
+      "backend": "onnx-espeak",
+      "aligned_note_id": "weak-note-001",
+      "aligner_v2_confidence": 1.0,
+      "aligner_v2_fallback_used": false,
+      "ownership_stability_margin": 0.196,
+      "top_acoustic_score": 0.679,
+      "ownership_resolution_basis": "same_note_continuity+part_note_span+long_note_interior+acoustic_continuation+weak_overlap_recovery+boundary_conflict_guardrail+boundary_conflict",
+      "alignment_competition_summary": "winner=weak-note-001:score=3.101,runner_up=weak-note-002:score=2.685,gap=0.416,conflict_threshold=0.220,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.220+one_sided_competition+uncertain_boundary,phrase_window_pressure=0.588,phrase_boundary_mode=none,phrase_boundary_interior_advantage=0.828,phrase_boundary_overlap_advantage=0.833,acoustic_separation=0.385,acoustic_interior_hold=0.683,acoustic_boundary_pressure=0.525,one_sided_strength=0.566,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.167,winner_interior=0.828,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.679,winner_note_span=1.421",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because boundary_conflict (stability_margin=0.196).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=boundary_conflict;stability_margin=0.196"
+    },
+    {
+      "case": "weak_overlap_low_confidence",
+      "backend": "prototype-logit",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.2,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.192,
+      "top_acoustic_score": 0.484,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+acoustic_continuation+boundary_pressure_guardrail+ownership_conflict_risk+boundary_conflict_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=weak-note-001:score=2.753,runner_up=weak-note-002:score=2.341,gap=0.412,conflict_threshold=0.220,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.220+one_sided_competition+uncertain_boundary+approximation_only_backend,phrase_window_pressure=0.655,phrase_boundary_mode=none,phrase_boundary_interior_advantage=0.828,phrase_boundary_overlap_advantage=0.833,acoustic_separation=0.265,acoustic_interior_hold=0.452,acoustic_boundary_pressure=0.774,one_sided_strength=0.430,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.167,winner_interior=0.828,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.484,winner_note_span=1.268",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because approximation_backend, boundary_conflict (stability_margin=0.192).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=approximation_backend+boundary_conflict;stability_margin=0.192"
+    },
+    {
+      "case": "weak_overlap_low_confidence",
+      "backend": "heuristic-dsp",
+      "aligned_note_id": null,
+      "aligner_v2_confidence": 0.2,
+      "aligner_v2_fallback_used": true,
+      "ownership_stability_margin": 0.196,
+      "top_acoustic_score": 0.439,
+      "ownership_resolution_basis": "part_note_span+long_note_interior+acoustic_continuation+boundary_pressure_guardrail+ownership_conflict_risk+boundary_conflict_guardrail+conservative_fallback+boundary_conflict",
+      "alignment_competition_summary": "winner=weak-note-001:score=2.674,runner_up=weak-note-002:score=2.258,gap=0.416,conflict_threshold=0.220,evidence_mode=posterior+logit,guardrails=dynamic_gap_threshold=0.220+one_sided_competition+uncertain_boundary+approximation_only_backend,phrase_window_pressure=0.670,phrase_boundary_mode=none,phrase_boundary_interior_advantage=0.828,phrase_boundary_overlap_advantage=0.833,acoustic_separation=0.246,acoustic_interior_hold=0.431,acoustic_boundary_pressure=0.794,one_sided_strength=0.399,winner_same_note_neighbors=1,runner_up_same_note_neighbors=1,winner_overlap=1.000,runner_up_overlap=0.167,winner_interior=0.828,runner_up_interior=0.000,winner_continuity=0.170,winner_acoustic=0.439,winner_note_span=1.237",
+      "release_explanation": "no selective release path activated; ownership stayed conservative because approximation_backend, boundary_conflict (stability_margin=0.196).",
+      "release_risk_summary": "mode=none;released=no;trained_only=no;natural_stability=no;subclass_specific_gate=no;approximation_backend_blocked=no;blockers=approximation_backend+boundary_conflict;stability_margin=0.196"
+    }
+  ]
+}

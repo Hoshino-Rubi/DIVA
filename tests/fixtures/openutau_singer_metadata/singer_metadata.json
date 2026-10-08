@@ -1,0 +1,12 @@
+{
+  "bank_metadata": {
+    "style": "neutral",
+    "tags": ["bank", "openutau"],
+    "subbanks": {
+      "power": {
+        "style": "strong",
+        "tags": ["belt", "projected"]
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 0.4,
+      "confidence": 0.95,
+      "candidate_phones": [
+        {"symbol": "l", "confidence": 0.95},
+        {"symbol": "n", "confidence": 0.14}
+      ],
+      "metadata": {
+        "score_bridge_identity": {
+          "normalized_track_id": "ust-track-0",
+          "normalized_part_id": "ust-track-0:part-main",
+          "normalized_note_id": "ust-track-0:part-main:#0000",
+          "source": "fixture:score_bridge"
+        },
+        "posterior": [
+          {"symbol": "l", "confidence": 0.95},
+          {"symbol": "n", "confidence": 0.14}
+        ]
+      }
+    },
+    {
+      "start_sec": 0.4,
+      "end_sec": 0.8,
+      "confidence": 0.72,
+      "candidate_phones": [
+        {"symbol": "aa", "confidence": 0.72},
+        {"symbol": "ih", "confidence": 0.7}
+      ],
+      "metadata": {
+        "score_bridge_identity": {
+          "normalized_track_id": "ust-track-0",
+          "normalized_part_id": "ust-track-0:part-main",
+          "normalized_note_id": "ust-track-0:part-main:#0000",
+          "source": "fixture:score_bridge"
+        },
+        "posterior": [
+          {"symbol": "aa", "confidence": 0.72},
+          {"symbol": "ih", "confidence": 0.7}
+        ]
+      }
+    },
+    {
+      "start_sec": 0.8,
+      "end_sec": 1.2,
+      "confidence": 0.84,
+      "candidate_phones": [
+        {"symbol": "ng", "confidence": 0.84},
+        {"symbol": "n", "confidence": 0.26}
+      ],
+      "metadata": {
+        "posterior": [
+          {"symbol": "ng", "confidence": 0.84},
+          {"symbol": "n", "confidence": 0.26}
+        ]
+      }
+    }
+  ]
+}

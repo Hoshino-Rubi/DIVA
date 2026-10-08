@@ -1,0 +1,12 @@
+[#VERSION]
+UST Version1.20
+[#SETTING]
+Tempo=100.00
+Tracks=1
+ProjectName=demo
+[#0000]
+Length=960
+Lyric=laa
+NoteNum=64
+NoteEnd=long
+[#TRACKEND]

@@ -1,0 +1,16 @@
+{
+  "schema_version": "training_replacement_policy_v1",
+  "active_limit": 20,
+  "replacement_limit": 13,
+  "window_sec": 10.0,
+  "step_sec": 0.5,
+  "descriptor_downsample": 4,
+  "minimum_similarity": 0.45,
+  "maximum_dual_path_disagreement_sec": 0.2,
+  "minimum_rendered_duration_sec": 7.0,
+  "maximum_rendered_duration_sec": 13.0,
+  "minimum_changed_correspondence_sec": 0.5,
+  "human_confirmation_required": true,
+  "training_eligible": false,
+  "selection_uses_phone_predictions_or_per": false
+}

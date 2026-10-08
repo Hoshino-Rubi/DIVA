@@ -1,0 +1,40 @@
+{
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 0.25,
+      "confidence": 0.95,
+      "candidate_phones": [
+        {"symbol": "l", "confidence": 0.95},
+        {"symbol": "n", "confidence": 0.12}
+      ]
+    },
+    {
+      "start_sec": 0.25,
+      "end_sec": 0.5,
+      "confidence": 0.9,
+      "candidate_phones": [
+        {"symbol": "aa", "confidence": 0.9},
+        {"symbol": "ax", "confidence": 0.22}
+      ]
+    },
+    {
+      "start_sec": 0.5,
+      "end_sec": 0.75,
+      "confidence": 0.84,
+      "candidate_phones": [
+        {"symbol": "ng", "confidence": 0.84},
+        {"symbol": "n", "confidence": 0.3}
+      ]
+    },
+    {
+      "start_sec": 0.75,
+      "end_sec": 1.0,
+      "confidence": 0.82,
+      "candidate_phones": [
+        {"symbol": "ng", "confidence": 0.82},
+        {"symbol": "ts_h", "confidence": 0.21}
+      ]
+    }
+  ]
+}

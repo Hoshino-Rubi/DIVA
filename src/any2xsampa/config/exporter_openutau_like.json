@@ -1,0 +1,140 @@
+{
+  "format": "openutau_like",
+  "default_unmapped_phone": "UNMAPPED",
+  "default_profile": "generic_openutau",
+  "bank_profiles": {
+    "generic_openutau": {
+      "alias_strategy": "grouped_hybrid",
+      "pause_aliases": ["pau", "SP"],
+      "alias_overrides": {
+        "pause_aliases": ["pau", "SP"],
+        "nasal_coda_map": {
+          "N": "ng",
+          "m": "m",
+          "n": "n"
+        },
+        "stop_coda_map": {
+          "p": "p",
+          "t": "t",
+          "k": "k"
+        }
+      },
+      "vv_transition": "join",
+      "prefix": "",
+      "suffix": "",
+      "fallback_strategy": "base_alias"
+    },
+    "cvvc_like": {
+      "alias_strategy": "grouped_cvvc",
+      "pause_aliases": ["R", "pau"],
+      "alias_overrides": {
+        "pause_aliases": ["R", "pau"],
+        "nasal_coda_map": {
+          "N": "N",
+          "m": "m",
+          "n": "n"
+        },
+        "stop_coda_map": {
+          "p": "cl",
+          "t": "cl",
+          "k": "cl"
+        }
+      },
+      "vv_transition": "join",
+      "prefix": "-",
+      "suffix": "",
+      "fallback_strategy": "keep_context_aliases"
+    },
+    "plain_cv_like": {
+      "alias_strategy": "plain_cv",
+      "pause_aliases": ["SP"],
+      "alias_overrides": {
+        "pause_aliases": ["SP"],
+        "nasal_coda_map": {
+          "N": "n",
+          "m": "m",
+          "n": "n"
+        },
+        "stop_coda_map": {
+          "p": "p",
+          "t": "t",
+          "k": "k"
+        }
+      },
+      "vv_transition": "keep_left",
+      "prefix": "",
+      "suffix": "_cv",
+      "fallback_strategy": "single_alias_only"
+    }
+  },
+  "syllable_grouping": {
+    "vowels": ["a", "e", "i", "o", "u", "@"],
+    "pause_phones": ["sil"],
+    "nasal_codas": ["N", "m", "n"],
+    "stop_codas": ["p", "t", "k"]
+  },
+  "alias_generation": {
+    "vowels": ["a", "e", "i", "o", "u", "@"],
+    "pause_phones": ["sil"],
+    "pause_aliases": ["pau", "SP"],
+    "nasal_coda_map": {
+      "N": "ng",
+      "m": "m",
+      "n": "n"
+    },
+    "stop_coda_map": {
+      "p": "p",
+      "t": "t",
+      "k": "k"
+    }
+  },
+  "alias_selection": {
+    "default_role_preferences": {
+      "onset": ["cv", "plain", "fallback", "vc", "pause"],
+      "nucleus": ["vc", "cv", "plain", "fallback", "pause"],
+      "coda": ["vc", "plain", "fallback", "cv", "pause"],
+      "pause": ["pause", "plain", "fallback", "cv", "vc"],
+      "unknown": ["plain", "cv", "vc", "fallback", "pause"]
+    },
+    "profile_role_preferences": {
+      "generic_openutau": {
+        "onset": ["cv", "plain", "fallback", "vc", "pause"],
+        "nucleus": ["vc", "cv", "plain", "fallback", "pause"],
+        "coda": ["vc", "plain", "fallback", "cv", "pause"],
+        "pause": ["pause", "plain", "fallback", "cv", "vc"]
+      },
+      "cvvc_like": {
+        "onset": ["cv", "plain", "fallback", "vc", "pause"],
+        "nucleus": ["vc", "plain", "cv", "fallback", "pause"],
+        "coda": ["vc", "plain", "fallback", "cv", "pause"],
+        "pause": ["pause", "plain", "fallback", "cv", "vc"]
+      },
+      "plain_cv_like": {
+        "onset": ["plain", "cv", "fallback", "vc", "pause"],
+        "nucleus": ["plain", "cv", "fallback", "vc", "pause"],
+        "coda": ["plain", "fallback", "vc", "cv", "pause"],
+        "pause": ["pause", "plain", "fallback", "cv", "vc"]
+      }
+    }
+  },
+  "phonetic_feature_config": "openutau_phonetic_features.json",
+  "mapping": {
+    "a": {"engine_phone": "a", "approximation_applied": false, "approximation_notes": []},
+    "e": {"engine_phone": "e", "approximation_applied": false, "approximation_notes": []},
+    "i": {"engine_phone": "i", "approximation_applied": false, "approximation_notes": []},
+    "k": {"engine_phone": "k", "approximation_applied": false, "approximation_notes": []},
+    "l": {"engine_phone": "l", "approximation_applied": false, "approximation_notes": []},
+    "m": {"engine_phone": "m", "approximation_applied": false, "approximation_notes": []},
+    "n": {"engine_phone": "n", "approximation_applied": false, "approximation_notes": []},
+    "o": {"engine_phone": "o", "approximation_applied": false, "approximation_notes": []},
+    "p": {"engine_phone": "p", "approximation_applied": false, "approximation_notes": []},
+    "s": {"engine_phone": "s", "approximation_applied": false, "approximation_notes": []},
+    "t": {"engine_phone": "t", "approximation_applied": false, "approximation_notes": []},
+    "ts": {"engine_phone": "ts", "approximation_applied": false, "approximation_notes": []},
+    "ts_h": {"engine_phone": "ts", "approximation_applied": true, "approximation_notes": ["aspiration merged into plain affricate for initial OpenUtau-like profile"]},
+    "u": {"engine_phone": "u", "approximation_applied": false, "approximation_notes": []},
+    "@": {"engine_phone": "e", "approximation_applied": true, "approximation_notes": ["schwa approximated as mid-front vowel for initial OpenUtau-like profile"]},
+    "N": {"engine_phone": "ng", "approximation_applied": true, "approximation_notes": ["velar nasal exported as alias-friendly ng"]},
+    "sil": {"engine_phone": "pau", "approximation_applied": true, "approximation_notes": ["silence exported as pause token"]}
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "spans": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 1.2,
+      "note_midi": 64,
+      "note_name": "E4",
+      "duration_ms": 280,
+      "beat": 1.0,
+      "tick": 480,
+      "release": "long"
+    }
+  ]
+}

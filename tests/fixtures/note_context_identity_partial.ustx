@@ -1,0 +1,39 @@
+{
+  "name": "identity partial project",
+  "resolution": 480,
+  "tempos": [
+    {
+      "position": 0,
+      "bpm": 100.0
+    }
+  ],
+  "tracks": [
+    {
+      "track_id": "partial-track",
+      "name": "Lead",
+      "parts": [
+        {
+          "part_id": "partial-part",
+          "name": "Verse",
+          "position": 0,
+          "notes": [
+            {
+              "note_id": "partial-note-001",
+              "position": 0,
+              "duration": 480,
+              "tone": 48,
+              "lyric": "low"
+            },
+            {
+              "note_id": "partial-note-002",
+              "position": 480,
+              "duration": 480,
+              "tone": 64,
+              "lyric": "high"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

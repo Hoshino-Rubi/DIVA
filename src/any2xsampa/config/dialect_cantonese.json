@@ -1,0 +1,7 @@
+{
+  "dialect": "cantonese",
+  "allowed_ipa": ["a", "e", "i", "k", "l", "m", "n", "o", "p", "s", "t", "ts", "u", "@", "N", "sil"],
+  "fallback_map": {
+    "ts_h": "ts"
+  }
+}

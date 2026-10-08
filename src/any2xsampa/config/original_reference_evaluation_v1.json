@@ -1,0 +1,28 @@
+{
+  "schema_version": "original_reference_evaluation_policy_v1",
+  "split_policy": "limited_data_song_split_v1",
+  "clip_selection": "reuse_frozen_original_baseline_clips",
+  "mapping_policy": "evidence_backed_v4_no_new_alias_guesses",
+  "whole_unresolved_windows_excluded": true,
+  "test_predictions_sealed": true,
+  "correspondence": {
+    "descriptor": "existing_hash_bound_librosa_0.11.0_chroma_cens",
+    "sample_rate": 22050,
+    "hop_length": 512,
+    "downsample_factors": [4, 8],
+    "maximum_cost_matrix_cells": 12000000,
+    "steps": [[1, 1], [0, 1], [1, 0]],
+    "step_cost_weights": [2.0, 1.0, 1.0],
+    "step_additive_penalties": [0.0, 0.05, 0.05],
+    "subsequence": false,
+    "relative_progress_band": 0.2,
+    "maximum_resolution_disagreement_sec": 0.5,
+    "note_boundary_margin_sec": 0.15,
+    "acceptance": "machine_proposal_only_requires_explicit_clip_binding"
+  },
+  "official_metric_scope": "original_audio_vs_user_calibrated_vsqx_derived_ipa",
+  "diagnostic_metric_scope": "conditional_on_unconfirmed_correspondence_not_original_accuracy",
+  "phone_duration_evaluated": false,
+  "new_training_authorized": false,
+  "default_model_replacement_allowed": false
+}

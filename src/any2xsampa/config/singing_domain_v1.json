@@ -1,0 +1,13 @@
+{
+  "schema_version":"singing_domain_policy_v1",
+  "architecture":{"version":"phoneticxeus_singing_domain_v1","interctc_layers":[4,8,12],"cache_after_encoder_layer":15,"encoder_blocks":19,"feature_width":1024,"label_count":428,"blank_id":0,"precision":"float32"},
+  "songs":["freedom-flower","half-moon-night-song","like-you","promise","queen-road-east"],
+  "architecture_arms":["endpoint","lora","full"],
+  "learning_rates":{"endpoint":0.001,"lora":0.0003,"full":0.00001},
+  "lora":{"rank":8,"scale":1.0,"projections":["linear_q","linear_k","linear_v","linear_out"]},
+  "training":{"screen_seed":17,"final_seeds":[17,29,43],"epochs":20,"micro_batch":1,"gradient_accumulation":8,"original_repeats":4,"rendered_repeats":1,"rendered_loss_weight":0.5,"weight_decay":0.0001,"gradient_clip":1.0,"baseline_kl_weight":0.01,"temperature":2.0,"gradient_checkpointing":true,"maximum_job_seconds":1500,"selection_epoch":20,"early_stopping":false},
+  "selection":{"folds":"leave_one_training_song_out","score":"pooled_original_phone_error_rate_at_fixed_epoch","tie_break":["trainable_parameter_count","arm_name"],"held_song_derived_data_in_training":false,"dev_used_for_architecture_selection":false,"automatic_promotion":false},
+  "ablations":{"variants":["paired","unlabeled","attributes"],"paired_kl_weight":0.05,"unlabeled_kl_weight":0.05,"feature_dropout":0.1,"unlabeled_windows_per_song":8,"unlabeled_window_seconds":10.0,"unlabeled_stride_seconds":10.0,"minimum_unlabeled_rms_dbfs":-45.0,"supervised_exclusion_margin_seconds":0.5,"attribute_ctc_weight":0.1,"attribute_learning_rate":0.001},
+  "limits":{"cpu_threads":4,"process_reserved_gib":7,"card_used_gib":14,"serial_gpu":true,"model_runtime_offline":true},
+  "default_replacement":false,"final_test_predictions_allowed":false
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "cantonese_singing_phone_review_priors_v1",
+  "min_phone_duration_sec": 0.02,
+  "two_phone": {
+    "onset_fraction": 0.18,
+    "onset_min_sec": 0.05,
+    "onset_max_sec": 0.16,
+    "nucleus_min_sec": 0.08
+  },
+  "three_phone": {
+    "onset_fraction": 0.15,
+    "onset_min_sec": 0.05,
+    "onset_max_sec": 0.16,
+    "coda_fraction": 0.18,
+    "coda_min_sec": 0.06,
+    "coda_max_sec": 0.22,
+    "nucleus_min_sec": 0.08
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version":"ipa_auxiliary_attributes_v1",
+  "purpose":"auxiliary training targets only; neither reference relabeling nor a reduced recognition inventory",
+  "attributes":["manner","place","aspiration","voicing","nasality","height","backness","rounding"],
+  "phones":{
+    "p":["stop","bilabial","plain","voiceless","oral","na","na","na"],
+    "pʰ":["stop","bilabial","aspirated","voiceless","oral","na","na","na"],
+    "t":["stop","alveolar","plain","voiceless","oral","na","na","na"],
+    "tʰ":["stop","alveolar","aspirated","voiceless","oral","na","na","na"],
+    "k":["stop","velar","plain","voiceless","oral","na","na","na"],
+    "kʰ":["stop","velar","aspirated","voiceless","oral","na","na","na"],
+    "t͡s":["affricate","alveolar","plain","voiceless","oral","na","na","na"],
+    "t͡sʰ":["affricate","alveolar","aspirated","voiceless","oral","na","na","na"],
+    "f":["fricative","labiodental","na","voiceless","oral","na","na","na"],
+    "s":["fricative","alveolar","na","voiceless","oral","na","na","na"],
+    "h":["fricative","glottal","na","voiceless","oral","na","na","na"],
+    "m":["nasal","bilabial","na","voiced","nasal","na","na","na"],
+    "n":["nasal","alveolar","na","voiced","nasal","na","na","na"],
+    "ŋ":["nasal","velar","na","voiced","nasal","na","na","na"],
+    "l":["lateral","alveolar","na","voiced","oral","na","na","na"],
+    "i":["vowel","na","na","voiced","oral","close","front","unrounded"],
+    "y":["vowel","na","na","voiced","oral","close","front","rounded"],
+    "u":["vowel","na","na","voiced","oral","close","back","rounded"],
+    "e":["vowel","na","na","voiced","oral","close_mid","front","unrounded"],
+    "ə":["vowel","na","na","voiced","oral","mid","central","unrounded"],
+    "ɐ":["vowel","na","na","voiced","oral","near_open","central","unrounded"],
+    "ɔ":["vowel","na","na","voiced","oral","open_mid","back","rounded"],
+    "ɛː":["vowel","na","na","voiced","oral","open_mid","front","unrounded"]
+  },
+  "unknown_phone_policy":"do not infer attributes; keep main phone CTC target intact and record auxiliary exclusion"
+}

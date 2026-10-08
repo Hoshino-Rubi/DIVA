@@ -1,0 +1,29 @@
+{
+  "dialect": "taigi",
+  "exact_entries": {},
+  "multigraph_map": {
+    "tsh": "ts_h",
+    "ts": "ts_h",
+    "ch": "ts_h",
+    "ng": "N",
+    "nn": "N",
+    "aa": "a",
+    "oo": "o"
+  },
+  "single_graph_map": {
+    "a": "a",
+    "e": "e",
+    "i": "i",
+    "o": "o",
+    "u": "u",
+    "l": "l",
+    "m": "m",
+    "n": "n",
+    "p": "p",
+    "s": "s",
+    "t": "t",
+    "k": "k",
+    "c": "ts_h"
+  },
+  "drop_chars": ["h", "j", "r", "v", "w", "y"]
+}

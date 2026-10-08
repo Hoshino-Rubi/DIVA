@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:vsq4 xmlns:ns0="http://www.yamaha.co.jp/vocaloid/schema/vsq4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.yamaha.co.jp/vocaloid/schema/vsq4/ vsq4.xsd">
+	<ns0:vender>Yamaha corporation</ns0:vender>
+	<ns0:version>4.0.0.3</ns0:version>
+	<ns0:vVoiceTable>
+		<ns0:vVoice>
+			<ns0:bs>4</ns0:bs>
+			<ns0:pc>0</ns0:pc>
+			<ns0:id>BNGE7CP7EMTRSNC3</ns0:id>
+			<ns0:name>MIKU_V4_Chinese</ns0:name>
+			<ns0:vPrm>
+				<ns0:bre>0</ns0:bre>
+				<ns0:bri>0</ns0:bri>
+				<ns0:cle>0</ns0:cle>
+				<ns0:gen>0</ns0:gen>
+				<ns0:ope>0</ns0:ope>
+			</ns0:vPrm>
+		</ns0:vVoice>
+	</ns0:vVoiceTable>
+	<ns0:mixer>
+		<ns0:masterUnit>
+			<ns0:oDev>0</ns0:oDev>
+			<ns0:rLvl>0</ns0:rLvl>
+			<ns0:vol>0</ns0:vol>
+		</ns0:masterUnit>
+		<ns0:vsUnit>
+			<ns0:tNo>0</ns0:tNo>
+			<ns0:iGin>0</ns0:iGin>
+			<ns0:sLvl>-898</ns0:sLvl>
+			<ns0:sEnable>0</ns0:sEnable>
+			<ns0:m>0</ns0:m>
+			<ns0:s>0</ns0:s>
+			<ns0:pan>64</ns0:pan>
+			<ns0:vol>0</ns0:vol>
+		</ns0:vsUnit>
+		<ns0:monoUnit>
+			<ns0:iGin>0</ns0:iGin>
+			<ns0:sLvl>-898</ns0:sLvl>
+			<ns0:sEnable>0</ns0:sEnable>
+			<ns0:m>0</ns0:m>
+			<ns0:s>0</ns0:s>
+			<ns0:pan>64</ns0:pan>
+			<ns0:vol>0</ns0:vol>
+		</ns0:monoUnit>
+		<ns0:stUnit>
+			<ns0:iGin>0</ns0:iGin>
+			<ns0:m>0</ns0:m>
+			<ns0:s>0</ns0:s>
+			<ns0:vol>-129</ns0:vol>
+		</ns0:stUnit>
+	</ns0:mixer>
+	<ns0:masterTrack>
+		<ns0:seqName>Any2Xsampa</ns0:seqName>
+		<ns0:comment />
+		<ns0:resolution>480</ns0:resolution>
+		<ns0:preMeasure>0</ns0:preMeasure>
+		<ns0:timeSig><ns0:m>0</ns0:m><ns0:nu>4</ns0:nu><ns0:de>4</ns0:de></ns0:timeSig>
+		<ns0:tempo><ns0:t>0</ns0:t><ns0:v>15000</ns0:v></ns0:tempo>
+	</ns0:masterTrack>
+	<ns0:vsTrack>
+		<ns0:tNo>0</ns0:tNo>
+		<ns0:name>Track</ns0:name>
+		<ns0:comment />
+		<ns0:vsPart>
+			<ns0:t>0</ns0:t>
+			<ns0:playTime>1</ns0:playTime>
+			<ns0:name>NewPart</ns0:name>
+			<ns0:comment />
+			<ns0:sPlug>
+				<ns0:id>ACA9C502-A04B-42b5-B2EB-5CEA36D16FCE</ns0:id>
+				<ns0:name>VOCALOID2 Compatible Style</ns0:name>
+				<ns0:version>3.0.0.1</ns0:version>
+			</ns0:sPlug>
+			<ns0:pStyle>
+				<ns0:v id="accent">50</ns0:v>
+				<ns0:v id="bendDep">8</ns0:v>
+				<ns0:v id="bendLen">0</ns0:v>
+				<ns0:v id="decay">50</ns0:v>
+				<ns0:v id="fallPort">0</ns0:v>
+				<ns0:v id="opening">127</ns0:v>
+				<ns0:v id="risePort">0</ns0:v>
+			</ns0:pStyle>
+			<ns0:singer>
+				<ns0:t>0</ns0:t>
+				<ns0:bs>4</ns0:bs>
+				<ns0:pc>0</ns0:pc>
+			</ns0:singer>
+			<ns0:plane>0</ns0:plane>
+		</ns0:vsPart>
+	</ns0:vsTrack>
+	<ns0:monoTrack>
+	</ns0:monoTrack>
+	<ns0:stTrack>
+	</ns0:stTrack>
+	<ns0:aux>
+		<ns0:id>AUX_VST_HOST_CHUNK_INFO</ns0:id>
+		<ns0:content>VlNDSwAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</ns0:content>
+	</ns0:aux>
+</ns0:vsq4>

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Any2Xsampa.Desktop (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Any2Xsampa.Desktop (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

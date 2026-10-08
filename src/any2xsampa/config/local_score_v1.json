@@ -1,0 +1,287 @@
+{
+  "schema_version": "local_score_policy_v1",
+  "tempo_default": 120,
+  "ticks_per_quarter": 480,
+  "pitch": {
+    "sample_rate": 22050,
+    "hop_length": 512,
+    "frame_length": 2048,
+    "fmin_hz": 65.40639132514966,
+    "fmax_hz": 2093.004522404789,
+    "chunk_seconds": 20,
+    "context_seconds": 1,
+    "min_note_duration_sec": 0.08
+  },
+  "template": {
+    "path": "examples/accepted/congqian_onnx_miku_v4c.vsqx",
+    "sha256": "83912cde78e250c5922e7feb71841b41859cfe19e70a6982c40f3d46df3d7357"
+  },
+  "alignment": {
+    "maximum_phone_distance_sec": 0.35,
+    "kind": "posthoc_emission_anchor_heuristic_not_verified_phone_boundaries"
+  },
+  "v4c_phone_rules": {
+    "p": {
+      "tokens": [
+        "p"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "pʰ": {
+      "tokens": [
+        "p_h"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "t": {
+      "tokens": [
+        "t"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "tʰ": {
+      "tokens": [
+        "t_h"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "k": {
+      "tokens": [
+        "k"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "kʰ": {
+      "tokens": [
+        "k_h"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "t͡s": {
+      "tokens": [
+        "ts"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "t͡sʰ": {
+      "tokens": [
+        "ts_h"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "s": {
+      "tokens": [
+        "s"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "f": {
+      "tokens": [
+        "f"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "h": {
+      "tokens": [
+        "x"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "l": {
+      "tokens": [
+        "l"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "m": {
+      "tokens": [
+        "m"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "n": {
+      "tokens": [
+        "n"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "ŋ": {
+      "tokens": [
+        "N"
+      ],
+      "approximation": false,
+      "basis": "existing_miku_v4c_phoneme_map:coda_ng"
+    },
+    "i": {
+      "tokens": [
+        "i"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "u": {
+      "tokens": [
+        "u"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "y": {
+      "tokens": [
+        "y"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "ɐ": {
+      "tokens": [
+        "a"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "ɔ": {
+      "tokens": [
+        "o"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "w": {
+      "tokens": [
+        "w"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "j": {
+      "tokens": [
+        "j"
+      ],
+      "approximation": false,
+      "basis": "existing_v4c_reference_ipa_v4_or_miku_v4c_phoneme_map"
+    },
+    "a": {
+      "tokens": [
+        "a"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "ə": {
+      "tokens": [
+        "a"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "e": {
+      "tokens": [
+        "@`"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "ɛ": {
+      "tokens": [
+        "@`"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "ʊ": {
+      "tokens": [
+        "u"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "ɪ": {
+      "tokens": [
+        "i"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "ɵ": {
+      "tokens": [
+        "e",
+        "o"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "œ": {
+      "tokens": [
+        "o",
+        "e"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "ø": {
+      "tokens": [
+        "o",
+        "e"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "sʰ": {
+      "tokens": [
+        "s"
+      ],
+      "approximation": true,
+      "basis": "existing_miku_v4c_phoneme_map_export_approximation; IPA remains unchanged"
+    },
+    "@": {
+      "tokens": [
+        "a"
+      ],
+      "approximation": true,
+      "basis": "legacy_internal_alias_for_export_only"
+    },
+    "N": {
+      "tokens": [
+        "N"
+      ],
+      "approximation": true,
+      "basis": "legacy_internal_alias_for_export_only"
+    },
+    "ts": {
+      "tokens": [
+        "ts"
+      ],
+      "approximation": true,
+      "basis": "legacy_internal_alias_for_export_only"
+    },
+    "ts_h": {
+      "tokens": [
+        "ts_h"
+      ],
+      "approximation": true,
+      "basis": "legacy_internal_alias_for_export_only"
+    }
+  },
+  "placeholder": {
+    "phonemes": [
+      "a"
+    ],
+    "lyric": "待定",
+    "meaning": "No supported phone evidence for this pitched note; audible editable placeholder, not recognition output"
+  }
+}

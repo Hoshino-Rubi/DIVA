@@ -1,0 +1,62 @@
+{
+  "schema_version": "v4c_reference_ipa_v4",
+  "label_scope": "derived_engine_reference",
+  "raw_human_annotations_modified": false,
+  "acoustic_realization_verified": false,
+  "evidence": {
+    "source": "v4c_to_recognizer_contract.json",
+    "sha256": "3028c4650ad64f8f4e9c8858ad8e806f7d6405693e91df5ff7347135a48840e3",
+    "policy": "Exact surviving v1 IPA values, not an inverse of the reduced recognizer inventory."
+  },
+  "unicode_normalization": "NFC",
+  "model_token_aliases": {
+    "ts": "t\u0361s",
+    "ts\u02b0": "t\u0361s\u02b0"
+  },
+  "unresolved_tokens": [
+    "7", "uAN", "iUN", "iE_r",
+    "ua_n", "uo", "UN", "ts\\_h", "ts\u0060", "ts\u0060_h"
+  ],
+  "tokens": {
+    "@N": {"ipa": ["\u0259", "\u014b"]},
+    "@U": {"ipa": ["\u0259", "u"]},
+    "@_n": {"ipa": ["\u0259", "n"]},
+    "@\u0060": {"ipa": ["\u025b\u02d0"]},
+    "AN": {"ipa": ["\u0250", "\u014b"]},
+    "AU": {"ipa": ["\u0250", "u"]},
+    "a": {"ipa": ["\u0250"]},
+    "aI": {"ipa": ["\u0250", "i"]},
+    "a_n": {"ipa": ["\u0250", "n"]},
+    "ei": {"ipa": ["e", "i"]},
+    "f": {"ipa": ["f"]},
+    "i": {"ipa": ["i"]},
+    "i@U": {"ipa": ["i", "\u0259", "u"]},
+    "iAN": {"ipa": ["i", "\u0250", "\u014b"]},
+    "iAU": {"ipa": ["i", "\u0250", "u"]},
+    "iN": {"ipa": ["i", "\u014b"]},
+    "i_n": {"ipa": ["i", "n"]},
+    "ia": {"ipa": ["i", "\u0250"]},
+    "k": {"ipa": ["k"]},
+    "k_h": {"ipa": ["k\u02b0"]},
+    "l": {"ipa": ["l"]},
+    "m": {"ipa": ["m"]},
+    "n": {"ipa": ["n"]},
+    "o": {"ipa": ["\u0254"]},
+    "p": {"ipa": ["p"]},
+    "p_h": {"ipa": ["p\u02b0"]},
+    "s": {"ipa": ["s"]},
+    "t": {"ipa": ["t"]},
+    "t_h": {"ipa": ["t\u02b0"]},
+    "ts": {"ipa": ["ts"]},
+    "ts_h": {"ipa": ["ts\u02b0"]},
+    "u": {"ipa": ["u"]},
+    "u@N": {"ipa": ["u", "\u0259", "\u014b"]},
+    "u@_n": {"ipa": ["u", "\u0259", "n"]},
+    "ua": {"ipa": ["u", "\u0250"]},
+    "uaI": {"ipa": ["u", "\u0250", "i"]},
+    "uei": {"ipa": ["u", "e", "i"]},
+    "x": {"ipa": ["h"]},
+    "y": {"ipa": ["y"]},
+    "y_n": {"ipa": ["y", "n"]}
+  }
+}

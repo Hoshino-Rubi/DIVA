@@ -1,0 +1,161 @@
+{
+  "strip_prefixes": ["-"],
+  "strip_suffixes": ["_cv"],
+  "alias_token_map": {
+    "ng": "N",
+    "SP": "sil",
+    "pau": "sil",
+    "R": "sil"
+  },
+  "symbol_features": {
+    "a": {
+      "type": "vowel",
+      "height": "open",
+      "backness": "front",
+      "rounded": "no"
+    },
+    "e": {
+      "type": "vowel",
+      "height": "mid",
+      "backness": "front",
+      "rounded": "no"
+    },
+    "i": {
+      "type": "vowel",
+      "height": "close",
+      "backness": "front",
+      "rounded": "no"
+    },
+    "o": {
+      "type": "vowel",
+      "height": "mid",
+      "backness": "back",
+      "rounded": "yes"
+    },
+    "u": {
+      "type": "vowel",
+      "height": "close",
+      "backness": "back",
+      "rounded": "yes"
+    },
+    "@": {
+      "type": "vowel",
+      "height": "mid",
+      "backness": "central",
+      "rounded": "no"
+    },
+    "l": {
+      "type": "consonant",
+      "manner": "lateral_approximant",
+      "manner_family": "approximant",
+      "place": "alveolar",
+      "place_family": "coronal",
+      "glide_like": "yes",
+      "nasal": "no",
+      "stop_like": "no"
+    },
+    "m": {
+      "type": "consonant",
+      "manner": "nasal",
+      "manner_family": "nasal",
+      "place": "bilabial",
+      "place_family": "labial",
+      "glide_like": "no",
+      "nasal": "yes",
+      "stop_like": "no"
+    },
+    "n": {
+      "type": "consonant",
+      "manner": "nasal",
+      "manner_family": "nasal",
+      "place": "alveolar",
+      "place_family": "coronal",
+      "glide_like": "no",
+      "nasal": "yes",
+      "stop_like": "no"
+    },
+    "N": {
+      "type": "consonant",
+      "manner": "nasal",
+      "manner_family": "nasal",
+      "place": "velar",
+      "place_family": "dorsal",
+      "glide_like": "no",
+      "nasal": "yes",
+      "stop_like": "no"
+    },
+    "p": {
+      "type": "consonant",
+      "manner": "stop",
+      "manner_family": "stop",
+      "place": "bilabial",
+      "place_family": "labial",
+      "glide_like": "no",
+      "nasal": "no",
+      "stop_like": "yes"
+    },
+    "t": {
+      "type": "consonant",
+      "manner": "stop",
+      "manner_family": "stop",
+      "place": "alveolar",
+      "place_family": "coronal",
+      "glide_like": "no",
+      "nasal": "no",
+      "stop_like": "yes"
+    },
+    "k": {
+      "type": "consonant",
+      "manner": "stop",
+      "manner_family": "stop",
+      "place": "velar",
+      "place_family": "dorsal",
+      "glide_like": "no",
+      "nasal": "no",
+      "stop_like": "yes"
+    },
+    "cl": {
+      "type": "consonant",
+      "manner": "stop_closure",
+      "manner_family": "stop",
+      "place": "velar",
+      "place_family": "dorsal",
+      "glide_like": "no",
+      "nasal": "no",
+      "stop_like": "yes"
+    },
+    "s": {
+      "type": "consonant",
+      "manner": "fricative",
+      "manner_family": "obstruent",
+      "place": "alveolar",
+      "place_family": "coronal",
+      "glide_like": "no",
+      "nasal": "no",
+      "stop_like": "no"
+    },
+    "ts": {
+      "type": "consonant",
+      "manner": "affricate",
+      "manner_family": "obstruent",
+      "place": "alveolar",
+      "place_family": "coronal",
+      "glide_like": "no",
+      "nasal": "no",
+      "stop_like": "no"
+    },
+    "ts_h": {
+      "type": "consonant",
+      "manner": "aspirated_affricate",
+      "manner_family": "obstruent",
+      "place": "alveolar",
+      "place_family": "coronal",
+      "glide_like": "no",
+      "nasal": "no",
+      "stop_like": "no"
+    },
+    "sil": {
+      "type": "pause"
+    }
+  }
+}

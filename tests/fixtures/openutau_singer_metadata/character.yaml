@@ -1,0 +1,8 @@
+name: Metadata Singer
+default_color: Clear
+default_style: Neutral
+tags: [bank, default]
+subbanks:
+  - name: Power
+    dir: Power
+    color: Power

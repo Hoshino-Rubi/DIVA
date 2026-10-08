@@ -1,0 +1,47 @@
+﻿{
+  "schema_version": "final_proxy_mapping_proposals_v1",
+  "label_scope": "proposed_engine_proxy_only",
+  "acoustic_ipa_verified": false,
+  "automatic_application_allowed": false,
+  "rules": [
+    {
+      "token": "7",
+      "manual": {"page": 168, "sample": "Ke（下划线为 e）"},
+      "basis": "你说明它类似汉语拼音 e；声库表也以 Ke 的 e 为例。以下是待批准的元音近似，不是声学测得的原唱 IPA。",
+      "options": [{"id": "pinyin_e_proxy", "ipa": ["ɤ"], "label": "按拼音 e 作 /ɤ/ 近似", "assumption": "保留一个元音单位，不据此断定实际歌声完全等于 /ɤ/。"}],
+      "bulk_option_id": "pinyin_e_proxy"
+    },
+    {
+      "token": "UN",
+      "manual": {"page": 169, "sample": "Dong（下划线为 ong）"},
+      "basis": "你说明 UN 类似 on；旧项目把它压成 u+N，声库表以 Dong 的 ong 为例。这些约定并不一致，因此不预选，也不把旧规则当成你的意思。",
+      "options": [
+        {"id": "open_on_proxy", "ipa": ["ɔ", "n"], "label": "按 on：较开口的 o + n", "assumption": "将你的 on 说明具体化为 /ɔ n/；这是需要你认可的工程近似。"},
+        {"id": "close_on_proxy", "ipa": ["o", "n"], "label": "按 on：较收口的 o + n", "assumption": "将你的 on 说明具体化为 /o n/；不预先认定元音开口度。"},
+        {"id": "legacy_u_ng_proxy", "ipa": ["u", "ŋ"], "label": "沿用旧工程约定：u + ng", "assumption": "采用旧项目的 u+N 投影；不声称符合你的 on 说明或实际原唱。"}
+      ],
+      "bulk_option_id": null
+    },
+    {
+      "token": "iE_r",
+      "manual": {"page": 168, "sample": "jie, ye"},
+      "basis": "保留你为此字调出的 V4C 写法及已确认的发音。下面只是给识别评测用的展开提案，不要求你重新解释这个写法。",
+      "options": [{"id": "i_open_e_proxy", "ipa": ["i", "ɛ"], "label": "近似展开为 i + 开口 e", "assumption": "把复合元音记作 /i ɛ/，不编码 _r 修饰或调音细节；不保证精确声学等价。"}],
+      "bulk_option_id": "i_open_e_proxy"
+    },
+    {
+      "token": "iUN",
+      "manual": {"page": 169, "sample": "xiong, yong"},
+      "basis": "你确认它比直接输入 yong 更合适；原始复合符号保持不变。展开提案独立于 UN 的选择，不按字符串自动拆分。",
+      "options": [{"id": "i_u_ng_proxy", "ipa": ["i", "u", "ŋ"], "label": "近似展开为 i + u + ng", "assumption": "采用一个显式的三单位工程近似，不表示声库实际分成三个独立音或等于原唱发音。"}],
+      "bulk_option_id": "i_u_ng_proxy"
+    },
+    {
+      "token": "uo",
+      "manual": {"page": 168, "sample": "huo, wo"},
+      "basis": "你确认该写法发音正确；旧项目已有 u+o 投影，完整旧表中 u=/u/、o=/ɔ/。以下仅恢复为待批准的复合代理约定。",
+      "options": [{"id": "u_open_o_proxy", "ipa": ["u", "ɔ"], "label": "沿用 u + o 的工程展开", "assumption": "记为 /u ɔ/，不把两个单位的代理展开宣称为原唱精确 IPA。"}],
+      "bulk_option_id": "u_open_o_proxy"
+    }
+  ]
+}

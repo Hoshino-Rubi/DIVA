@@ -1,0 +1,7 @@
+{
+  "dialect": "taigi",
+  "allowed_ipa": ["a", "e", "i", "k", "l", "m", "n", "o", "p", "s", "t", "ts_h", "u", "@", "N", "sil"],
+  "fallback_map": {
+    "ts": "ts_h"
+  }
+}

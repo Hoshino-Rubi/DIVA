@@ -1,0 +1,20 @@
+# Optional auxiliary-only runtime, separate from .venv and PhoneticXeus.
+# Qwen supplies text/time evidence; the pinned author separator imports only
+# torch, librosa, beartype, rotary_embedding_torch, einops and packaging.
+# Matched torch/torchaudio 2.8.0+cu126 are installed separately.
+torch==2.8.0+cu126
+torchaudio==2.8.0+cu126
+qwen-asr==0.0.6
+transformers==4.57.6
+accelerate==1.12.0
+huggingface-hub==0.36.2
+safetensors==0.8.0
+numpy==2.2.6
+scipy==1.15.3
+soundfile==0.13.1
+PyYAML==6.0.3
+packaging==25.0
+librosa==0.11.0
+beartype==0.14.1
+rotary-embedding-torch==0.3.5
+einops==0.6.1

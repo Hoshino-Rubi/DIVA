@@ -1,0 +1,211 @@
+{
+  "schema_version": "miku_v4c_empirical_phonemes_v1",
+  "target": "miku_v4c",
+  "empirical_audit": {
+    "miku_v4c_2026_06_27": {
+      "invalid_in_vsqx_note_p_context": [
+        "bare @N",
+        "f UN",
+        "i\\",
+        "i`",
+        "bare_atN",
+        "_ibs",
+        "_ibt"
+      ],
+      "notes": [
+        "User import/playback probe: every *_ibs (i\\) and *_ibt (i`) note was silent.",
+        "User import/playback probe: bare_atN (@N as a standalone final) was silent.",
+        "PHG2 membership alone is not sufficient; tokens must be validated in VSQX note p context for Miku V4C.",
+        "User narrow PHG2 probe: only f UN was silent; all other tested onset+final combinations in miku_v4c_phg2_narrow_probe.vsqx sounded.",
+        "Keep Cantonese fun as f u n by default; do not replace it with f UN.",
+        "Onset-attached @N can sound even though bare @N was silent, so validity depends on VSQX note p context.",
+        "Alias labels bare_atN, _ibs, and _ibt are recorded so tooling can reject either raw tokens or probe labels.",
+        "User-facing Cantonese lyric input must not require Jyutping; overrides are developer/manual correction aids only.",
+        "hung1 lattice: x u N, h u N, x o N, and k u N are retained only as baseline/negative/de-prioritized evidence, not as positive/default candidates.",
+        "hung1 lattice: pending onset-attached nasal-final probes are tracked separately; bare @N stays excluded from main candidates."
+      ],
+      "validated_in_vsqx_note_p_context": {
+        "hei_candidates": [
+          "x ei",
+          "x i",
+          "x 7",
+          "x @`",
+          "x @U",
+          "x @N",
+          "x a_n",
+          "x @_n",
+          "x AN"
+        ],
+        "nei_lei_candidates": [
+          "n ei",
+          "n i",
+          "n 7",
+          "n @`",
+          "n @U",
+          "n @N",
+          "n a_n",
+          "n @_n",
+          "n AN",
+          "l ei",
+          "l i",
+          "l 7",
+          "l @`",
+          "l @U",
+          "l @N",
+          "l a_n",
+          "l @_n",
+          "l AN"
+        ],
+        "fun_candidates": [
+          "f u n",
+          "f u@N",
+          "f @N"
+        ],
+        "other_onset_final_smoke": [
+          "f ei",
+          "f i",
+          "f 7",
+          "f @`",
+          "f @U",
+          "f a_n",
+          "f @_n",
+          "f AN",
+          "m ei",
+          "m i",
+          "m 7",
+          "m @`",
+          "m @U",
+          "m @N",
+          "m a_n",
+          "m @_n",
+          "m AN"
+        ]
+      },
+      "invalid_aliases": {
+        "bare_atN": "bare @N",
+        "_ibs": "i\\",
+        "_ibt": "i`"
+      },
+      "hung1_phoneme_lattice": {
+        "jyutping": "hung1",
+        "schema_version": "hung1_miku_v4c_candidate_lattice_v1",
+        "status": "pending_manual_probe",
+        "user_input_policy": "Jyutping remains optional; Chinese lyric lexicon resolution must work without requiring user Jyutping input.",
+        "positive_default_candidates": [],
+        "main_candidate_exclusions": [
+          "@N",
+          "bare @N"
+        ],
+        "baseline_negative_or_deprioritized_families": [
+          {
+            "phonemes": "x u N",
+            "status": "baseline_deprioritized",
+            "candidate_role": "legacy_mapper_baseline_not_positive_default",
+            "positive_default": false,
+            "reason": "current collapse/baseline family; preserve as evidence only until manual probe proves a better hung1 path"
+          },
+          {
+            "phonemes": "h u N",
+            "status": "negative_deprioritized",
+            "candidate_role": "failed_family_not_positive_default",
+            "positive_default": false,
+            "reason": "current collapse/failed family; do not promote as positive/default"
+          },
+          {
+            "phonemes": "x o N",
+            "status": "negative_deprioritized",
+            "candidate_role": "failed_family_not_positive_default",
+            "positive_default": false,
+            "reason": "current collapse/failed family; do not promote as positive/default"
+          },
+          {
+            "phonemes": "k u N",
+            "status": "negative_deprioritized",
+            "candidate_role": "contrast_negative_not_positive_default",
+            "positive_default": false,
+            "reason": "contrast/collapse family; should remain disabled for positive/default routing"
+          }
+        ],
+        "pending_probe_candidates": [
+          "x @N",
+          "h @N",
+          "x a_n",
+          "h a_n",
+          "x @_n",
+          "h @_n",
+          "x AN",
+          "h AN",
+          "x u@N",
+          "h u@N"
+        ],
+        "pending_probe_candidate_entries": [
+          {
+            "phonemes": "x @N",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "h @N",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "x a_n",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "h a_n",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "x @_n",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "h @_n",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "x AN",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "h AN",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "x u@N",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          },
+          {
+            "phonemes": "h u@N",
+            "status": "pending_probe",
+            "candidate_role": "onset_attached_hung1_probe",
+            "positive_default": false
+          }
+        ],
+        "notes": [
+          "Do not infer hung1 success from PHG2 membership or from other syllable/onset contexts.",
+          "Bare @N is excluded from main candidates because the standalone final was manually observed silent.",
+          "Onset-attached candidates are pending probes; they are not validated/default until manual VOCALOID4 FE evidence is recorded."
+        ]
+      }
+    }
+  }
+}

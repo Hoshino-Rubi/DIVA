@@ -1,0 +1,67 @@
+{
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 0.31,
+      "confidence": 0.94,
+      "candidate_phones": [
+        {"symbol": "l", "confidence": 0.94},
+        {"symbol": "n", "confidence": 0.12}
+      ],
+      "metadata": {
+        "score_bridge_identity": {
+          "normalized_track_id": "lead-track",
+          "normalized_part_id": "verse-part",
+          "normalized_note_id": "note-001",
+          "source": "fixture:score_bridge"
+        },
+        "posterior": [
+          {"symbol": "l", "confidence": 0.94},
+          {"symbol": "n", "confidence": 0.12}
+        ]
+      }
+    },
+    {
+      "start_sec": 0.31,
+      "end_sec": 0.73,
+      "confidence": 0.89,
+      "candidate_phones": [
+        {"symbol": "aa", "confidence": 0.89},
+        {"symbol": "ax", "confidence": 0.22}
+      ],
+      "metadata": {
+        "score_bridge_identity": {
+          "normalized_track_id": "lead-track",
+          "normalized_part_id": "verse-part",
+          "normalized_note_id": "note-001",
+          "source": "fixture:score_bridge"
+        },
+        "posterior": [
+          {"symbol": "aa", "confidence": 0.89},
+          {"symbol": "ax", "confidence": 0.22}
+        ]
+      }
+    },
+    {
+      "start_sec": 0.73,
+      "end_sec": 1.08,
+      "confidence": 0.83,
+      "candidate_phones": [
+        {"symbol": "ng", "confidence": 0.83},
+        {"symbol": "n", "confidence": 0.3}
+      ],
+      "metadata": {
+        "score_bridge_identity": {
+          "normalized_track_id": "lead-track",
+          "normalized_part_id": "verse-part",
+          "normalized_note_id": "note-001",
+          "source": "fixture:score_bridge"
+        },
+        "posterior": [
+          {"symbol": "ng", "confidence": 0.83},
+          {"symbol": "n", "confidence": 0.3}
+        ]
+      }
+    }
+  ]
+}

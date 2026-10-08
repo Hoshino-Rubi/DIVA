@@ -1,0 +1,28 @@
+{
+  "spans": [
+    {
+      "track_id": "bridge-track",
+      "part_id": "bridge-part-a",
+      "note_id": "bridge-part-a-note-001",
+      "start_sec": 0.0,
+      "end_sec": 0.54,
+      "note_midi": 64,
+      "note_name": "E4",
+      "duration_ms": 540,
+      "tick": 0,
+      "release": "short"
+    },
+    {
+      "track_id": "bridge-track",
+      "part_id": "bridge-part-b",
+      "note_id": "bridge-part-b-note-001",
+      "start_sec": 0.49,
+      "end_sec": 1.2,
+      "note_midi": 48,
+      "note_name": "C3",
+      "duration_ms": 710,
+      "tick": 480,
+      "release": "long"
+    }
+  ]
+}

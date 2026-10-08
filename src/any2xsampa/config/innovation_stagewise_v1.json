@@ -1,0 +1,51 @@
+{
+  "schema_version": "innovation_stagewise_v1",
+  "order": ["factor_exchange", "event_readout_prototype", "paired_position_feasibility"],
+  "factor_exchange": {
+    "cells": ["xx", "vv", "xv", "vx"],
+    "primary": "xv",
+    "reverse_control_is_not_selectable": true,
+    "train_windows": 20,
+    "reference_phones": 1235,
+    "maximum_errors": 561,
+    "maximum_insertions": 35,
+    "maximum_deletions": 273,
+    "minimum_improved_songs": 3,
+    "minimum_group_references": 20,
+    "maximum_group_per_increase": 0.03,
+    "formula": "P(blank)=P_x(blank); P(k!=blank)=(1-P_x(blank))*softmax(z_v_nonblank)",
+    "source_or_logit_time_warp": false,
+    "coefficient_sweep": false,
+    "near_blank_diagnostic_threshold": 0.999,
+    "diagnostic_nearby_frames": 5,
+    "reconstruction_probability_tolerance": 0.000002,
+    "training_internal_not_holdout": true,
+    "development_execution_in_this_protocol": false
+  },
+  "event_readout_prototype": {
+    "quality_training_authorized": false,
+    "prototype_profile_process_cap": 1,
+    "optimizer_steps": 0,
+    "cache_rows": "longest_original_train_then_example_id",
+    "global_label_count": 428,
+    "blank_id": 0,
+    "blank_arcs": "single_frame_null",
+    "phone_arcs": "any_positive_duration_up_to_complete_window",
+    "adjacent_same_label_segments": "distinct_events",
+    "reference_boundary_supervision": false,
+    "decoded_segment_times_are_ground_truth": false
+  },
+  "pair_feasibility": {
+    "quality_training_authorized": false,
+    "initial_match": "exact_phone_sequence_and_same_song",
+    "note_provenance_required_for_eligibility": true,
+    "subsequence_matches": "audit_only_not_new_training_windows",
+    "no_new_audio_or_features": true
+  },
+  "limits": {"cpu_threads": 4, "process_reserved_gib": 7, "card_used_gib": 14, "serial_gpu": true, "offline_model_runtime": true},
+  "new_acoustic_forwards": 0,
+  "new_quality_training_starts": 0,
+  "new_models_or_dependencies": false,
+  "default_replacement": false,
+  "final_test_predictions_allowed": false
+}

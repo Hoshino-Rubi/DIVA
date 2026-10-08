@@ -1,0 +1,15 @@
+{
+  "schema_version": "original_reference_offset_probe_policy_v1",
+  "descriptor_source": "existing_hash_bound_chroma_cens",
+  "downsample_factors": [4, 8],
+  "maximum_offset_sec": 60.0,
+  "minimum_fit_overlap_fraction": 0.7,
+  "competitor_separation_sec": 1.0,
+  "fit_excludes_frozen_original_clips": true,
+  "validation_local_radius_sec": 1.0,
+  "maximum_lag_frame_products": 12000000,
+  "timing_model": "rendered_time_equals_original_time_plus_audio_estimated_offset",
+  "score_inputs": "audio_descriptors_only_no_phone_predictions_or_lyrics",
+  "acceptance": "machine_proposal_not_human_clip_approval",
+  "model_training_or_checkpoint_selection_allowed": false
+}

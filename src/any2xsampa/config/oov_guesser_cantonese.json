@@ -1,0 +1,27 @@
+{
+  "dialect": "cantonese",
+  "exact_entries": {},
+  "multigraph_map": {
+    "ng": "N",
+    "aa": "a",
+    "oe": "e",
+    "eu": "e",
+    "ts": "ts"
+  },
+  "single_graph_map": {
+    "a": "a",
+    "e": "e",
+    "i": "i",
+    "o": "o",
+    "u": "u",
+    "l": "l",
+    "m": "m",
+    "n": "n",
+    "p": "p",
+    "s": "s",
+    "t": "t",
+    "k": "k",
+    "c": "ts"
+  },
+  "drop_chars": ["h", "j", "r", "v", "w", "y"]
+}

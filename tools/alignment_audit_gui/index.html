@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' file:; media-src 'self' file:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>原唱片段审计台 · any2xsampa</title>
+<style>__AUDIT_CSS__</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark" aria-hidden="true">a / ə</span><div><div class="eyebrow">ANY2XSAMPA · LOCAL AUDIT</div><h1>原唱片段审计台</h1></div></div>
+  <div class="top-actions"><span class="offline">● 离线 · 来源只读</span><button id="help-button" class="quiet">使用说明</button><button id="import-button">导入审计</button><button id="export-button" class="primary">导出审计 JSON</button><input id="import-file" type="file" accept="application/json,.json" hidden></div>
+</header>
+<main>
+<section class="intro"><div><h2>让每个结论，都有据可查。</h2><p>原唱优先，人工意见优先。机器建议与正式音素真值分开记录。</p></div><span id="dataset-date" class="muted"></span></section>
+<section id="summary" class="summary" aria-label="审计概览"></section>
+<div id="global-notice" class="notice" role="note"></div>
+<details id="help" class="help"><summary>只需三步：选片段 → 听原唱 → 记录判断</summary>
+<ol><li>默认列表隐藏已判错位的 12 项，不必全部重听。“人机冲突”可单独查看机器误判。</li><li>可在原唱与合成辅助间切换。<strong>A/B 只保留相对播放位置，不会自动修正旧偏移</strong>；分离人声也只作辅助。</li><li>按“对应正确 / 错位 / 需修正边界 / 不确定”保存，备注写普通汉字即可。不需要 nxxx 或 phone_index。</li></ol>
+<p>保存到本浏览器后，仍建议导出 JSON 备份。导出只是<strong>对应审计记录</strong>，不会修改 WAV、VSQX，不会自动创建音素真值或启动训练。两首最终测试歌不在此页面。</p>
+<p>快捷键（不在输入框时）：空格 播放/暂停，A 原唱，B 合成辅助，J/K 上一项/下一项。点击波形可跳转。边缘表可按需展开。</p>
+</details>
+<div class="workspace">
+<aside class="sidebar">
+  <div class="filters"><label for="search">查找片段或汉字</label><input id="search" type="search" placeholder="C03、沙龙、框住目前…"><div class="filter-pair"><label>任务<select id="filter"><option value="attention">尚待审计</option><option value="all">全部 26 项</option><option value="conflict">人机冲突</option><option value="rejected">人工已判错位</option><option value="machine_issue">机器异常</option><option value="boundary">沙龙切点 B01–B06</option><option value="saved">本次已保存</option></select></label><label>歌曲<select id="song"><option value="">全部歌曲</option></select></label></div></div>
+  <div class="list-heading"><span id="list-count"></span><span>编号 / 历史结论</span></div>
+  <nav id="item-list" aria-label="复核片段列表"></nav>
+</aside>
+<section class="detail" id="detail" aria-label="片段审计详情"></section>
+</div>
+<footer><span>审计不等于训练授权 · 保留来源哈希和历史原话</span><span id="storage-status" role="status"></span></footer>
+</main>
+<div id="toast" class="toast" role="status" hidden></div>
+<noscript><p class="notice">请在启用 JavaScript 的本地浏览器中打开此页面。</p></noscript>
+<script id="audit-data" type="application/json">__AUDIT_DATA__</script>
+<script>__AUDIT_CORE__</script>
+<script>__AUDIT_APP__</script>
+</body></html>

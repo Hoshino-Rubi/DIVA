@@ -1,0 +1,57 @@
+{
+  "schema_version": "shalong_clock_audit_policy_v1",
+  "song_id": "shalong",
+  "split": "dev",
+  "clock_equations": {
+    "score_absolute_sec": "integrate_tempo(part_tick + note_tick)",
+    "score_display_sec": "score_absolute_sec - premeasure_duration_sec",
+    "rendered_sec": "score_absolute_sec + rendered_minus_score_offset_sec",
+    "original_to_score_sec": "original_sec + rendered_minus_original_offset_sec - rendered_minus_score_offset_sec"
+  },
+  "audio_offset": {
+    "descriptor_sample_rate": 22050,
+    "descriptor_hop_samples": 512,
+    "factors": [4, 8],
+    "maximum_offset_sec": 60.0,
+    "fit_clip_exclusion_padding_sec": 4.0,
+    "minimum_common_fit_frames": 64,
+    "maximum_frame_lag_products": 12000000,
+    "runner_up_separation_sec": 1.0,
+    "minimum_separated_similarity_margin": 0.02,
+    "maximum_resolution_difference_sec": 0.2,
+    "local_validation_radius_sec": 1.0,
+    "maximum_local_offset_deviation_sec": 0.25,
+    "same_original_frame_support_for_every_lag": true,
+    "whole_song_cached_descriptors_have_context": true,
+    "strict_waveform_context_independence_claimed": false
+  },
+  "rendered_to_score": {
+    "sample_step_sec": 0.01,
+    "maximum_offset_sec": 10.0,
+    "activity_peak_ratios": [0.01, 0.03],
+    "minimum_mcc": 0.8,
+    "maximum_threshold_offset_spread_sec": 0.2,
+    "nominal_edge_uncertainty_sec": 0.15,
+    "note_timing_is_not_phone_timing": true
+  },
+  "clip_binding": {
+    "preserve_original_clip_intervals": true,
+    "half_open_intervals": true,
+    "require_full_note_containment_for_all_supported_offsets": true,
+    "retain_and_report_partial_edge_notes": true,
+    "reject_any_unresolved_reference_in_complete_window": true,
+    "machine_clock_binding_is_human_review": false,
+    "existing_official_evaluator_still_requires_explicit_clip_binding": true
+  },
+  "recrop_proposals": {
+    "selection": "nearest_safe_rest_midpoints_expanding_each_frozen_clip",
+    "maximum_endpoint_expansion_sec": 4.0,
+    "maximum_duration_sec": 20.0,
+    "preserve_entire_old_audio_interval": true,
+    "phone_predictions_or_error_scores_used": false,
+    "automatic_acceptance_or_inference": false
+  },
+  "training_or_test_access_allowed": false,
+  "choose_offset_by_per_allowed": false,
+  "automatic_model_promotion_allowed": false
+}

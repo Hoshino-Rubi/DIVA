@@ -1,0 +1,14 @@
+{
+  "schema_version": "sequence_routes_policy_v1",
+  "songs": ["freedom-flower", "half-moon-night-song", "like-you", "promise", "queen-road-east"],
+  "powsm": {"conditions": ["<unk>", "<yue>"], "training_windows": 20, "selection": "pooled_training_PER", "minimum_relative_gain": 0.05, "minimum_nonworse_songs": 4, "development_after_selection_only": true},
+  "arms": ["control", "whole_sequence", "sequence_risk"],
+  "initialization": "matching previous full-baseline held-song checkpoint; final jobs use matching previous final seed",
+  "training": {"screen_seed": 17, "final_seeds": [17,29,43], "epochs": 20, "learning_rate": 0.00001, "weight_decay": 0.0001, "gradient_clip": 1.0, "gradient_accumulation": 8, "original_repeats": 4, "rendered_loss_weight": 0.5, "pretrained_kl_weight": 0.01, "temperature": 2.0, "maximum_job_seconds": 1500, "maximum_screen_jobs": 15, "maximum_final_jobs": 3, "checkpoint_epoch": 20},
+  "risk": {"beam_width": 8, "refresh_epochs": [1,6,11,16], "include_greedy": true, "include_training_reference_in_loss_pool": true, "coefficient": 1.0, "posterior_temperature": 2.0, "substitution_cost": 1.0, "deletion_cost": 1.0, "insertion_cost": 2.0, "extra_aspiration_error_cost": 1.0, "normalize_by_reference_phones": true, "model_decoding_receives_reference": false},
+  "whole_sequence": {"core_seconds": 16.0, "context_seconds": 2.0, "maximum_encoder_seconds": 20.0, "coefficient": 0.25, "passes_per_available_song_per_epoch": 1, "same_optimizer_step_count": true, "additional_compute_reported": true, "minimum_independent_confirmed_anchors": 3, "unknown_mapping_policy": "exclude_complete_song", "reference_nature": "user_calibrated_sequence_derived_IPA_machine_correspondence; not newly human-confirmed boundaries"},
+  "selection": {"source": "five training songs leave-one-song-out", "fixed_epoch": 20, "minimum_relative_PER_gain_against_prior_folds": 0.05, "protected_group_min_references": 20, "maximum_group_PER_increase": 0.03, "tie_break": ["pooled_original_PER", "insertions", "arm_name"], "development_selection_prohibited": true},
+  "release": {"maximum_original_errors": 80, "maximum_original_insertions": 11, "maximum_original_deletions": 25, "maximum_original_aspiration_errors": 1, "maximum_original_h_errors": 2, "maximum_protected_PER_increase": 0.03, "minimum_group_references": 20, "minimum_passing_seeds": 2},
+  "limits": {"cpu_threads": 4, "process_reserved_gib": 7, "card_used_gib": 14, "serial_gpu": true, "offline_model_runtime": true},
+  "new_models_or_dependencies": false, "final_test_predictions_allowed": false, "default_replacement": false
+}

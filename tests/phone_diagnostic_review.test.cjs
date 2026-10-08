@@ -1,0 +1,21 @@
+﻿const test=require('node:test'),assert=require('node:assert/strict');
+const state=require('../tools/phone_diagnostic_review/state.js');
+const packet={packet_sha256:'abc',items:[{review_id:'D01'},{review_id:'D02'}]};
+test('all pending is exportable without inventing answers',()=>{const a=state.exportAnswers(packet,state.blank(packet));assert.equal(a.responses.length,2);assert.equal(a.responses[0].decision,'pending');});
+test('uncertain, wrong location and original statement are preserved',()=>{let a=state.blank(packet);a=state.setAnswer(packet,a,'D01','wrong_location','根本不是这个字');a=state.setAnswer(packet,a,'D02','uncertain','先不确定');const out=state.exportAnswers(packet,a);assert.deepEqual(out.responses,a.responses);assert.equal(out.scope,'diagnostic_only_no_reference_or_training_update');});
+test('rejects another packet and duplicate IDs before import',()=>{let a=state.blank(packet);assert.throws(()=>state.validate(packet,{...a,packet_sha256:'bad'}));a.responses[1].review_id='D01';assert.throws(()=>state.validate(packet,a));});
+test('immutable updates keep an unfinished draft',()=>{const old=state.blank(packet);const next=state.setAnswer(packet,old,'D01','pending','<script>literal</script>');assert.equal(old.responses[0].statement,'');assert.equal(next.responses[0].statement,'<script>literal</script>');});
+test('DOM choice keeps scroll, saves a partial draft and exports it',()=>{
+ const fs=require('node:fs'),vm=require('node:vm');
+ const build=()=>({handlers:{},addEventListener(k,fn){this.handlers[k]=fn;},textContent:'',value:'',checked:false});
+ const names=['pending','a','b','neither','uncertain','wrong_location'];
+ const cards=packet.items.map(item=>{const box=build();box.id=item.review_id;box.radios=names.map(n=>Object.assign(build(),{value:n}));box.area=build();box.querySelectorAll=()=>box.radios;box.querySelector=sel=>sel==='textarea'?box.area:box.radios.find(r=>r.checked);return box;});
+ const byId=Object.fromEntries(cards.map(x=>[x.id,x]));for(const id of ['packet','status','count','export','import'])byId[id]=build();byId.packet.textContent=JSON.stringify(packet);
+ let blob,clicked=false;const stored=new Map();
+ const document={scrollingElement:{scrollTop:431},getElementById:id=>byId[id],querySelectorAll:()=>cards,createElement:()=>({click(){clicked=true;}})};
+ const context={PhoneDiagnosticReview:state,document,localStorage:{getItem:k=>stored.get(k),setItem:(k,v)=>stored.set(k,v)},Blob:class{constructor(parts){blob=parts.join('');}},URL:{createObjectURL:()=> 'blob:test',revokeObjectURL(){}},setTimeout:()=>0};
+ vm.runInNewContext(fs.readFileSync(require.resolve('../tools/phone_diagnostic_review/app.js'),'utf8'),context);
+ cards[0].radios.forEach(r=>r.checked=r.value==='wrong_location');cards[0].area.value='不对应';cards[0].radios.find(r=>r.value==='wrong_location').handlers.change();
+ assert.equal(document.scrollingElement.scrollTop,431);assert.equal(cards[0].area.value,'不对应');
+ byId.export.handlers.click();assert(clicked);const output=JSON.parse(blob);assert.equal(output.responses[0].decision,'wrong_location');assert.equal(output.responses[1].decision,'pending');assert.equal(output.responses[0].statement,'不对应');
+});

@@ -1,0 +1,28 @@
+{
+  "spans": [
+    {
+      "track_id": "demo-track",
+      "part_id": "demo-part",
+      "note_id": "demo-note-001",
+      "start_sec": 0.0,
+      "end_sec": 0.2,
+      "note_midi": 64,
+      "note_name": "E4",
+      "duration_ms": 80,
+      "tick": 0,
+      "release": "short"
+    },
+    {
+      "track_id": "other-track",
+      "part_id": "other-part",
+      "note_id": "other-note-999",
+      "start_sec": 0.25,
+      "end_sec": 0.9,
+      "note_midi": 48,
+      "note_name": "C3",
+      "duration_ms": 420,
+      "tick": 480,
+      "release": "long"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": "quality8h_policy_v1",
+  "minimum_execution_seconds": 28800,
+  "reference_mode": "rendered_proxy_only",
+  "new_training_seeds": [17, 29, 43],
+  "training": {
+    "temperature": 2.0,
+    "kl_coefficient": 0.05,
+    "kl_direction": "frozen_baseline_to_adapter",
+    "kl_reduction": "mean_valid_frames_all_428_labels",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size": 8,
+    "gradient_clip_norm": 1.0,
+    "max_epochs": 20,
+    "patience": 4,
+    "max_seconds_per_seed": 1500,
+    "expected_train_windows": 129,
+    "expected_dev_windows": 25,
+    "early_stopping_source": "unconstrained_dev_per",
+    "minimum_relative_per_improvement": 0.05,
+    "minimum_passing_seeds": 2,
+    "group_minimum_reference_count": 20,
+    "maximum_group_per_regression": 0.03
+  },
+  "slicing": {
+    "context_padding_sec": 6.0,
+    "maximum_context_sec": 30.0,
+    "minimum_gap_sec": 0.30,
+    "maximum_boundary_disagreement_sec": 0.20,
+    "minimum_window_sec": 8.0,
+    "maximum_window_sec": 20.0,
+    "preferred_window_sec": 18.0,
+    "energy_frame_sec": 0.02,
+    "energy_hop_sec": 0.01,
+    "maximum_gap_rms_relative_peak_db": -35.0,
+    "cut_guard_sec": 0.10,
+    "text_normalization": "NFC_remove_punctuation_and_whitespace_only",
+    "selection_order": ["duration_distance_to_18", "center_distance_to_old_clip", "earlier_start"],
+    "minimum_internal_matched_words": 1,
+    "inference_scores_used_for_selection": false,
+    "machine_boundaries_are_human_approval": false
+  },
+  "resources": {
+    "cpu_threads": 4,
+    "process_reserved_limit_gib": 7,
+    "card_used_limit_gib": 14,
+    "explicit_cuda": true,
+    "cpu_model_fallback": false,
+    "model_jobs_serial": true,
+    "proxy": "http://127.0.0.1:10808",
+    "offline_inference": true,
+    "download_timeout_sec": 2700,
+    "second_separator_fallback": false
+  },
+  "models": {
+    "separator": {
+      "id": "KimberleyJSN/melbandroformer",
+      "revision": "ac9b0614ab3cd7f77219e18ba494dfd93956c348",
+      "license": "mit",
+      "weight_file": "MelBandRoformer.ckpt",
+      "weight_bytes": 913106900,
+      "weight_sha256": "87201f4d31afb5bc79993230fc49446918425574db48c01c405e44f365c7559e",
+      "code_repository": "KimberleyJensen/Mel-Band-Roformer-Vocal-Model",
+      "code_revision": "25f44ffb55ee3c301281bba21b2d6d311cb69ae2",
+      "config": "configs/config_vocals_mel_band_roformer.yaml"
+    },
+    "asr": {
+      "id": "Qwen/Qwen3-ASR-0.6B",
+      "revision": "5eb144179a02acc5e5ba31e748d22b0cf3e303b0",
+      "license": "apache-2.0",
+      "weight_sha256": "79d6cbd4c98c7bbffe9db2edac07f56cd6637d0d5944b27f6c2b8353840323ea",
+      "root": "models/qwen3-asr-0.6b"
+    },
+    "timestamps": {
+      "id": "Qwen/Qwen3-ForcedAligner-0.6B",
+      "revision": "c7cbfc2048c462b0d63a45797104fc9db3ad62b7",
+      "license": "apache-2.0",
+      "weight_sha256": "47831d0e82f96b20e9034dba01a075ee06436654719f6a68289e49f1b65ce0e7",
+      "root": ".state/runs/forced-aligner-resources/Qwen3-ForcedAligner-0.6B"
+    }
+  },
+  "performance": {
+    "cold_repetitions": 3,
+    "warm_repetitions": 5,
+    "target_elapsed_reduction": 0.15,
+    "target_peak_memory_reduction": 0.20,
+    "phoneticxeus_dtype": "float32",
+    "phone_sequence_identity_required": true
+  },
+  "test_prediction_access": false,
+  "automatic_default_change": false,
+  "maximum_review_items": 12
+}

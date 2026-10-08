@@ -1,0 +1,21 @@
+{
+  "schema_version": "local_correspondence_review_policy_v2",
+  "candidate_ranks_per_input": 3,
+  "pair_rule": "all_available_mixed_vocal_rank_pairs",
+  "anchor_rule": "same_context_reviewed_window_midpoint_must_map_inside_selected_rendered_section",
+  "anchor_scope": "section_constraint_not_phone_time_truth",
+  "window_sec": 10.0,
+  "step_sec": 0.5,
+  "minimum_similarity": 0.45,
+  "maximum_dual_path_disagreement_sec": 0.2,
+  "minimum_rendered_duration_sec": 7.0,
+  "maximum_rendered_duration_sec": 13.0,
+  "minimum_changed_correspondence_sec": 0.5,
+  "maximum_human_clips": 2,
+  "maximum_human_edges": 4,
+  "human_priority": "existing_clean_correspondence_then_fewest_data_accepted_songs_then_song_order_then_start",
+  "never_reask_review_ids": ["L01", "L04", "L02-E"],
+  "maximum_active_training_candidates": 20,
+  "automatic_correspondence_confirmation": false,
+  "training_started": false
+}

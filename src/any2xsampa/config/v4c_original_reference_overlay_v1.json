@@ -1,0 +1,20 @@
+{
+  "schema_version": "v4c_original_reference_overlay_v1",
+  "label_scope": "derived_engine_reference",
+  "base_mapping_sha256": "5ff1f36f3e707f4ced4a088f31355ab20b421c4ab0f569a112ace15886cae9d9",
+  "legacy_convention_source": "v4c_to_recognizer_contract_v2.json",
+  "legacy_convention_sha256": "6408c3175b1f42ae911fc4730a7eb16ec8050c5c8b6ec94901224bd1af0d0702",
+  "manual_sha256": "c85565ec473e6bfd52e9483a4838d7d9d3a9355ef3e3c326d132f5758e57d9fe",
+  "rules": {
+    "ua_n": {
+      "source_tokens": ["ua", "n"],
+      "ipa": ["u", "\u0250", "n"],
+      "basis": "Restore the already documented ua+n project convention using intact v1-derived IPA constituents, not an inverse of reduced phone IDs.",
+      "manual_role": "Corroborates the vowel-plus-final-n symbol structure; does not supply a Cantonese IPA transcription."
+    }
+  },
+  "general_string_splitting_allowed": false,
+  "other_unresolved_aliases_remain_unresolved": true,
+  "historical_mapping_or_annotations_modified": false,
+  "independent_acoustic_ipa_verified": false
+}

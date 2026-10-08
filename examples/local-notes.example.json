@@ -1,0 +1,5 @@
+{
+  "schema_version": "local_note_runtime_v1",
+  "snapshot": "models/game",
+  "python": ".venv/Scripts/python.exe"
+}

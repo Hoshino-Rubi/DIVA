@@ -1,0 +1,4 @@
+name: Fallback Singer
+subbanks:
+  - color: Power
+    dir: Power

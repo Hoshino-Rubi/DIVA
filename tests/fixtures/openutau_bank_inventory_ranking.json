@@ -1,0 +1,22 @@
+{
+  "format": "openutau_alias_inventory",
+  "aliases": [
+    "a",
+    "l a",
+    "a ng",
+    "-a",
+    "-a N",
+    "-a ng",
+    "i",
+    "l i",
+    "i ng",
+    "pau",
+    "SP",
+    "a_cv",
+    "SP_cv"
+  ],
+  "repair_map": {
+    "-a cl": ["-a N", "-a ng", "-a"],
+    "pau_cv": ["SP_cv"]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "external_posterior_json_v1",
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 0.16,
+      "candidate_phones": [
+        {"symbol": "sil", "confidence": 0.61},
+        {"symbol": "@", "confidence": 0.39}
+      ],
+      "boundary_uncertainty": {
+        "start_ms": 28.0,
+        "end_ms": 32.0,
+        "uncertain": true
+      },
+      "adapter_diagnostics": {
+        "source": "tests/fixtures/recognizer_real_partial_adapter.json",
+        "approximation_only": false
+      },
+      "notes": [
+        "partial external recognizer JSON intentionally omits posterior/logits summaries"
+      ]
+    }
+  ]
+}

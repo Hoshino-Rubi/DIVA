@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+package any2xsampa.v1;
+option csharp_namespace = "Any2Xsampa_Desktop.Grpc";
+
+// Windows desktop product-facing draft VSQX service.
+// This contract is intentionally narrow for the first Miku V4C Cantonese slice:
+// audio/full mix + optional user lyrics/ASR/pitch evidence -> draft VSQX artifacts.
+service MikuV4CProductDraftService {
+  rpc InferDraftVsqx (InferDraftVsqxRequest) returns (InferDraftVsqxResponse);
+}
+
+message InferDraftVsqxRequest {
+  string audio_path = 1;
+  string template_path = 2;
+  string output_root = 3;
+  string lyrics = 4;
+  string jyutping_override = 5;
+  string asr_transcript_path = 6;
+  string pitch_analysis_path = 7;
+  string qwen3_asr_model = 8;
+  bool use_fake_asr = 9;
+  bool timestamps = 10;
+  string language = 11;
+  string context = 12;
+  string pitches_csv = 13;
+  double tempo = 14;
+  string prefix = 15;
+}
+
+message InferDraftVsqxResponse {
+  bool ok = 1;
+  string schema_version = 2;
+  string error_kind = 3;
+  repeated string errors = 4;
+  string product_summary_json = 5;
+  string vsqx_path = 6;
+  string draft_path = 7;
+  string phoneme_lattice_path = 8;
+  string export_summary_path = 9;
+  string audio_product_summary_path = 10;
+  string lyric_source = 11;
+  bool manual_vocaloid_import_required = 12;
+  bool user_jyutping_required = 13;
+}

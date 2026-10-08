@@ -1,0 +1,13 @@
+{
+  "bank_metadata": {
+    "color": "clear",
+    "style": "neutral",
+    "tags": ["bank", "fallback"],
+    "subbanks": {
+      "power": {
+        "style": "strong",
+        "tags": ["belt"]
+      }
+    }
+  }
+}

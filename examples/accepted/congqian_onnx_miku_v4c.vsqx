@@ -1,0 +1,3386 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:vsq4 xmlns:ns0="http://www.yamaha.co.jp/vocaloid/schema/vsq4/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.yamaha.co.jp/vocaloid/schema/vsq4/ vsq4.xsd">
+	<ns0:vender>Yamaha corporation</ns0:vender>
+	<ns0:version>4.0.0.3</ns0:version>
+	<ns0:vVoiceTable>
+		<ns0:vVoice>
+			<ns0:bs>4</ns0:bs>
+			<ns0:pc>0</ns0:pc>
+			<ns0:id>BNGE7CP7EMTRSNC3</ns0:id>
+			<ns0:name>MIKU_V4_Chinese</ns0:name>
+			<ns0:vPrm>
+				<ns0:bre>0</ns0:bre>
+				<ns0:bri>0</ns0:bri>
+				<ns0:cle>0</ns0:cle>
+				<ns0:gen>0</ns0:gen>
+				<ns0:ope>0</ns0:ope>
+			</ns0:vPrm>
+		</ns0:vVoice>
+	</ns0:vVoiceTable>
+	<ns0:mixer>
+		<ns0:masterUnit>
+			<ns0:oDev>0</ns0:oDev>
+			<ns0:rLvl>0</ns0:rLvl>
+			<ns0:vol>0</ns0:vol>
+		</ns0:masterUnit>
+		<ns0:vsUnit>
+			<ns0:tNo>0</ns0:tNo>
+			<ns0:iGin>0</ns0:iGin>
+			<ns0:sLvl>-898</ns0:sLvl>
+			<ns0:sEnable>0</ns0:sEnable>
+			<ns0:m>0</ns0:m>
+			<ns0:s>0</ns0:s>
+			<ns0:pan>64</ns0:pan>
+			<ns0:vol>0</ns0:vol>
+		</ns0:vsUnit>
+		<ns0:monoUnit>
+			<ns0:iGin>0</ns0:iGin>
+			<ns0:sLvl>-898</ns0:sLvl>
+			<ns0:sEnable>0</ns0:sEnable>
+			<ns0:m>0</ns0:m>
+			<ns0:s>0</ns0:s>
+			<ns0:pan>64</ns0:pan>
+			<ns0:vol>0</ns0:vol>
+		</ns0:monoUnit>
+		<ns0:stUnit>
+			<ns0:iGin>0</ns0:iGin>
+			<ns0:m>0</ns0:m>
+			<ns0:s>0</ns0:s>
+			<ns0:vol>-129</ns0:vol>
+		</ns0:stUnit>
+	</ns0:mixer>
+	<ns0:masterTrack>
+		<ns0:seqName>Untitled0</ns0:seqName>
+		<ns0:comment>New VSQ File</ns0:comment>
+		<ns0:resolution>480</ns0:resolution>
+		<ns0:preMeasure>4</ns0:preMeasure>
+		<ns0:timeSig><ns0:m>0</ns0:m><ns0:nu>4</ns0:nu><ns0:de>4</ns0:de></ns0:timeSig>
+		<ns0:tempo><ns0:t>0</ns0:t><ns0:v>15000</ns0:v></ns0:tempo>
+	</ns0:masterTrack>
+	<ns0:vsTrack>
+		<ns0:tNo>0</ns0:tNo>
+		<ns0:name>Track</ns0:name>
+		<ns0:comment>Track</ns0:comment>
+		<ns0:vsPart>
+			<ns0:t>7680</ns0:t>
+			<ns0:playTime>232264</ns0:playTime>
+			<ns0:name>NewPart</ns0:name>
+			<ns0:comment>New Musical Part</ns0:comment>
+			<ns0:sPlug>
+				<ns0:id>ACA9C502-A04B-42b5-B2EB-5CEA36D16FCE</ns0:id>
+				<ns0:name>VOCALOID2 Compatible Style</ns0:name>
+				<ns0:version>3.0.0.1</ns0:version>
+			</ns0:sPlug>
+			<ns0:pStyle>
+				<ns0:v id="accent">50</ns0:v>
+				<ns0:v id="bendDep">8</ns0:v>
+				<ns0:v id="bendLen">0</ns0:v>
+				<ns0:v id="decay">50</ns0:v>
+				<ns0:v id="fallPort">0</ns0:v>
+				<ns0:v id="opening">127</ns0:v>
+				<ns0:v id="risePort">0</ns0:v>
+			</ns0:pStyle>
+			<ns0:singer>
+				<ns0:t>0</ns0:t>
+				<ns0:bs>4</ns0:bs>
+				<ns0:pc>0</ns0:pc>
+			</ns0:singer>
+			<ns0:note>
+				<ns0:t>10186</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>10546</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>10883</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>11507</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>11964</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>12637</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>13357</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>14318</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>21117</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>21381</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a t</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>21742</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>22342</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>23423</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>24144</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>24961</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>25489</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>25946</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>30270</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>30823</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>31303</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>32601</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>33105</ns0:t>
+				<ns0:dur>336</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>33682</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>35363</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>35580</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>36012</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>36685</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>37357</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>37670</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a n</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>38030</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>38679</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>39087</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>45526</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a N</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>45862</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>46174</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>46775</ns0:t>
+				<ns0:dur>288</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>47183</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>47568</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>48529</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>49489</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>49946</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>56432</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a n</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>56697</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>57033</ns0:t>
+				<ns0:dur>288</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a n</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>57730</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>58042</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>58763</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>60877</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a n</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>61309</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>65513</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>66138</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>66450</ns0:t>
+				<ns0:dur>288</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>68613</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a n</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>68997</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts u n</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>70607</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>70871</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>71399</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>71616</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>72048</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">o</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>73297</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>73994</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s o</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>74378</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>79351</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>79904</ns0:t>
+				<ns0:dur>288</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>80553</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>81249</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s o</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>84589</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>85117</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>85550</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>87423</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>87952</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>88384</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>90138</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>91580</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>95495</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>96048</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>96360</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>98162</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">@`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>98619</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>99171</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>102030</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>103592</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>106354</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>106739</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>107003</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>107267</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>109982</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>110991</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>112793</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>113105</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>114042</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a n</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>114354</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>114715</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>115075</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>119255</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>120889</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>121538</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>121850</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>122210</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>122450</ns0:t>
+				<ns0:dur>336</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>122883</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>123339</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>125045</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>129682</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>130402</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>131027</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>131387</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts i N</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>131724</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>132468</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>132781</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>140540</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>141261</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>142246</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>142607</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>142943</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>143351</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>143688</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>144673</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>149910</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>150438</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>150847</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">@`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>152264</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>152841</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>153201</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>154811</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>155171</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">p a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>155387</ns0:t>
+				<ns0:dur>312</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>155844</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">l u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>156252</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>156877</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">@`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>158198</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>158703</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>163387</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>164036</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>164685</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>168745</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>169273</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>169754</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>171507</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>171988</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>172420</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>174150</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s @`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>177129</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>179652</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts i</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>180252</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>180661</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>182631</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">@`</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>188540</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>191279</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>191519</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>193922</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>196973</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>197357</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>202354</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>204492</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>204781</ns0:t>
+				<ns0:dur>168</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>205141</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>207063</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>207616</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>212324</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>212925</ns0:t>
+				<ns0:dur>264</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>213598</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>217682</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>218210</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>218667</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">k a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>220420</ns0:t>
+				<ns0:dur>192</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>220973</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>221333</ns0:t>
+				<ns0:dur>216</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">t a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>223087</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">s u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>224432</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>228589</ns0:t>
+				<ns0:dur>240</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">ts u</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>231519</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:note>
+				<ns0:t>232144</ns0:t>
+				<ns0:dur>120</ns0:dur>
+				<ns0:n>60</ns0:n>
+				<ns0:v>64</ns0:v>
+				<ns0:y>la</ns0:y>
+				<ns0:p lock="1">a</ns0:p>
+				<ns0:nStyle>
+					<ns0:v id="accent">50</ns0:v>
+					<ns0:v id="bendDep">0</ns0:v>
+					<ns0:v id="bendLen">0</ns0:v>
+					<ns0:v id="decay">50</ns0:v>
+					<ns0:v id="fallPort">0</ns0:v>
+					<ns0:v id="opening">127</ns0:v>
+					<ns0:v id="risePort">0</ns0:v>
+					<ns0:v id="vibLen">0</ns0:v>
+					<ns0:v id="vibType">0</ns0:v>
+				</ns0:nStyle>
+			</ns0:note>
+			<ns0:plane>0</ns0:plane>
+		</ns0:vsPart>
+	</ns0:vsTrack>
+	<ns0:monoTrack>
+	</ns0:monoTrack>
+	<ns0:stTrack>
+	</ns0:stTrack>
+	<ns0:aux>
+		<ns0:id>AUX_VST_HOST_CHUNK_INFO</ns0:id>
+		<ns0:content>VlNDSwAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</ns0:content>
+	</ns0:aux>
+</ns0:vsq4>

@@ -1,0 +1,9 @@
+{
+  "dialect": "taigi",
+  "entries": {
+    "li": ["l", "i"],
+    "ng": ["N"],
+    "tsia": ["ts_h", "a"],
+    "lang": ["l", "a", "N"]
+  }
+}

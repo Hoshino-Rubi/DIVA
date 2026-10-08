@@ -1,0 +1,37 @@
+{
+  "schema_version": "game_note_policy_v1",
+  "model_id": "openvpi/GAME-1.0.3-medium-onnx",
+  "revision": "475a8ee781fe8cca980b3b12fbe6c80c768a813a",
+  "archive_sha256": "5b7a21e64c6310efac399f5d12838fffa70565be162436b5a4a65f290721e7d8",
+  "language": "yue",
+  "unknown_language_fallback": false,
+  "seed": 17,
+  "sample_times": [
+    0,
+    0.125,
+    0.25,
+    0.375,
+    0.5,
+    0.625,
+    0.75,
+    0.875
+  ],
+  "boundary_threshold": 0.2,
+  "boundary_radius": 2,
+  "presence_threshold": 0.2,
+  "max_input_seconds": 20,
+  "cpu_threads": 4,
+  "max_total_gpu_gib": 14,
+  "max_process_gpu_gib": 7,
+  "cuda_arena_per_graph_gib": 1.5,
+  "device": "cpu",
+  "reference_conditions": false,
+  "quality_gate": {
+    "integer_pitch_exact": true,
+    "onset_tolerance_sec": 0.05,
+    "offset_tolerance_sec": 0.05,
+    "precision_min": 0.95,
+    "recall_min": 0.95
+  },
+  "rationale": "Fixed v1.0.3 infer.py extract defaults: threshold .2, radius20ms,8steps,presence.2. CPU explicitly selected for first quality qualification while user desktop owns shared GPU lock; no automatic CPU fallback."
+}

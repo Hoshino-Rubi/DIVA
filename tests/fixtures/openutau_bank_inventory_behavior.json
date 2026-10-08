@@ -1,0 +1,50 @@
+{
+  "format": "openutau_alias_inventory",
+  "aliases": [
+    "a low",
+    "a high",
+    "ng short",
+    "ng long",
+    "-a ng tight",
+    "-a ng tail"
+  ],
+  "repair_map": {
+    "a": ["a low", "a high"],
+    "ng": ["ng short", "ng long"],
+    "-a N": ["-a ng tight", "-a ng tail"]
+  },
+  "alias_metadata": {
+    "a low": {
+      "subbank": "low",
+      "color": "warm",
+      "min_note": "C3",
+      "max_note": "B3",
+      "tags": ["plain", "nucleus"]
+    },
+    "a high": {
+      "subbank": "high",
+      "color": "bright",
+      "min_note": "C4",
+      "max_note": "B4",
+      "tags": ["plain"]
+    },
+    "ng short": {
+      "timing": "short",
+      "max_duration_ms": 120,
+      "tags": ["coda", "plain"]
+    },
+    "ng long": {
+      "timing": "long",
+      "min_duration_ms": 180,
+      "tags": ["plain"]
+    },
+    "-a ng tight": {
+      "release": "short",
+      "tags": ["nucleus", "vc", "release"]
+    },
+    "-a ng tail": {
+      "release": "long",
+      "tags": ["release"]
+    }
+  }
+}
