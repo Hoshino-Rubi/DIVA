@@ -58,6 +58,7 @@ public sealed partial class MainPage : Page
     private double audioDuration, playStart, playEnd;
     private double[] peaks = Array.Empty<double>();
     private bool initialized, closed, dirty, closingAuthorized;
+    private bool setupPreferencesReady;
     private long editVersion;
     private readonly Queue<string> log = new();
     public MainPage(LocalTaskService service)
@@ -71,7 +72,17 @@ public sealed partial class MainPage : Page
         service.Progress += e => DispatcherQueue.TryEnqueue(() =>
         {
             var stage=e.TryGetProperty("stage",out var s)?s.GetString():"";
-            if(e.TryGetProperty("chunk_total",out var total) && total.GetInt32()>0)
+            if(stage is "model_download" or "model_import" or "model_ready")
+            {
+                ModelDownloadProgress.Visibility=Visibility.Visible;
+                if(e.TryGetProperty("total_bytes",out var size) && size.GetInt64()>0 && e.TryGetProperty("downloaded_bytes",out var done))
+                {
+                    ModelDownloadProgress.Value=done.GetInt64()*100d/size.GetInt64();
+                    ModelSetupStatus.Text=$"{e.GetProperty("file").GetString()} · {done.GetInt64()/1048576d:F1}/{size.GetInt64()/1048576d:F1} MiB";
+                }
+                StatusBar.Message=stage=="model_ready"?"模型已安装并校验":"正在安装模型，可取消；已下载部分会保留";
+            }
+            else if(e.TryGetProperty("chunk_total",out var total) && total.GetInt32()>0)
             {
                 var index=e.TryGetProperty("chunk_index",out var current)?current.GetInt32():0;
                 if(e.TryGetProperty("processed_seconds",out var processed) && e.TryGetProperty("total_seconds",out var seconds) && seconds.GetDouble()>0)
@@ -105,6 +116,7 @@ public sealed partial class MainPage : Page
         };
         await RefreshModels();
         await RefreshNoteRuntime();
+        await InitializeModelSetup();
         try
         {
             string session=Path.Combine(service.Root,".state","local-ui-session.json");
@@ -121,7 +133,7 @@ public sealed partial class MainPage : Page
         }catch(Exception error){Log("上次会话未恢复："+error.Message);}
     }
     private void Log(string line) { log.Enqueue(line);while(log.Count>70)log.Dequeue();ActivityLog.Text=string.Join(Environment.NewLine,log); }
-    private void Error(Exception e) { StatusBar.Severity=InfoBarSeverity.Error;StatusBar.Title="操作未完成";StatusBar.Message=e.Message;Log(e.Message); }
+    private void Error(Exception e) { service.Diagnostics.Record("desktop", "failed", e);StatusBar.Severity=InfoBarSeverity.Error;StatusBar.Title="操作未完成";StatusBar.Message=e.Message;Log(e.Message); }
     private async Task RefreshModels()
     {
         try
@@ -133,11 +145,90 @@ public sealed partial class MainPage : Page
                 string detail=ok?m.GetProperty("quality").GetString()!:m.GetProperty("reason").GetString()!;
                 return new ModelChoice(id,id+(ok?" · "+detail:" · 不可用"),ok,detail);
             }).ToList();
+            string? selected=(ModelBox.SelectedItem as ModelChoice)?.Id;
             ModelBox.ItemsSource=choices;
-            GpuStatus.Text=await LocalTaskService.GpuStatusAsync();
+            if(selected is not null)ModelBox.SelectedItem=choices.FirstOrDefault(m=>m.Id==selected);
+            GpuStatus.Text=await LocalTaskService.GpuStatusAsync(service.Diagnostics);
             ModelStatus.Text=choices.Count==0?"尚未配置真实模型；不会自动使用 fixture。":"运行包已核验；请选择模型。质量状态与可加载状态分开。";
         }catch(Exception e){Error(e);ModelStatus.Text="环境检查失败；未启动推理。";}
     }
+
+    private string SetupPreferencesPath => Path.Combine(service.Root, ".state", "model-setup-preferences.json");
+
+    private async Task InitializeModelSetup()
+    {
+        try
+        {
+            var info=await service.CallAsync("model_setup_status",new{});
+            bool enabled=info.GetProperty("enabled").GetBoolean();
+            InstallModelsButton.IsEnabled=ImportModelsButton.IsEnabled=enabled;
+            AutoDownloadBox.IsChecked=info.GetProperty("auto_download").GetBoolean();
+            if(File.Exists(SetupPreferencesPath))
+            {
+                using var doc=JsonDocument.Parse(await File.ReadAllTextAsync(SetupPreferencesPath));
+                AutoDownloadBox.IsChecked=doc.RootElement.GetProperty("auto_download").GetBoolean();
+                ModelProxyBox.Text=doc.RootElement.GetProperty("proxy").GetString() ?? "";
+            }
+            setupPreferencesReady=true;
+            bool ready=info.GetProperty("ready").GetBoolean();
+            ModelSetupStatus.Text=!enabled?"此开发版本未配置自动下载清单。":ready?"模型文件已完整核验；识别阶段不联网。":"缺少模型，首次安装需要约 2.4 GiB 下载空间。";
+            if(enabled && !ready && AutoDownloadBox.IsChecked==true)await InstallModels();
+        }
+        catch(Exception ex){Error(ex);ModelSetupStatus.Text="模型安装检查失败："+ex.Message;}
+    }
+
+    private async Task SaveSetupPreferences()
+    {
+        if(!setupPreferencesReady)return;
+        Directory.CreateDirectory(Path.GetDirectoryName(SetupPreferencesPath)!);
+        string tmp=SetupPreferencesPath+".tmp";
+        await File.WriteAllTextAsync(tmp,JsonSerializer.Serialize(new{auto_download=AutoDownloadBox.IsChecked==true,proxy=ModelProxyBox.Text.Trim()}));
+        File.Move(tmp,SetupPreferencesPath,true);
+    }
+
+    private async void AutoDownload_Changed(object sender,RoutedEventArgs e)
+    {
+        if(!setupPreferencesReady)return;
+        try{await SaveSetupPreferences();}catch(Exception ex){Error(ex);}
+    }
+
+    private async Task InstallModels(string? offline=null)
+    {
+        if(active is not null)return;
+        active=new CancellationTokenSource();
+        SetBusy(true);ModelDownloadProgress.Visibility=Visibility.Visible;ModelDownloadProgress.Value=0;
+        StatusBar.Severity=InfoBarSeverity.Informational;StatusBar.Title=offline is null?"安装模型":"导入离线模型";
+        try
+        {
+            await SaveSetupPreferences();
+            var p=new Dictionary<string,object>{{"proxy",ModelProxyBox.Text.Trim()}};
+            if(offline is not null)p["offline_dir"]=offline;
+            await service.CallAsync("install_models",p,active.Token);
+            await RefreshModels();NoteSnapshotBox.Text="";await RefreshNoteRuntime();
+            ModelDownloadProgress.Value=100;ModelSetupStatus.Text="模型安装完成，文件哈希均已核验。请选择真实模型后识别。";
+            StatusBar.Severity=InfoBarSeverity.Success;StatusBar.Message="模型就绪。";
+        }
+        catch(OperationCanceledException)
+        {ModelSetupStatus.Text="已取消安装，下载部分保留；点击“继续下载”可恢复。";StatusBar.Severity=InfoBarSeverity.Warning;StatusBar.Message=ModelSetupStatus.Text;}
+        catch(Exception ex)
+        {Error(ex);ModelSetupStatus.Text="安装未完成："+ex.Message+"。可配置代理后继续下载，或导入离线模型文件夹。";}
+        finally{active.Dispose();active=null;SetBusy(false);}
+    }
+
+    private async void InstallModels_Click(object sender,RoutedEventArgs e)=>await InstallModels();
+    private async void ImportModels_Click(object sender,RoutedEventArgs e)
+    {
+        if(active is not null)return;
+        try
+        {
+            var picker=new FolderPicker();picker.FileTypeFilter.Add("*");
+            WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
+            var folder=await picker.PickSingleFolderAsync();
+            if(folder is not null)await InstallModels(folder.Path);
+        }
+        catch(Exception ex){Error(ex);}
+    }
+
     private void Model_Changed(object sender,SelectionChangedEventArgs e)
     { if(ModelBox.SelectedItem is ModelChoice m)ModelStatus.Text=m.Detail; }
     private FileOpenPicker OpenPicker(string extension)
@@ -216,7 +307,7 @@ public sealed partial class MainPage : Page
     private void Phone_Selected(object sender,SelectionChangedEventArgs e)
     { if(PhoneList.SelectedItem is PhoneRow row)Play(Math.Max(0,row.Start-.18),Math.Min(audioDuration,row.End+.18)); }
     private void SetBusy(bool busy)
-    {RunButton.IsEnabled=!busy;CancelButton.IsEnabled=busy;BusyRing.IsActive=busy;ModelBox.IsEnabled=!busy;DeviceBox.IsEnabled=!busy;PhoneList.IsEnabled=!busy;WholeMode.IsEnabled=!busy;ClipMode.IsEnabled=!busy;AnalyzeScoreButton.IsEnabled=!busy;ImportScoreButton.IsEnabled=!busy;ExportScoreButton.IsEnabled=!busy;ScoreTempo.IsEnabled=!busy;ImportNotesButton.IsEnabled=!busy;NoteSnapshotBox.IsEnabled=!busy;AutoVsqxBox.IsEnabled=!busy;WholeProgress.Visibility=busy && WholeMode.IsChecked==true?Visibility.Visible:Visibility.Collapsed;if(!busy)WholeProgress.Value=0;}
+    {RunButton.IsEnabled=!busy;CancelButton.IsEnabled=busy;BusyRing.IsActive=busy;ModelBox.IsEnabled=!busy;DeviceBox.IsEnabled=!busy;PhoneList.IsEnabled=!busy;WholeMode.IsEnabled=!busy;ClipMode.IsEnabled=!busy;AnalyzeScoreButton.IsEnabled=!busy;ImportScoreButton.IsEnabled=!busy;ExportScoreButton.IsEnabled=!busy;ScoreTempo.IsEnabled=!busy;ImportNotesButton.IsEnabled=!busy;NoteSnapshotBox.IsEnabled=!busy;AutoVsqxBox.IsEnabled=!busy;InstallModelsButton.IsEnabled=!busy;ImportModelsButton.IsEnabled=!busy;AutoDownloadBox.IsEnabled=!busy;ModelProxyBox.IsEnabled=!busy;WholeProgress.Visibility=busy && WholeMode.IsChecked==true?Visibility.Visible:Visibility.Collapsed;if(!busy)WholeProgress.Value=0;}
     private async Task<bool> RunTask(string action,object parameters)
     {
         if(active is not null)return false;
@@ -459,6 +550,22 @@ public sealed partial class MainPage : Page
             await service.CallAsync("draft",new{result_path=resultPath,result_sha256=resultHash,edits});if(version==editVersion)dirty=false;DraftStatus.Text="草稿已保存（非真值）";
         }finally{draftGate.Release();}
     }
+    private async void ExportDiagnostics_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var picker = new FolderPicker(); picker.FileTypeFilter.Add("*");
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
+            var folder = await picker.PickSingleFolderAsync(); if (folder is null) return;
+            string file = Path.Combine(folder.Path, $"Any2Xsampa-diagnostics-{DateTime.UtcNow:yyyyMMdd-HHmmssfff}.zip");
+            await service.ExportDiagnosticsAsync(file);
+            StatusBar.Severity = InfoBarSeverity.Success;
+            StatusBar.Title = "诊断已导出";
+            StatusBar.Message = "已保存到所选目录；不包含音频、原始日志或完整路径，未自动上传。";
+        }
+        catch (Exception ex) { Error(ex); }
+    }
+
     private async void Doctor_Click(object sender,RoutedEventArgs e)
     {if(active is not null)return;try{var d=await service.CallAsync("doctor",new{});Log(d.ToString());await RefreshModels();}catch(Exception ex){Error(ex);}}
     private async void Unload_Click(object sender,RoutedEventArgs e)

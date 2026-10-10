@@ -42,7 +42,7 @@ class Server:
             self.emit("result", task_id, data={"cancel_requested": event is not None, "target": message.get("target")})
             return
         if action == "capabilities":
-            self.emit("result", task_id, data={"commands": ["recognize", "recognize-whole", "replay", "models", "doctor", "note_runtime", "inspect_audio", "draft", "export", "export_vsqx", "build_score", "import_score", "export_score", "preview_xsampa", "cancel", "unload"],
+            self.emit("result", task_id, data={"commands": ["recognize", "recognize-whole", "replay", "models", "doctor", "note_runtime", "model_setup_status", "install_models", "inspect_audio", "draft", "export", "export_vsqx", "build_score", "import_score", "export_score", "preview_xsampa", "cancel", "unload"],
                       "transport": "stdio", "max_pending": 8, "requires_server_port": False})
             return
         params = message.get("params", {})
@@ -68,7 +68,7 @@ class Server:
         except Exception as e:
             import traceback
             traceback.print_exc(file=sys.stderr)
-            self.emit("error", task_id, code=type(e).__name__, message=str(e), retry_performed=False)
+            self.emit("error", task_id, code=getattr(e, "code", type(e).__name__), message=str(e), retry_performed=False)
         finally:
             with self.state_lock:
                 self.pending.pop(task_id, None)

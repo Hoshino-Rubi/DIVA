@@ -1,96 +1,107 @@
 # Any2Xsampa
 
-本地音频 → IPA / phones → 音符 → VSQX / X-SAMPA。桌面程序和 CLI 共用
-本地子进程引擎，正常使用不需要启动 HTTP 或 gRPC 服务。
+[简体中文](README_CN.md)
 
-VSQX 生成已接通 **GAME 音高、起点、终点 + 音素识别结果**。可以处理整首音频，
-也可以复用已经保存的预测，生成过程不要求听审、标注或填写确认表。
+Local audio → IPA / phones → notes → VSQX / X-SAMPA.
+The Windows desktop app and CLI share a local subprocess engine. Normal use does **not** require an HTTP or gRPC server.
 
-## 使用桌面程序
+## Windows research preview · pre-1.0.1a
 
-配置本地音素模型运行包及 GAME 模型目录后：
+Download these four files from the same GitHub Release and keep them in one folder:
 
-1. 打开 WAV，选择音素模型和“整首”或“当前片段”。
-2. 保持“识别后自动生成 VSQX”勾选，点击“开始识别并生成”。
-3. 完成后点击“导出 VSQX（音高/时值保留）”。
+- `Any2Xsampa-Setup.exe`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.001`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.002`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.003`
 
-“音符与 VSQX”区域支持单独生成，也支持“使用已保存 GAME 音符”，无需重复推理。
-音素推理使用所选设备；当前 GAME 适配器明确运行在 CPU 四线程。
-取消只终止本应用拥有的任务；失败不会自动重试或改用假结果。
+Run the installer and choose a writable directory. It verifies the volumes and extracts the complete application. Do not run a volume directly or copy only the desktop EXE.
+Python, .NET and required libraries are bundled; no separate server or CUDA Toolkit installation is needed.
 
-## CLI：已有结果生成 VSQX
+**Requirements:** Windows 11 22H2 or later, x64, an NVIDIA GPU and a driver compatible with CUDA 12.6 for phoneme recognition. GAME note transcription runs on four CPU threads. Allow at least 12 GiB of free disk space for installation, weights and caches.
 
-在已安装的 Python 环境中运行（建议 Python 3.12 或更新版本）：
+The release is unsigned. Its self-contained installer, relocated runtimes and saved-result VSQX export have been tested locally; a GUI launch on a separate machine has not been verified.
+
+### Automatic model setup
+
+On first launch, the app downloads missing, revision-pinned PhoneticXeus and GAME weights from their upstream HTTPS sources (about 2.31 GiB total). File sizes and SHA256 hashes are verified before models become available.
+
+The setup panel supports disabling startup downloads, HTTP(S) proxies, cancellation, explicit resumption and offline import.
+Failures do not trigger automatic retry loops; partial downloads are retained. Inference stays offline.
+
+For offline setup, download the three `PhoneticXeus-model.safetensors.00x` volumes and `GAME-1.0.3-medium-onnx.zip` from the Release. Put them in one folder, then select **Import offline models**. No manual concatenation or archive extraction is required.
+
+## Desktop workflow
+
+1. Finish model setup, open a WAV file and explicitly select `guarded-candidate-v2`.
+2. Choose the whole file or an interval. Keep automatic VSQX generation enabled.
+3. Start recognition, then export the generated VSQX.
+
+The note panel can reuse saved GAME predictions without rerunning inference.
+Cancellation affects only application-owned jobs. Missing real models fail clearly; fixture data is never silently substituted for recognition.
+
+## Diagnostics and updates
+
+In **Model environment and saved-result replay**, choose **Export diagnostic bundle**. It creates a local ZIP even when Python or model setup failed. It includes version, allowlisted error codes, expected model hashes/file sizes, memory counters and recent task timings. Audio, predictions, raw logs, complete paths, usernames and proxy credentials are excluded; nothing uploads automatically. Matching file sizes are not reported as verified hashes.
+
+Install this version into a new folder. Existing installations, models and results are not overwritten. You can reuse the verified offline model assets from pre-1.0.0.
+
+## CLI
+
+The portable application includes `any2xsampa.cmd`. Run from the installation directory:
+
+~~~bat
+any2xsampa.cmd models status
+any2xsampa.cmd models install --proxy http://127.0.0.1:18080
+any2xsampa.cmd models install --offline-dir "D:\models"
+any2xsampa.cmd models list
+any2xsampa.cmd recognize input.wav --model guarded-candidate-v2 --device cuda --whole-file --output-dir runs/phones
+any2xsampa.cmd score runs/phones/result.json --backend game --output-dir runs/score
+~~~
+
+Use your actual proxy address, not the example unless it matches your setup.
+The source checkout uses the equivalent `python -m any2xsampa.cli` entry point but contains neither runtimes nor weights. Configure dependencies and model packages separately; automatic downloads require a verified download catalog.
+
+### Export saved results with zero inference
 
 ~~~text
 python -m any2xsampa.cli export-vsqx prediction.json --phones result.json --output song.vsqx
-~~~
-
-- prediction.json：已保存的 GAME note_transcription_v1 音符。
-- result.json：同一音频、同一时间坐标上的 local_task_result_v1 音素。
-- 两份证据的源音频哈希必须一致；不会猜偏移或升降八度。
-- 本命令不运行模型。已有 score.json 也可直接导出：
-
-~~~text
 python -m any2xsampa.cli export-vsqx score.json --output song.vsqx
-~~~
-
-只提供音符 JSON 时也能生成 VSQX；没有音素的 note 会明确标为“待定”，以中性
-a 发音占位。它保留音高与时间，不代表已还原歌词或发音。
-
-## CLI：从音频生成
-
-先配置真实音素模型运行包；recognize 不会自动改用 fixture。
-使用 ANY2XSAMPA_MODELS 指向与当前源码匹配的注册表；本机桌面发布目录里的
-any2xsampa.cmd 已配置对应版本。旧冻结注册表不会被覆盖。
-
-~~~text
-python -m any2xsampa.cli models list
-python -m any2xsampa.cli recognize input.wav --model MODEL_ID --device cuda --whole-file --output-dir runs/phones
-python -m any2xsampa.cli score runs/phones/result.json --backend game --snapshot models/game --output-dir runs/score
-~~~
-
-结果包括 runs/score/transcription.vsqx、score.json、来源说明，以及可重放的
-GAME 原始张量和分窗记录。更改 BPM 只改变秒数到 tick 的编码网格，不会改变原始
-秒数或移调。旧 pYIN 路径保留为显式的 --backend pyin。
-
-已有 GAME 结果可跳过音符推理：
-
-~~~text
 python -m any2xsampa.cli score result.json --notes prediction.json --output-dir runs/score
 ~~~
 
-GAME 使用已有的固定本地快照，不会自动下载。将
-[示例配置](examples/local-notes.example.json) 复制为根目录 local-notes.json，
-填写现有运行时和快照目录；也可使用 --snapshot 或 ANY2XSAMPA_GAME_SNAPSHOT。
-应用源码和模型权重分别管理。仓库不包含 Python 环境、模型、个人音频或研究缓存。
-模型和 Python 库需要在运行前安装；本次功能没有新增依赖。
-GAME 运行时使用 numpy、soundfile、librosa 和 onnxruntime；
-保存的 PhoneticXeus posterior 重放还使用 safetensors。
+`prediction.json` is a saved GAME `note_transcription_v1` result; `result.json` contains phones in the same original-audio time coordinates. Source audio hashes must match. No offset or octave shift is guessed.
 
-## 输出保证与边界
+Notes-only export is supported. Notes without usable phones retain their pitch and timing and are explicitly marked as placeholders with neutral `a` pronunciation; they do not claim to recover lyrics.
 
-- 生成真正的 VSQ4 XML，保留整数 MIDI 音高、起点、终点、休止和重复音。
-- 不把 CTC 发射时间当作 note 时值，也不使用歌词、VSQX 或人工答案解码 GAME。
-- 每次写出后自动读回，核对 note 数量、音高和时间；120 BPM / 480 PPQ 下，
-  起点或终点的 tick 舍入不超过约 0.521 ms。这只是文件编码误差。
-- 整首使用最长 20 秒的窗口和上下文重叠。仅在两个窗口都表明同一音高的音符
-  跨越拼接点时连接该音符；真实的同音重复边界保留，拼接变更写入来源记录。
-- 缺失或不能用于 Miku V4C 的音素会保留原 IPA 并标记占位，不删除音符、伪造歌词。
-- **文件正确写入不等于模型识别准确。** 目前没有可支持原唱音高及起止点联合
-  准确率声明的独立真值。输出是自动转写，识别错误仍可能存在。
-- 不覆盖原始 WAV、人工工程或已存在的输出文件。无需人工确认才能生成或导出。
+## Output guarantees and limitations
 
-完整接口及验证说明见 [VSQX 使用说明](docs/vsqx_generation.md)。
-旧的参考工程/强制对齐研究流程保留在 [历史工作流](docs/legacy_product_workflows.md)，
-它们不是当前自动 VSQX 生成的前置步骤。
+- Generates actual VSQ4 XML with MIDI pitch, onset, offset, rests and repeated notes.
+- Reads exports back to verify note count, pitch and timing. At 120 BPM / 480 PPQ, endpoint tick rounding is at most about 0.521 ms. This is serialization error, **not recognition accuracy**.
+- Processes whole songs in overlapping windows of at most 20 seconds. Only continuing same-pitch notes supported on both sides are joined; real repeated notes remain separate.
+- CTC emission times are not note durations. Lyrics, VSQX and manual references are not GAME decoding conditions.
+- Unmapped phones preserve original IPA and explicit placeholder status. Notes are not deleted to hide mapping gaps.
+- Original audio, manual projects and existing outputs are not overwritten. No extra manual review is required.
+- **Correct file generation does not establish accurate transcription.** Formal joint pitch/onset/offset accuracy has not been validated against independent original-singing note ground truth. This is a research preview, not an accuracy-certified release.
 
-## 开发验证
+See [VSQX documentation](docs/vsqx_generation.md), [distribution instructions](docs/distribution/README-使用说明.md) and [legacy reference workflows](docs/legacy_product_workflows.md). Legacy research workflows are not required for automatic generation.
+
+## Development verification
 
 ~~~text
-python -m pytest tests/test_game_vsqx.py tests/test_local_score.py tests/test_game_notes.py tests/test_local_engine.py tests/test_local_whole_audio.py tests/test_local_desktop_layout.py -q -p no:cacheprovider
+python -m pytest tests/test_model_install.py tests/test_game_vsqx.py tests/test_local_score.py tests/test_local_engine.py tests/test_local_whole_audio.py tests/test_local_desktop_layout.py -q -p no:cacheprovider
 dotnet build apps/Any2Xsampa.Desktop/Any2Xsampa.Desktop.csproj --no-restore -c Debug -p:Platform=x64 -p:WindowsPackageType=None
+dotnet run --project apps/Any2Xsampa.Setup.Tests/Any2Xsampa.Setup.Tests.csproj -- <new-test-output-directory>
 ~~~
 
-模块入口和安装后的 any2xsampa 命令等效。VSQX 空白容器与配置文件随 Python 包分发，
-不依赖本人的历史工程目录。PhoneSegment、posterior 与旧模板导出契约保持兼容。
+`tools/split_portable_release.py` generates the installer's manifest, embedded using `ReleaseManifestPath`. Runtime packaging uses existing audited installations; release tools do not train or silently download new models.
+
+Run the Windows CI entry with `python tools/check_windows_release.py --output <new-directory>`. It covers installer faults, model installation failures, diagnostic privacy and relocated stdio/VSQX replay without loading weights. Build inputs and signing are documented in [release build instructions](docs/release_build.md).
+
+The full historical research suite needs additional unpublished artifacts. Public product checks do not depend on those artifacts.
+
+Stable `PhoneSegment`, posterior JSON and explicit fixture/replay contracts remain supported. X-SAMPA is an export representation, not the recognizer truth layer.
+
+## Licenses
+
+PhoneticXeus uses Apache-2.0. GAME's pretrained weights use **CC BY-NC-SA 4.0**, not the MIT license of its source code; noncommercial and share-alike restrictions apply to covered model material.
+See [third-party notices](docs/distribution/THIRD_PARTY_NOTICES.md) and license texts. The repository owner has not selected a license for the application's own source yet.

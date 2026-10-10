@@ -85,10 +85,25 @@
        </ComboBox>
       </Grid>
       <TextBlock x:Name="ModelStatus" Text="正在检查本地运行包……" TextWrapping="Wrap"/>
+      <Border Padding="12" CornerRadius="6" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
+       <StackPanel Spacing="8">
+        <TextBlock Text="模型安装" FontWeight="SemiBold"/>
+        <TextBlock x:Name="ModelSetupStatus" Text="正在检查模型文件……" TextWrapping="Wrap"/>
+        <ProgressBar x:Name="ModelDownloadProgress" Minimum="0" Maximum="100" Visibility="Collapsed"/>
+        <TextBox x:Name="ModelProxyBox" Header="下载代理（可选）" PlaceholderText="例如 http://127.0.0.1:18080；留空使用系统代理"/>
+        <CheckBox x:Name="AutoDownloadBox" Content="启动时自动下载缺失模型" IsChecked="True" Checked="AutoDownload_Changed" Unchecked="AutoDownload_Changed"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+         <Button x:Name="InstallModelsButton" Content="下载 / 继续下载模型" Click="InstallModels_Click"/>
+         <Button x:Name="ImportModelsButton" Content="导入离线模型文件夹" Click="ImportModels_Click"/>
+        </StackPanel>
+        <TextBlock Text="PhoneticXeus：Apache-2.0；GAME 权重：CC BY-NC-SA 4.0（限非商业使用）。模型文件校验成功后才启用，识别阶段断网。" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+       </StackPanel>
+      </Border>
       <Expander Header="模型环境与已有结果回放" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
        <StackPanel Spacing="10">
         <StackPanel x:Name="EnvironmentActions" Orientation="Vertical" Spacing="8">
          <Button Content="检查环境" Click="Doctor_Click"/>
+         <Button Content="导出诊断包" Click="ExportDiagnostics_Click" ToolTipService.ToolTip="保存脱敏错误码、模型文件状态与资源信息；不会上传，可在模型未就绪时使用"/>
          <Button Content="释放模型显存" Click="Unload_Click"/>
          <Button Content="显式回放 JSON" Click="Replay_Click" ToolTipService.ToolTip="只回放已有结果，不执行真实模型推理"/>
         </StackPanel>

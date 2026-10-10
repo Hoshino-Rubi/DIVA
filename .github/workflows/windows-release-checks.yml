@@ -1,0 +1,43 @@
+name: Windows release checks
+on:
+  push:
+    branches: [main, release-pre-1.0.1a]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  product-regression:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      PYTHONUTF8: "1"
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Install small test dependencies (no models or Torch)
+        shell: pwsh
+        run: python -m pip install -r tools/requirements/release-ci.txt
+      - name: Offline product, transport, installer and desktop checks
+        shell: pwsh
+        run: python tools/check_windows_release.py --output .state/ci-checks
+      - name: Save validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-check-evidence
+          path: |
+            .state/ci-checks/*.json
+            .state/ci-checks/*.xml
+            .state/ci-checks/*.log
+          if-no-files-found: warn

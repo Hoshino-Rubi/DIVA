@@ -26,6 +26,9 @@ class LocalEngine:
 
     def execute(self, action: str, params: dict, cancel: threading.Event, progress):
         check_cancel(cancel)
+        if action in {"model_setup_status", "install_models"}:
+            from .model_install import status, install
+            return status() if action == "model_setup_status" else install(params, cancel, progress)
         if action == "models":
             return {"models": models()}
         if action == "note_runtime":
@@ -113,7 +116,7 @@ class LocalEngine:
                 key = (spec["package_sha256"], params["device"])
                 if self.worker is None or self.worker_key != key or self.worker.process.poll() is not None:
                     self.close()
-                    self.worker = WorkerClient(spec["python"], output / "worker.log")
+                    self.worker = WorkerClient(spec["python"], ROOT / ".state/worker-logs" / (uuid.uuid4().hex + ".log"))
                     self.worker_key = key
                 artifact = self.worker.call("recognize", {**params, "_output": str(output)}, cancel, progress)
                 evidence_path = Path(artifact["evidence_path"])
