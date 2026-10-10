@@ -15,7 +15,10 @@ ROOT = Path(__file__).resolve().parents[1]
 TESTS = [
     "test_model_install.py", "test_worker_log_ownership.py", "test_local_engine.py",
     "test_local_desktop_layout.py", "test_local_whole_audio.py", "test_local_score.py",
-    "test_game_vsqx.py", "test_portable_release_policy.py", "test_release_build.py",
+    "test_game_vsqx.py", "test_game_notes.py", "test_portable_release_policy.py", "test_release_build.py",
+    "test_release_version.py",
+    "test_local_storage.py",
+    "test_stream_portable_release.py",
 ]
 def write(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
@@ -50,6 +53,7 @@ def main():
     dll=ROOT/"apps/Any2Xsampa.LocalTransport.Tests/bin/Release/net8.0/Any2Xsampa.LocalTransport.Tests.dll"
     command("setup-faults",["dotnet",ROOT/"apps/Any2Xsampa.Setup.Tests/bin/Release/net8.0/Any2Xsampa.Setup.Tests.dll",out/"installer"])
     command("diagnostics",["dotnet",dll,"--diagnostics",out/"diagnostics"])
+    command("release-version",["dotnet",dll,"--release"])
     # Fresh path with spaces/Unicode; no repository cwd or inherited model registry.
     clean=out/"clean installation 中文"
     clean.mkdir()

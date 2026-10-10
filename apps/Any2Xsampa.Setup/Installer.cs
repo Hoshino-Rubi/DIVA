@@ -7,8 +7,11 @@ namespace Any2Xsampa.Setup;
 
 public sealed record Part(string name, long bytes, string sha256);
 public sealed record ReleaseManifest(string schema_version, string root_directory, long archive_bytes,
-    string archive_sha256, long expanded_bytes, int file_count, Part[] parts);
+    string archive_sha256, long expanded_bytes, int file_count, Part[] parts,
+    string? release_tag = null, string? download_base_url = null);
 public sealed record InstallProgress(int percent, string message);
+public sealed record InstalledFile(string path, string sha256);
+public sealed record InstallReceipt(string schema_version, string archive_sha256, InstalledFile[] files);
 
 public static class Installer
 {
@@ -27,10 +30,19 @@ public static class Installer
 
     public static void Validate(ReleaseManifest value)
     {
-        if (value.schema_version != "portable_split_release_v1" || !SimpleName(value.root_directory)
+        if (value.schema_version is not ("portable_split_release_v1" or "portable_split_release_v2") || !SimpleName(value.root_directory)
             || value.archive_bytes <= 0 || value.expanded_bytes <= 0 || value.file_count <= 0
             || !HashValid(value.archive_sha256) || value.parts is not { Length: > 0 and <= 16 })
             throw new InvalidDataException("安装清单无效");
+        if (value.schema_version == "portable_split_release_v2")
+        {
+            if (!Regex.IsMatch(value.release_tag ?? "", "^v[0-9]+\\.[0-9]+\\.[0-9]+$")
+                || value.download_base_url != "https://github.com/Hoshino-Rubi/any2xsampa/releases/download/"
+                    + value.release_tag + "/")
+                throw new InvalidDataException("正式版下载地址必须绑定版本和指定仓库");
+        }
+        else if (value.release_tag is not null || value.download_base_url is not null)
+            throw new InvalidDataException("预览版清单不应包含下载地址");
         var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         long total = 0;
         foreach (var part in value.parts)
@@ -44,7 +56,7 @@ public static class Installer
     }
 
     public static string Install(ReleaseManifest manifest, string partsDirectory, string parentDirectory,
-        IProgress<InstallProgress>? progress, CancellationToken cancel)
+        IProgress<InstallProgress>? progress, CancellationToken cancel, string? reuseModelsFrom = null)
     {
         Validate(manifest);
         cancel.ThrowIfCancellationRequested();
@@ -69,8 +81,17 @@ public static class Installer
             string archive = Path.Combine(staging, "application.zip");
             Join(manifest, partsDirectory, archive, progress, cancel);
             string payload = Path.Combine(staging, "payload");
-            Extract(manifest, archive, payload, progress, cancel);
+            var installedFiles = Extract(manifest, archive, payload, progress, cancel);
+            if (!string.IsNullOrWhiteSpace(reuseModelsFrom))
+            {
+                var reused = ModelReuse.CopyVerified(reuseModelsFrom, Path.Combine(payload, manifest.root_directory), cancel);
+                progress?.Report(new(99, $"已复用 {reused.files} 个经过校验的旧版模型文件。"));
+            }
             cancel.ThrowIfCancellationRequested();
+            string receiptFile = Path.Combine(payload, manifest.root_directory, "installation-receipt.json");
+            using (var receipt = new FileStream(receiptFile, FileMode.CreateNew, FileAccess.Write))
+                JsonSerializer.Serialize(receipt, new InstallReceipt("any2xsampa_install_receipt_v1",
+                    manifest.archive_sha256, installedFiles));
             Directory.Move(Path.Combine(payload, manifest.root_directory), target);
             progress?.Report(new(100, "安装完成。启动应用后将自动下载模型。"));
             return target;
@@ -112,7 +133,7 @@ public static class Installer
         output.Flush(true);
     }
 
-    static void Extract(ReleaseManifest manifest, string archivePath, string payload,
+    static InstalledFile[] Extract(ReleaseManifest manifest, string archivePath, string payload,
         IProgress<InstallProgress>? progress, CancellationToken cancel)
     {
         using var archive = ZipFile.OpenRead(archivePath);
@@ -136,6 +157,7 @@ public static class Installer
         if (entries.Count != manifest.file_count || expanded != manifest.expanded_bytes)
             throw new InvalidDataException("ZIP 文件数量或展开大小与清单不符");
         byte[] buffer = new byte[1024 * 1024];
+        var installed = new List<InstalledFile>();
         long done = 0;
         foreach (var (entry, path) in entries)
         {
@@ -143,16 +165,67 @@ public static class Installer
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             using var input = entry.Open();
             using var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+            using var digest = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
             long count = 0; int read;
             while ((read = input.Read(buffer)) > 0)
             {
                 cancel.ThrowIfCancellationRequested(); count += read;
                 if (count > entry.Length) throw new InvalidDataException("ZIP 内容大小不符");
+                digest.AppendData(buffer, 0, read);
                 output.Write(buffer, 0, read);
             }
             if (count != entry.Length) throw new InvalidDataException("ZIP 内容不完整");
+            installed.Add(new(entry.FullName[(manifest.root_directory.Length + 1)..],
+                Convert.ToHexString(digest.GetHashAndReset()).ToLowerInvariant()));
             done += count;
             progress?.Report(new(40 + (int)(done * 60 / manifest.expanded_bytes), "正在解压 " + entry.Name));
         }
+        return installed.ToArray();
+    }
+
+    public static (int removed, int preserved) Uninstall(ReleaseManifest manifest, string target)
+    {
+        Validate(manifest);
+        string root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(target));
+        if (Path.GetFileName(root) != manifest.root_directory
+            || (File.GetAttributes(root) & FileAttributes.ReparsePoint) != 0)
+            throw new InvalidDataException("卸载目标与此版本不符");
+        string receiptFile = Path.Combine(root, "installation-receipt.json");
+        var receipt = JsonSerializer.Deserialize<InstallReceipt>(File.ReadAllBytes(receiptFile));
+        if (receipt?.schema_version != "any2xsampa_install_receipt_v1"
+            || receipt.archive_sha256 != manifest.archive_sha256 || receipt.files.Length != manifest.file_count)
+            throw new InvalidDataException("卸载清单与此安装器不符");
+        var targets = new List<(string path, string hash)>();
+        var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        int preserved = 0;
+        foreach (var row in receipt.files)
+        {
+            string[] parts = row.path.Split('/');
+            if (parts.Any(p => !SimpleName(p)) || !HashValid(row.sha256) || !names.Add(row.path))
+                throw new InvalidDataException("卸载清单包含不安全路径");
+            string full = Path.GetFullPath(Path.Combine(root, Path.Combine(parts)));
+            if (!full.StartsWith(root + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("卸载路径越界");
+            if (parts[0].Equals("models", StringComparison.OrdinalIgnoreCase)
+                || parts[0].Equals(".state", StringComparison.OrdinalIgnoreCase)) { preserved++; continue; }
+            bool linked = false;
+            for (string? path = full; path is not null && path.Length > root.Length; path = Path.GetDirectoryName(path))
+                if (File.Exists(path) || Directory.Exists(path))
+                    linked |= (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0;
+            if (linked) throw new InvalidDataException("卸载路径经过链接，已停止");
+            if (File.Exists(full)) targets.Add((full, row.sha256));
+        }
+        var removals = new List<string>();
+        foreach (var (file, expectedHash) in targets)
+        {
+            // Pre-open every file exclusively: a running app aborts before anything is removed.
+            using var input = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
+            if (Convert.ToHexString(SHA256.HashData(input)).Equals(expectedHash, StringComparison.OrdinalIgnoreCase))
+                removals.Add(file);
+            else preserved++;
+        }
+        foreach (string file in removals) File.Delete(file);
+        // Keep receipt, model directories, unlisted user files and all per-user data.
+        return (removals.Count, preserved);
     }
 }

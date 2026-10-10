@@ -23,7 +23,8 @@ def _bound_result(params):
 
 def _output(params):
     stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
-    output=Path(params.get("output_dir") or ROOT/'.state/runs'/('local-score-'+stamp)).resolve()
+    from .storage import state_dir
+    output=Path(params.get("output_dir") or state_dir(ROOT)/'runs'/('local-score-'+stamp)).resolve()
     output.mkdir(parents=True,exist_ok=False)
     return output
 

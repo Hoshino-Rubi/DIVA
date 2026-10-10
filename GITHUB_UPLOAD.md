@@ -1,47 +1,13 @@
-# Publishing pre-1.0.1a
+# Publishing v1.0.1
 
-This source checkout uses the existing repository history. The development branch
-is release-pre-1.0.1a, based on the published pre-1.0.0 commit. Do not recreate the
-repository, force-push main, or rewrite the old tag.
+Use the existing source checkout on release-v1.0.1. Do not git init again, force-push main, rewrite old tags or attach the original workspace. Source and binaries must identify the same reviewed commit.
 
-## Source and main
+1. Review the release report and remaining acceptance gates. Push release-v1.0.1 with your existing Git login; open a PR into main through the GitHub website. Wait for Windows release checks and merge.
+2. Create the new annotated v1.0.1 tag on the exact packaged commit and push it. Do not retag an already published version.
+3. Create a new Release draft on v1.0.1. Use docs/releases/v1.0.1.md as the English body; the Chinese link names the exact tag.
+4. Upload the exact files listed by final RELEASE_ASSETS.json plus SHA256SUMS.txt. Include Any2Xsampa-Setup-v1.0.1.exe, three application volumes, four optional offline model files, notices/licenses, the manifest and bilingual notes. Never upload private .state, build inputs or the unsplit internal ZIP.
+5. Verify the uploaded asset names, sizes and digests before publishing. Keep the Release a draft until all pre-publication gates pass.
+6. For public online installation, the repo and release assets must be anonymously accessible. Repository visibility and source license are owner decisions, not changed by build scripts. No tokens are embedded.
+7. Publish as a normal release only after authorization; then verify anonymous asset access. Failure of that check means the hosted installation gate remains unpassed. Do not hide it by clearing prerelease labels.
 
-Review the branch diff and Windows checks, then commit/push this branch and open a
-pull request into main. Merging the PR brings the English README and README_CN.md
-to the default branch. Keep repository visibility and the application source
-license as separate owner decisions.
-
-~~~text
-git status --short
-git diff --check
-git push -u origin release-pre-1.0.1a
-gh pr create --base main --head release-pre-1.0.1a --title "Prepare pre-1.0.1a reliability release" --body-file <prepared-PR-description>
-~~~
-
-The commands above are maintainer instructions; preparing these files does not
-push or publish anything.
-
-## Release
-
-After the reviewed commit is present remotely, create a new tag named
-pre-1.0.1a on that commit. Mark the Release as a pre-release. Use
-docs/releases/pre-1.0.1a.md as the English body; its Chinese link points to this
-exact tag.
-
-Upload all 15 files from the separately verified
-Any2Xsampa-Release-assets-pre-1.0.1a directory. They include Setup, three
-application volumes, four optional offline model files, model notices/licenses,
-the split manifest, both release descriptions and SHA256SUMS.txt.
-
-Do not attach the unsplit internal ZIP, private build inputs, study results,
-audio, credentials or the original workspace. Do not upload this maintainer
-guide as a release asset. Public checksums cover the other 14 attachments and
-exclude the checksum file itself.
-
-Automatic model installation uses the same fixed upstream sources as pre-1.0.0.
-The four offline model attachments are byte-identical and reusable. Install the
-application into a new directory; the installer preserves old installations.
-
-This build is unsigned. Signing and publication are distinct actions, not
-implied by a successful local build. Do not silently replace old release assets.
-See docs/release_build.md for the signing sequence and verification limits.
+This candidate is unsigned unless the final report explicitly states trusted signing was verified. It does not promise certified original-singing accuracy. Old release/model assets remain unchanged.

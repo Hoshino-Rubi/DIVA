@@ -106,7 +106,15 @@ public sealed partial class MainPage : Page
     private async void Page_Loaded(object sender,RoutedEventArgs e)
     {
         if(initialized)return; initialized=true;
-        App.Window.Closed += (_,_) => { closed=true; active?.Cancel(); draftDebounce?.Cancel(); playbackTimer.Stop(); media.Dispose(); };
+        App.Window.Closed += (_,_) => {
+            App.StartupTrace("page-close-start");
+            closed=true; active?.Cancel(); draftDebounce?.Cancel(); playbackTimer.Stop();
+            App.StartupTrace("page-close-dispose-media");
+            Player.SetMediaPlayer(null);
+            media.Source = null;
+            media.Dispose();
+            App.StartupTrace("page-close-complete");
+        };
         App.Window.AppWindow.Closing += async (_, args) =>
         {
             if(closingAuthorized || !dirty)return;
@@ -116,10 +124,40 @@ public sealed partial class MainPage : Page
         };
         await RefreshModels();
         await RefreshNoteRuntime();
+        if (App.StartupReportPath is string startupReport)
+        {
+            try
+            {
+                var doctor = await service.CallAsync("doctor", new { });
+                await Task.Delay(250);
+                UpdateLayout();
+                bool ready = doctor.GetProperty("transport").GetString() == "stdio"
+                    && RunButton.ActualWidth > 0 && RunButton.ActualHeight > 0
+                    && RunButton.Visibility == Visibility.Visible;
+                using var report = new FileStream(startupReport, FileMode.CreateNew, FileAccess.Write);
+                await JsonSerializer.SerializeAsync(report, new {
+                    status = ready ? "passed" : "failed", version = ReleaseUpdates.CurrentTag,
+                    real_winui_window_loaded = true, local_worker_ready = true,
+                    inference_button_visible = RunButton.ActualWidth > 0 && RunButton.ActualHeight > 0,
+                    run_button_width = RunButton.ActualWidth, run_button_height = RunButton.ActualHeight,
+                    model_forwards = 0, model_downloads = 0,
+                    state_separate_from_program = !service.StateDirectory.StartsWith(service.Root + Path.DirectorySeparatorChar,
+                        StringComparison.OrdinalIgnoreCase)
+                });
+            }
+            catch (Exception ex)
+            {
+                using var report = new FileStream(startupReport, FileMode.CreateNew, FileAccess.Write);
+                await JsonSerializer.SerializeAsync(report, new { status = "failed",
+                    error_code = ex.GetType().Name, model_forwards = 0, model_downloads = 0 });
+            }
+            finally { DispatcherQueue.TryEnqueue(() => App.Window.Close()); }
+            return;
+        }
         await InitializeModelSetup();
         try
         {
-            string session=Path.Combine(service.Root,".state","local-ui-session.json");
+            string session=Path.Combine(service.StateDirectory,"local-ui-session.json");
             if(File.Exists(session))
             {
                 using var saved=JsonDocument.Parse(await File.ReadAllTextAsync(session));
@@ -153,7 +191,7 @@ public sealed partial class MainPage : Page
         }catch(Exception e){Error(e);ModelStatus.Text="环境检查失败；未启动推理。";}
     }
 
-    private string SetupPreferencesPath => Path.Combine(service.Root, ".state", "model-setup-preferences.json");
+    private string SetupPreferencesPath => Path.Combine(service.StateDirectory, "model-setup-preferences.json");
 
     private async Task InitializeModelSetup()
     {
@@ -468,7 +506,7 @@ public sealed partial class MainPage : Page
         ScoreStatus.Text=scoreSource=="supplied_vsqx_phone_draft"
             ?$"已导入 {scoreRows.Count} 个音符；原 VSQX 另存只读备份，并生成独立音素草稿。音高、时值、歌词和轨道结构保持；机器音素按时间关联。"
             :$"{(scoreSource=="audio_game"?"GAME":"pYIN")}：{scoreRows.Count} 个音符，{placeholders} 个音符缺少可用发音而使用中性占位。VSQX 已生成，音高、起点和时值已自动读回核对。";
-        string session=Path.Combine(service.Root,".state","local-ui-session.json");
+        string session=Path.Combine(service.StateDirectory,"local-ui-session.json");
         await File.WriteAllTextAsync(session+".tmp",JsonSerializer.Serialize(new{result_path=resultPath,score_delivery=response}));
         File.Move(session+".tmp",session,true);
     }
@@ -526,7 +564,7 @@ public sealed partial class MainPage : Page
             try{using var link=JsonDocument.Parse(await File.ReadAllTextAsync(scoreLink));await LoadScore(link.RootElement);}
             catch(Exception ex){ScoreStatus.Text="音符数据未恢复："+ex.Message;}
         }
-        string session=Path.Combine(service.Root,".state","local-ui-session.json");
+        string session=Path.Combine(service.StateDirectory,"local-ui-session.json");
         Directory.CreateDirectory(Path.GetDirectoryName(session)!);
         await File.WriteAllTextAsync(session+".tmp",JsonSerializer.Serialize(new{result_path=file}));
         File.Move(session+".tmp",session,true);
@@ -564,6 +602,26 @@ public sealed partial class MainPage : Page
             StatusBar.Message = "已保存到所选目录；不包含音频、原始日志或完整路径，未自动上传。";
         }
         catch (Exception ex) { Error(ex); }
+    }
+
+    private async void CheckUpdate_Click(object sender, RoutedEventArgs e)
+    {
+        if (active is not null) return;
+        if (sender is not Button button) return;
+        button.IsEnabled = false;
+        try
+        {
+            var update = await ReleaseUpdates.CheckAsync(CancellationToken.None);
+            var dialog = new ContentDialog {
+                XamlRoot = XamlRoot, Title = update.IsNewer ? $"发现 {update.Tag}" : "已是当前正式版",
+                Content = $"本机 {ReleaseUpdates.CurrentTag}；公开正式版 {update.Tag}。旧安装和结果不会被覆盖。",
+                CloseButtonText = "关闭", PrimaryButtonText = update.IsNewer ? "打开下载页" : ""
+            };
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                await Launcher.LaunchUriAsync(update.Page);
+        }
+        catch (Exception ex) { Error(new IOException("更新检查失败；程序和模型未改变。", ex)); }
+        finally { button.IsEnabled = true; }
     }
 
     private async void Doctor_Click(object sender,RoutedEventArgs e)

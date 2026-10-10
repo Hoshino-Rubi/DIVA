@@ -66,7 +66,14 @@ def decode_regions(raw: dict, *, start_sec: float, duration_sec: float, timestep
     expected=np.diff(cuts)*timestep
     if len(expected)!=n or not np.allclose(lengths[:n],expected,atol=1e-6,rtol=1e-6):
         raise ValueError('Durations do not match the predicted frame boundaries')
-    if abs(t*timestep-duration_sec)>timestep/2+1e-6:
+    tail = duration_sec - t*timestep
+    # The pinned encoder limits round(duration / timestep) by the actual
+    # spectrogram length. Its uncentered, hop-padded STFT can end at floor(L/hop).
+    # Accept that last fractional hop only when the mask fills the whole tensor.
+    # Do not extend the predicted final note or invent a frame for the tail.
+    fractional_tail = (t == len(frames) and 0 < tail < timestep + 1e-6
+                       and t == math.floor(duration_sec/timestep + 1e-6))
+    if abs(tail)>timestep/2+1e-6 and not fractional_tail:
         raise ValueError('Frame count does not cover the audio duration')
     regions=[];notes=[]
     for i in range(n):
@@ -85,6 +92,8 @@ def decode_regions(raw: dict, *, start_sec: float, duration_sec: float, timestep
     return {'schema_version':'note_transcription_v1','notes':notes,'regions':regions,
             'time_basis':'original_audio','timestep_sec':timestep,'source_start_sec':start_sec,
             'source_end_sec':start_sec+duration_sec,'time_quantization_error_bound_sec':timestep/2,
+            'modeled_end_sec':start_sec+min(t*timestep,duration_sec),
+            'source_tail_without_model_frames_sec':max(0.,tail),
             'known_reference_boundaries_used':False,'automatic_pitch_transpose':False,
             'min_duration_filter_applied':False,'same_pitch_regions_merged':False,
             'quality_validated':False}

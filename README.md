@@ -5,21 +5,22 @@
 Local audio → IPA / phones → notes → VSQX / X-SAMPA.
 The Windows desktop app and CLI share a local subprocess engine. Normal use does **not** require an HTTP or gRPC server.
 
-## Windows research preview · pre-1.0.1a
+## Windows x64 · v1.0.1
 
-Download these four files from the same GitHub Release and keep them in one folder:
+Download **Any2Xsampa-Setup-v1.0.1.exe** and run it. Setup downloads the fixed application volumes, checks their sizes and SHA256, then installs into a new folder. Partial downloads support explicit resumption; failures do not start retry loops. Public automatic installation requires an anonymously accessible, published Release.
 
-- `Any2Xsampa-Setup.exe`
-- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.001`
-- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.002`
-- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.003`
+For offline installation, keep these beside Setup:
+
+- `Any2Xsampa-Windows-x64-v1.0.1.zip.001`
+- `Any2Xsampa-Windows-x64-v1.0.1.zip.002`
+- `Any2Xsampa-Windows-x64-v1.0.1.zip.003`
 
 Run the installer and choose a writable directory. It verifies the volumes and extracts the complete application. Do not run a volume directly or copy only the desktop EXE.
 Python, .NET and required libraries are bundled; no separate server or CUDA Toolkit installation is needed.
 
-**Requirements:** Windows 11 22H2 or later, x64, an NVIDIA GPU and a driver compatible with CUDA 12.6 for phoneme recognition. GAME note transcription runs on four CPU threads. Allow at least 12 GiB of free disk space for installation, weights and caches.
+**Requirements:** Windows 11 22H2 or later, x64, an NVIDIA GPU and a driver compatible with CUDA 12.6 for phoneme recognition. GAME note transcription runs on four CPU threads. Allow at least 16 GiB of free disk space for installation, weights and caches.
 
-The release is unsigned. Its self-contained installer, relocated runtimes and saved-result VSQX export have been tested locally; a GUI launch on a separate machine has not been verified.
+This build is unsigned. Read the release acceptance report for the actual tested scope. Application stability is separate from recognition-accuracy certification.
 
 ### Automatic model setup
 
@@ -43,7 +44,11 @@ Cancellation affects only application-owned jobs. Missing real models fail clear
 
 In **Model environment and saved-result replay**, choose **Export diagnostic bundle**. It creates a local ZIP even when Python or model setup failed. It includes version, allowlisted error codes, expected model hashes/file sizes, memory counters and recent task timings. Audio, predictions, raw logs, complete paths, usernames and proxy credentials are excluded; nothing uploads automatically. Matching file sizes are not reported as verified hashes.
 
-Install this version into a new folder. Existing installations, models and results are not overwritten. You can reuse the verified offline model assets from pre-1.0.0.
+Install this version into a new folder. Select a previous installation in Setup to copy only models matching the new catalog hashes; old models and results stay untouched. Verified downloaded model blobs are cached across versions.
+
+Settings, logs and results use `%LOCALAPPDATA%\Any2Xsampa\state`; verified model downloads use `%LOCALAPPDATA%\Any2Xsampa\cache\model-downloads`. `ANY2XSAMPA_DATA_HOME` selects an absolute portable data directory. Old preview results remain in their original installation and can be replayed directly.
+
+Setup can uninstall unchanged program files while preserving models, shared data and unlisted or modified files. Close the app first. **Check program updates** is explicit and read-only: it opens the official release page and never silently replaces an application or model.
 
 ## CLI
 
@@ -81,7 +86,7 @@ Notes-only export is supported. Notes without usable phones retain their pitch a
 - CTC emission times are not note durations. Lyrics, VSQX and manual references are not GAME decoding conditions.
 - Unmapped phones preserve original IPA and explicit placeholder status. Notes are not deleted to hide mapping gaps.
 - Original audio, manual projects and existing outputs are not overwritten. No extra manual review is required.
-- **Correct file generation does not establish accurate transcription.** Formal joint pitch/onset/offset accuracy has not been validated against independent original-singing note ground truth. This is a research preview, not an accuracy-certified release.
+- **Correct file generation does not establish accurate transcription.** Formal joint pitch/onset/offset accuracy has not been validated against independent original-singing note ground truth. The recognizer retains research-quality limitations; a stable application version is not an accuracy certificate.
 
 See [VSQX documentation](docs/vsqx_generation.md), [distribution instructions](docs/distribution/README-使用说明.md) and [legacy reference workflows](docs/legacy_product_workflows.md). Legacy research workflows are not required for automatic generation.
 

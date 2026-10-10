@@ -23,7 +23,8 @@ def run_whole(engine, params: dict, cancel, progress) -> dict:
     info = whole_input(Path(params["audio"]))
     chunks = plan_chunks(info)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-    output = Path(params.get("output_dir") or ROOT/".state/runs"/("whole-audio-"+stamp+"-"+uuid.uuid4().hex[:8])).resolve()
+    from .storage import state_dir
+    output = Path(params.get("output_dir") or state_dir(ROOT)/"runs"/("whole-audio-"+stamp+"-"+uuid.uuid4().hex[:8])).resolve()
     output.mkdir(parents=True, exist_ok=False)
     manifest = {"schema_version":"local_whole_evidence_v1", "policy":POLICY,"input":info,"chunks":chunks,
                 "backend":spec["backend"],"model_id":params["model"],"package_sha256":spec["package_sha256"],
@@ -94,7 +95,8 @@ def replay_whole(engine, params: dict, cancel, progress) -> dict:
     if core(saved["segments"]) != core(evidence["segments"]):
         raise ValueError("Whole-file result differs from independent frame evidence replay")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-    output = Path(params.get("output_dir") or ROOT/".state/runs"/("whole-replay-"+stamp)).resolve()
+    from .storage import state_dir
+    output = Path(params.get("output_dir") or state_dir(ROOT)/"runs"/("whole-replay-"+stamp)).resolve()
     output.mkdir(parents=True,exist_ok=False)
     evidence.update(whole_evidence_path=str(manifest_path),whole_evidence_sha256=sha(manifest_path),
                     original_mode=saved["mode"],source_result_path=str(source_path),source_result_sha256=sha(source_path))

@@ -136,7 +136,7 @@ public sealed class DiagnosticBundle
         using var process = Process.GetCurrentProcess();
         var value = new {
             schema_version = "local_diagnostic_bundle_v1",
-            release = "pre-1.0.1a",
+            release = typeof(DiagnosticBundle).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion?.Split('+')[0],
             app_version = typeof(DiagnosticBundle).Assembly.GetName().Version?.ToString(),
             created_utc = DateTimeOffset.UtcNow,
             collection = "local_only_no_model_load_no_network",
