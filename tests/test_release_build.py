@@ -52,6 +52,42 @@ def test_missing_binding_is_not_filled_from_current_bytes(tmp_path):
     with pytest.raises(ValueError,match="Missing required"):builder().load_inputs(file)
 
 
+def test_numpy_runtime_helper_is_not_pruned_as_a_test():
+    module=builder()
+    assert module.kept(Path("Lib/site-packages/numpy/_core/tests/_natype.py"))
+    assert module.kept(Path("numpy/_core/tests/__init__.py"))
+    assert not module.kept(Path("numpy/_core/tests/test_numeric.py"))
+    assert not module.kept(Path("other/tests/__init__.py"))
+
+
+def test_runtime_support_overlay_requires_exact_source_binding(tmp_path):
+    file=manifest(tmp_path);value=json.loads(file.read_text())
+    helper=tmp_path/"helper.py";helper.write_text("pd_NA = None")
+    value["runtime_support_files"]=[dict(role="phonetic",module_path="numpy/_core/tests/_natype.py",
+        source="helper.py",sha256=digest(helper))]
+    file.write_text(json.dumps(value))
+    with pytest.raises(ValueError,match="not hash-bound"):builder().load_inputs(file)
+    value["bindings"].append(dict(path="helper.py",sha256=digest(helper)))
+    file.write_text(json.dumps(value))
+    assert builder().load_inputs(file)["runtime_support_files"][0]["resolved_source"]==helper
+    value["runtime_support_files"][0]["module_path"]="../injection.py"
+    file.write_text(json.dumps(value))
+    with pytest.raises(ValueError,match="Unexpected runtime support"):builder().load_inputs(file)
+
+
+def test_runtime_support_updates_array_dependency_inventory(tmp_path):
+    module=builder();source=tmp_path/"support.py";source.write_text("# fixture")
+    module.INPUTS={"runtime_support_files":[dict(role="core",module_path="safetensors/__init__.py",resolved_source=source)]}
+    out=tmp_path/"app";runtime=out/"runtime/core";runtime.mkdir(parents=True)
+    lock=runtime/"DEPENDENCIES.json";lock.write_text('[{"name":"numpy","version":"2.4.6"}]')
+    module.copy_runtime_support(out)
+    module.copy_runtime_support(out)
+    rows=json.loads(lock.read_text())
+    assert rows.count(dict(name="safetensors",version="0.8.0"))==1
+    assert (runtime/"Lib/site-packages/safetensors/__init__.py").read_text()=="# fixture"
+    assert not module.support_module_allowed("safetensors/../../escape.py")
+
+
 def asset_tool():
     spec=importlib.util.spec_from_file_location("release_assets",ROOT/"tools/finalize_release_assets.py")
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)

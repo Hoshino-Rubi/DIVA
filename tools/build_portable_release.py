@@ -23,6 +23,14 @@ GAME: Path
 FROZEN: Path
 INPUTS: dict
 CHUNK=1024**3
+NUMPY_RUNTIME_SUPPORT = {"numpy/_core/tests/__init__.py", "numpy/_core/tests/_natype.py"}
+
+
+def support_module_allowed(name):
+    path=Path(name)
+    return (not path.is_absolute() and ".." not in path.parts and "\\" not in name
+            and (name in NUMPY_RUNTIME_SUPPORT or name.startswith(
+                ("safetensors/", "safetensors-0.8.0.dist-info/"))))
 
 
 def load_inputs(file):
@@ -66,6 +74,13 @@ def load_inputs(file):
         if actual!=expected:
             raise ValueError("Runtime file inventory changed: " + role)
         item["resolved_directory"]=directory
+    for item in value.get("runtime_support_files", []):
+        if item["role"] not in ("core", "phonetic") or not support_module_allowed(item["module_path"]):
+            raise ValueError("Unexpected runtime support module")
+        source=(anchor/item["source"]).resolve()
+        if source not in bound or sha(source)!=item["sha256"]:
+            raise ValueError("Runtime support module is not hash-bound")
+        item["resolved_source"]=source
     INPUTS=value
     return value
 
@@ -81,6 +96,9 @@ def copy(source,target):
 
 
 def kept(relative):
+    if any(relative.as_posix() == name or relative.as_posix().endswith("/"+name)
+           for name in NUMPY_RUNTIME_SUPPORT):
+        return True
     return not (set(relative.parts)&{"__pycache__","test","tests",".git"} or
                 relative.suffix.lower() in {".pyc",".pyo",".pdb",".lib",".whl"} or relative.name=="direct_url.json")
 
@@ -90,6 +108,18 @@ def copy_tree(source,target,exclude=()):
         relative=file.relative_to(source)
         if file.is_file() and kept(relative) and not any(relative.parts[0]==x for x in exclude):
             copy(file,target/relative)
+
+
+def copy_runtime_support(out):
+    extras=INPUTS.get("runtime_support_files", [])
+    for item in extras:
+        copy(item["resolved_source"],out/"runtime"/item["role"]/"Lib/site-packages"/item["module_path"])
+    for role in {r["role"] for r in extras if r["module_path"].startswith("safetensors/")}:
+        lock=out/"runtime"/role/"DEPENDENCIES.json"
+        rows=json.loads(lock.read_text(encoding="utf-8"))
+        if not any(row["name"].lower()=="safetensors" for row in rows):
+            rows.append({"name":"safetensors","version":"0.8.0"})
+            write(lock,sorted(rows,key=lambda row:row["name"].lower()))
 
 
 def dependencies(site,names,version):
@@ -241,6 +271,8 @@ def package(out,review):
     sources += [out/"runtime/core/python314._pth",out/"runtime/phonetic/python312._pth",
                 out/"runtime/core/python314.dll",out/"runtime/phonetic/python312.dll",
                 out/"runtime/core/DEPENDENCIES.json",out/"runtime/phonetic/DEPENDENCIES.json"]
+    sources += [out/"runtime"/item["role"]/"Lib/site-packages"/item["module_path"]
+                for item in INPUTS.get("runtime_support_files", [])]
     write(out/"runtime-review.json",review)
     value={"schema_version":"local_model_package_v1","id":"guarded-candidate-v2","root":".",
            "backend":"guarded-phoneticxeus","quality":"研究候选 / 非质量验收通过",
@@ -310,6 +342,7 @@ def main():
     copy_tree(INPUTS["runtimes"]["core"]["resolved_directory"], out/"runtime/core")
     print("copy phonetic runtime",flush=True)
     copy_tree(INPUTS["runtimes"]["phonetic"]["resolved_directory"], out/"runtime/phonetic")
+    copy_runtime_support(out)
     print("models and fixed offline assets",flush=True)
     models(out,assets)
     candidate(out)

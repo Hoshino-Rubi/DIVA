@@ -85,3 +85,21 @@ def test_invalid_tag_writes_nothing(tmp_path):
     with pytest.raises(ValueError, match="stable release tag"):
         tool().stream_release(source, output, "../latest", reserve_bytes=0)
     assert not list(output.iterdir())
+
+
+def test_explicit_payload_avoids_repackaging_installed_weights(tmp_path):
+    module=tool();source,output=payload(tmp_path)
+    (source/"installed-weights.bin").write_bytes(b"not an application asset")
+    value=module.stream_release(source,output,"v1.0.1",reserve_bytes=0,
+        include_paths=["runtime.bin","说明.txt"])
+    assert value['file_count']==2
+    with module.VolumeReader(output,value['parts']) as reader, zipfile.ZipFile(reader) as z:
+        assert 'Application/installed-weights.bin' not in z.namelist()
+
+
+@pytest.mark.parametrize('paths',[["../outside"],["missing"],["runtime.bin","runtime.bin"]])
+def test_invalid_explicit_payload_writes_nothing(tmp_path,paths):
+    source,output=payload(tmp_path)
+    with pytest.raises(ValueError,match="inventory"):
+        tool().stream_release(source,output,"v1.0.1",reserve_bytes=0,include_paths=paths)
+    assert not list(output.iterdir())

@@ -152,7 +152,8 @@ def package_files(source: Path) -> list[Path]:
 
 def stream_release(source: Path, output: Path, release_tag: str, *,
                    part_bytes: int = GIB, max_archive_bytes: int = 6*GIB,
-                   reserve_bytes: int = 30*GIB) -> dict:
+                   reserve_bytes: int = 30*GIB,
+                   include_paths: list[str] | None = None) -> dict:
     if not re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", release_tag):
         raise ValueError("Expected a stable release tag")
     if not 0 < part_bytes < 2*GIB or max_archive_bytes <= 0 or reserve_bytes < 0:
@@ -165,6 +166,14 @@ def stream_release(source: Path, output: Path, release_tag: str, *,
     if manifest.exists() or any(output.glob(name + ".*")):
         raise FileExistsError("Release volumes already exist; no automatic retry")
     files = package_files(source)
+    if include_paths is not None:
+        available = {p.relative_to(source).as_posix(): p for p in files}
+        if (not include_paths or len({p.casefold() for p in include_paths}) != len(include_paths)
+                or any(p not in available for p in include_paths)):
+            raise ValueError("Explicit payload inventory is invalid or missing a file")
+        # An installed app may already contain weights; package only the reviewed
+        # program inventory so no second full staging tree is necessary.
+        files = sorted(available[p] for p in include_paths)
     sizes = {p: p.stat().st_size for p in files}
     if shutil.disk_usage(output).free < reserve_bytes + max_archive_bytes:
         raise OSError("Insufficient space for archive budget and reserve")
