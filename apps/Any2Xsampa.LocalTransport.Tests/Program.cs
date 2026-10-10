@@ -3,6 +3,20 @@ using System.Text.Json;
 using System.Security.Cryptography;
 
 if(args.Length==2 && args[0]=="--diagnostics") { await DiagnosticChecks.Run(args[1]); return; }
+if(args.Length==1 && args[0]=="--release")
+{
+    if(ReleaseUpdates.CurrentTag!="v1.0.1")throw new Exception("Compiled release identity mismatch");
+    var same=ReleaseUpdates.Parse("""{"tag_name":"v1.0.1","draft":false,"prerelease":false,"html_url":"https://untrusted.invalid"}""", "v1.0.1");
+    var newer=ReleaseUpdates.Parse("""{"tag_name":"v1.0.2","draft":false,"prerelease":false}""", "v1.0.1");
+    if(same.IsNewer||!newer.IsNewer||newer.Page.AbsoluteUri!="https://github.com/Hoshino-Rubi/any2xsampa/releases/tag/v1.0.2")
+        throw new Exception("Release comparison/origin failure");
+    foreach(string invalid in new[]{"v1.0.2/extra","pre-1.0.2","v1.0.2?token=x"})
+    {
+        try{ReleaseUpdates.Parse(JsonSerializer.Serialize(new{tag_name=invalid,draft=false,prerelease=false}),"v1.0.1");
+            throw new Exception("Invalid tag accepted");}catch(InvalidDataException){}
+    }
+    Console.WriteLine("""{"status":"passed","checks":5,"model_forwards":0}""");return;
+}
 
 if(args.Length==4 && args[0]=="--portable-setup")
 {

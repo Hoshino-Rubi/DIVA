@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 import zipfile
 
 from .common import ROOT, check_cancel, read, sha
+from .storage import model_cache, state_dir
 
 BLOCK = 1024 * 1024
 
@@ -108,7 +109,7 @@ def status(root: Path = ROOT) -> dict:
 
 @contextmanager
 def install_lock(root: Path):
-    directory = root / ".state"
+    directory = state_dir(root)
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / "model-install.lock"
     with path.open("a+b") as stream:
@@ -270,7 +271,7 @@ def install(params: dict, cancel, progress, root: Path = ROOT, *, opener=None) -
     data = catalog(root)
     if data is None:
         raise ValueError("This build has no model download catalog")
-    cache = root / ".state/model-downloads"
+    cache = model_cache(root)
     cache.mkdir(parents=True, exist_ok=True)
     proxy = params.get("proxy", "").strip()
     if proxy and (urlsplit(proxy).scheme not in {"http", "https"} or not urlsplit(proxy).hostname):

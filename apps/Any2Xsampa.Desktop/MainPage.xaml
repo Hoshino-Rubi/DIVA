@@ -103,6 +103,7 @@
        <StackPanel Spacing="10">
         <StackPanel x:Name="EnvironmentActions" Orientation="Vertical" Spacing="8">
          <Button Content="检查环境" Click="Doctor_Click"/>
+         <Button Content="检查程序更新" Click="CheckUpdate_Click" ToolTipService.ToolTip="仅检查公开正式版，不会自动下载或替换程序"/>
          <Button Content="导出诊断包" Click="ExportDiagnostics_Click" ToolTipService.ToolTip="保存脱敏错误码、模型文件状态与资源信息；不会上传，可在模型未就绪时使用"/>
          <Button Content="释放模型显存" Click="Unload_Click"/>
          <Button Content="显式回放 JSON" Click="Replay_Click" ToolTipService.ToolTip="只回放已有结果，不执行真实模型推理"/>

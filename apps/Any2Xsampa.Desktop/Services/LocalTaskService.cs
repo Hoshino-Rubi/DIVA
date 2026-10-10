@@ -19,6 +19,7 @@ public sealed class LocalTaskService : IDisposable
     public event Action<string>? Log;
     public event Action<JsonElement>? Progress;
     public string Root { get; private set; } = "";
+    public string StateDirectory { get; private set; } = "";
     public DiagnosticBundle Diagnostics { get; } = new();
     public Task ExportDiagnosticsAsync(string output) => Diagnostics.ExportAsync(output, configPath);
 
@@ -35,6 +36,17 @@ public sealed class LocalTaskService : IDisposable
             if (!File.Exists(configPath)) throw new FileNotFoundException("找不到本地运行配置 local-app.json；无需启动任何服务器。", configPath);
             using var config = JsonDocument.Parse(await File.ReadAllTextAsync(configPath, ct));
             Root = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(configPath)!, config.RootElement.GetProperty("root").GetString()!));
+            string? dataHome = Environment.GetEnvironmentVariable("ANY2XSAMPA_DATA_HOME");
+            if (!string.IsNullOrWhiteSpace(dataHome) && !Path.IsPathFullyQualified(dataHome))
+                throw new InvalidDataException("ANY2XSAMPA_DATA_HOME must be an absolute directory");
+            string mode = config.RootElement.TryGetProperty("storage_mode", out var storageMode)
+                ? storageMode.GetString() ?? "" : "portable_v1";
+            if (mode is not ("per_user_v1" or "portable_v1"))
+                throw new InvalidDataException("Unsupported application storage mode");
+            if (string.IsNullOrWhiteSpace(dataHome) && mode == "per_user_v1")
+                dataHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Any2Xsampa");
+            StateDirectory = string.IsNullOrWhiteSpace(dataHome) ? Path.Combine(Root, ".state")
+                : Path.Combine(Path.GetFullPath(dataHome), "state");
             var python = Path.GetFullPath(Path.Combine(Root, config.RootElement.GetProperty("python").GetString()!));
             if (!File.Exists(python)) throw new FileNotFoundException("本地 Python 运行时不存在。", python);
             var start = new ProcessStartInfo(python) { UseShellExecute=false, CreateNoWindow=true, WorkingDirectory=Root,
@@ -42,6 +54,7 @@ public sealed class LocalTaskService : IDisposable
                 StandardInputEncoding=new UTF8Encoding(false), StandardOutputEncoding=Encoding.UTF8, StandardErrorEncoding=Encoding.UTF8 };
             foreach (var arg in new[] { "-X", "utf8", "-m", "any2xsampa.local.server" }) start.ArgumentList.Add(arg);
             start.Environment["ANY2XSAMPA_HOME"] = Root;
+            if (!string.IsNullOrWhiteSpace(dataHome)) start.Environment["ANY2XSAMPA_DATA_HOME"] = Path.GetFullPath(dataHome);
             start.Environment["PYTHONPATH"] = Path.Combine(Root, "src");
             start.Environment["PYTHONUTF8"] = "1";
             start.Environment["PYTHONDONTWRITEBYTECODE"] = "1";

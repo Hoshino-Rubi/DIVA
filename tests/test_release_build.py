@@ -2,6 +2,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import zipfile
 
 import pytest
 
@@ -74,3 +75,29 @@ def test_extra_or_missing_asset_stops_publication(tmp_path):
 def test_unsafe_asset_name_stops_publication(tmp_path):
     with pytest.raises(ValueError,match="simple"):
         asset_tool().finalize(tmp_path,["../secret"],"pre-1.0.1a")
+
+
+def test_stable_tag_is_accepted_without_accepting_arbitrary_name(tmp_path):
+    (tmp_path/"app.exe").write_bytes(b"release")
+    assert asset_tool().finalize(tmp_path,["app.exe"],"v1.0.1")["tag"]=="v1.0.1"
+    other=tmp_path/"other";other.mkdir();(other/"app.exe").write_bytes(b"release")
+    with pytest.raises(ValueError,match="tag"):
+        asset_tool().finalize(other,["app.exe"],"v1.0.1/evil")
+
+
+def test_split_manifest_binds_stable_tag_and_exact_parts(tmp_path):
+    spec=importlib.util.spec_from_file_location("release_splitter",ROOT/"tools/split_portable_release.py")
+    tool=importlib.util.module_from_spec(spec);spec.loader.exec_module(tool)
+    archive=tmp_path/"app.zip"
+    with zipfile.ZipFile(archive,"x") as zip_file:
+        zip_file.writestr("Application/file.txt",b"fixture")
+    output=tmp_path/"assets";output.mkdir()
+    result=tool.split(archive,output,digest(archive),"v1.0.1")
+    assert result["schema_version"]=="portable_split_release_v2"
+    assert result["release_tag"]=="v1.0.1"
+    assert result["download_base_url"]=="https://github.com/Hoshino-Rubi/any2xsampa/releases/download/v1.0.1/"
+    assert (output/result["parts"][0]["name"]).read_bytes()==archive.read_bytes()
+    other=tmp_path/"invalid";other.mkdir()
+    with pytest.raises(ValueError,match="stable release tag"):
+        tool.split(archive,other,digest(archive),"v1.0.1/extra")
+    assert not list(other.iterdir())

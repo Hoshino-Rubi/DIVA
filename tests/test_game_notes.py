@@ -45,6 +45,29 @@ def test_empty_output_is_valid_if_model_predicts_only_rest():
     assert decode_regions(r,start_sec=0,duration_sec=1)['notes']==[]
 
 
+@pytest.mark.parametrize('duration',[1.0056,1.00999])
+def test_fractional_stft_tail_is_recorded_without_extending_notes(duration):
+    r=decode_regions(raw_example(),start_sec=20,duration_sec=duration)
+    assert r['source_end_sec']==pytest.approx(20+duration)
+    assert r['modeled_end_sec']==21
+    assert r['notes'][-1]['end_sec']==21
+    assert r['source_tail_without_model_frames_sec']==pytest.approx(duration-1)
+
+
+@pytest.mark.parametrize('duration',[1.01,1.02,.99])
+def test_a_missing_or_extra_complete_frame_is_still_rejected(duration):
+    with pytest.raises(ValueError,match='Frame count'):
+        decode_regions(raw_example(),start_sec=0,duration_sec=duration)
+
+
+def test_fractional_tail_cannot_hide_unused_existing_frames():
+    r=raw_example()
+    r['maskT']=np.pad(r['maskT'],((0,0),(0,1)),constant_values=False)
+    r['boundaries']=np.pad(r['boundaries'],((0,0),(0,1)),constant_values=False)
+    with pytest.raises(ValueError,match='Frame count'):
+        decode_regions(r,start_sec=0,duration_sec=1.008)
+
+
 def test_rounding_at_half_step_is_explicit_and_padding_is_ignored():
     r=raw_example();r['scores'][0,1]=60.5
     assert decode_regions(r,start_sec=0,duration_sec=1)['notes'][0]['pitch_midi']==61

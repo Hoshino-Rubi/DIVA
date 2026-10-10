@@ -60,7 +60,8 @@ def serial_candidate_job():
     if os.name != 'nt':
         raise RuntimeError('this isolated runtime bundle is configured for Windows')
     import msvcrt
-    path=ROOT/'.state/candidate-inference.lock';path.parent.mkdir(exist_ok=True)
+    from any2xsampa.local.storage import state_dir
+    path=state_dir(ROOT)/'candidate-inference.lock';path.parent.mkdir(parents=True,exist_ok=True)
     with path.open('a+b') as stream:
         if not path.stat().st_size:stream.write(b'0');stream.flush()
         stream.seek(0)

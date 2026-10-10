@@ -256,7 +256,7 @@ def package(out,review):
     write(out/"local-models.json",{"schema_version":"local_model_registry_v1","default_model":None,
         "models":[{"id":value["id"],"package":"guarded-candidate-v2.json","sha256":sha(out/"guarded-candidate-v2.json")}]})
     write(out/"local-notes.json",{"schema_version":"local_note_runtime_v1","snapshot":"models/game","python":"runtime/core/python.exe"})
-    write(out/"local-app.json",{"schema_version":"local_desktop_config_v1","root":".","python":"runtime/core/python.exe","models":"local-models.json"})
+    write(out/"local-app.json",{"schema_version":"local_desktop_config_v1","root":".","python":"runtime/core/python.exe","models":"local-models.json","storage_mode":"per_user_v1"})
 
 
 def venv_home(directory):
@@ -264,6 +264,8 @@ def venv_home(directory):
     return Path(settings["home"])
 
 def main():
+    from sync_release_version import sync
+    sync(ROOT, check=True)
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--assets",type=Path,required=True)

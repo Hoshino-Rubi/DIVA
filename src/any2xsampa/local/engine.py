@@ -11,6 +11,7 @@ import time
 import uuid
 from .common import ROOT, Cancelled, audio_info, check_cancel, crop, read, request, sha, write
 from .process import WorkerClient
+from .storage import state_dir
 from .registry import doctor, models, package
 from any2xsampa.exporters.ipa_xsampa import IpaXSampaConverter
 
@@ -104,7 +105,7 @@ class LocalEngine:
             elif "audio" not in params:
                 raise ValueError("Generic fixture replay requires --audio")
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-        output = Path(params.get("output_dir") or ROOT / ".state/runs" / ("local-task-"+stamp+"-"+uuid.uuid4().hex[:8])).resolve()
+        output = Path(params.get("output_dir") or state_dir(ROOT) / "runs" / ("local-task-"+stamp+"-"+uuid.uuid4().hex[:8])).resolve()
         output.mkdir(parents=True, exist_ok=False)
         write(output / "request.json", {"command": action, "params": params, "at_utc": stamp})
         try:
@@ -116,7 +117,7 @@ class LocalEngine:
                 key = (spec["package_sha256"], params["device"])
                 if self.worker is None or self.worker_key != key or self.worker.process.poll() is not None:
                     self.close()
-                    self.worker = WorkerClient(spec["python"], ROOT / ".state/worker-logs" / (uuid.uuid4().hex + ".log"))
+                    self.worker = WorkerClient(spec["python"], state_dir(ROOT) / "worker-logs" / (uuid.uuid4().hex + ".log"))
                     self.worker_key = key
                 artifact = self.worker.call("recognize", {**params, "_output": str(output)}, cancel, progress)
                 evidence_path = Path(artifact["evidence_path"])
