@@ -1,0 +1,39 @@
+{
+  "schema_version": "portable_build_inputs_v1",
+  "artifact_root": "path/to/private-artifacts",
+  "phoneticxeus_root": "phoneticxeus",
+  "game_root": "game",
+  "candidate_freeze": "candidate/CANDIDATE_FREEZE.json",
+  "runtimes": {
+    "core": {
+      "directory": "audited-app/runtime/core",
+      "inventory": "core-inventory.json"
+    },
+    "phonetic": {
+      "directory": "audited-app/runtime/phonetic",
+      "inventory": "phonetic-inventory.json"
+    }
+  },
+  "bindings": [
+    {
+      "path": "phoneticxeus/model/snapshot-lock.json",
+      "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+    },
+    {
+      "path": "game/model/snapshot-lock.json",
+      "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+    },
+    {
+      "path": "candidate/CANDIDATE_FREEZE.json",
+      "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+    },
+    {
+      "path": "core-inventory.json",
+      "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+    },
+    {
+      "path": "phonetic-inventory.json",
+      "sha256": "REPLACE_WITH_VERIFIED_SHA256"
+    }
+  ]
+}

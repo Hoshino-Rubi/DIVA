@@ -1,0 +1,7 @@
+{
+  "schema_version": "release_version_v1",
+  "tag": "pre-1.0.1a",
+  "python_version": "1.0.1a0",
+  "assembly_version": "1.0.1.0",
+  "prerelease": true
+}

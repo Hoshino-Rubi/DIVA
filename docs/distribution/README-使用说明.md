@@ -1,6 +1,6 @@
 # Any2Xsampa Windows x64
 
-1. 从 Release 下载 Any2Xsampa-Setup.exe 和三个 Any2Xsampa-Windows-x64-20261008.zip.001／.002／.003 分卷，放在同一个文件夹。双击安装器，选择可写目录；安装器会自动校验、拼接并解压。不要单独打开分卷或只复制桌面 EXE。
+1. 从 Release 下载 Any2Xsampa-Setup.exe 和三个 Any2Xsampa-Windows-x64-pre-1.0.1a.zip.001／.002／.003 分卷，放在同一个文件夹。双击安装器，选择可写目录；安装器会自动校验、拼接并解压。不要单独打开分卷或只复制桌面 EXE。
    若已获得完整 ZIP，也可直接解压整个目录。支持中文及空格路径。
 2. 双击 Any2Xsampa.Desktop.exe。不需要另外安装 Python、.NET、CUDA Toolkit 或启动服务器。
 3. 初次打开会自动下载缺失的 PhoneticXeus 和 GAME 固定权重，下载约 2.31 GiB。界面可取消、设置 HTTP(S) 代理、继续下载；连接失败不会自动重试。运行识别时禁止联网。
@@ -40,3 +40,7 @@ any2xsampa.cmd score "结果目录\result.json"
 这是可运行的研究预览版；VSQX 已实现音高、起点、时值写入及自动读回验证，但尚无正式逐音符联合准确率的验收结论。
 应用不伪造真值，不要求额外人工审核才能导出。
 第三方许可见 THIRD_PARTY_NOTICES.md；GAME 权重是 CC BY-NC-SA 4.0，不能将其整体宣称为 MIT 或用于不符合许可的商业用途。
+
+## 诊断与升级
+
+版本 pre-1.0.1a。“模型环境与已有结果回放”中可导出诊断包。文件保存在所选本地目录，不会上传；不含音频、用户名、完整路径、原始日志或代理凭据。新版本请选择新目录安装，旧版模型离线附件可继续使用。

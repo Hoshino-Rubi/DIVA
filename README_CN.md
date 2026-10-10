@@ -9,9 +9,9 @@
 从同一个 GitHub Release 下载以下四个文件，保留名称并放在同一个文件夹：
 
 - `Any2Xsampa-Setup.exe`
-- `Any2Xsampa-Windows-x64-20261008.zip.001`
-- `Any2Xsampa-Windows-x64-20261008.zip.002`
-- `Any2Xsampa-Windows-x64-20261008.zip.003`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.001`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.002`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.003`
 
 双击安装器，选择可写目录。安装器会自动校验并解压；不要直接运行分卷或只复制桌面 EXE。无需另装 Python、.NET、CUDA Toolkit，也不用启动服务器。
 
@@ -77,3 +77,11 @@ python -m any2xsampa.cli score result.json --notes prediction.json --output-dir 
 测试和安装器构建入口见 [英文 README](README.md#development-verification)。`PhoneSegment`、posterior JSON 与显式 fixture/replay 契约保持兼容。X-SAMPA 只是导出层，不是内部识别真值。
 
 PhoneticXeus 为 Apache-2.0；GAME 权重为 **CC BY-NC-SA 4.0**，不是源码 MIT，覆盖材料受非商业与相同方式共享限制。见 [第三方声明](docs/distribution/THIRD_PARTY_NOTICES.md)。应用自己的源码许可证尚未由仓库所有者选择。
+
+## pre-1.0.1a 可靠性更新
+
+“模型环境与已有结果回放”内新增“导出诊断包”，Python 启动失败或模型未就绪时也能使用。仅包含版本、错误码、模型预期哈希/大小、资源数值及任务耗时；不包含音频、预测、原始日志、用户名、完整路径或代理凭据，不会自动上传。大小相符不等于哈希验证通过。
+
+常驻模型进程使用独立会话日志，每个任务保存 worker-session.json 说明所属会话。请安装到新文件夹，旧模型与结果不被覆盖；可复用 pre-1.0.0 离线模型附件。
+
+Windows 回归入口为 python tools/check_windows_release.py --output <新目录>。它使用零模型测试；完整历史研究测试另外需要未公开的本地资料。构建与签名顺序见 [构建说明](docs/release_build.md)。本次更新不声称识别准确率提高。

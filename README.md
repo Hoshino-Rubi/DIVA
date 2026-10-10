@@ -5,14 +5,14 @@
 Local audio → IPA / phones → notes → VSQX / X-SAMPA.
 The Windows desktop app and CLI share a local subprocess engine. Normal use does **not** require an HTTP or gRPC server.
 
-## Windows research preview
+## Windows research preview · pre-1.0.1a
 
 Download these four files from the same GitHub Release and keep them in one folder:
 
 - `Any2Xsampa-Setup.exe`
-- `Any2Xsampa-Windows-x64-20261008.zip.001`
-- `Any2Xsampa-Windows-x64-20261008.zip.002`
-- `Any2Xsampa-Windows-x64-20261008.zip.003`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.001`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.002`
+- `Any2Xsampa-Windows-x64-pre-1.0.1a.zip.003`
 
 Run the installer and choose a writable directory. It verifies the volumes and extracts the complete application. Do not run a volume directly or copy only the desktop EXE.
 Python, .NET and required libraries are bundled; no separate server or CUDA Toolkit installation is needed.
@@ -38,6 +38,12 @@ For offline setup, download the three `PhoneticXeus-model.safetensors.00x` volum
 
 The note panel can reuse saved GAME predictions without rerunning inference.
 Cancellation affects only application-owned jobs. Missing real models fail clearly; fixture data is never silently substituted for recognition.
+
+## Diagnostics and updates
+
+In **Model environment and saved-result replay**, choose **Export diagnostic bundle**. It creates a local ZIP even when Python or model setup failed. It includes version, allowlisted error codes, expected model hashes/file sizes, memory counters and recent task timings. Audio, predictions, raw logs, complete paths, usernames and proxy credentials are excluded; nothing uploads automatically. Matching file sizes are not reported as verified hashes.
+
+Install this version into a new folder. Existing installations, models and results are not overwritten. You can reuse the verified offline model assets from pre-1.0.0.
 
 ## CLI
 
@@ -88,6 +94,10 @@ dotnet run --project apps/Any2Xsampa.Setup.Tests/Any2Xsampa.Setup.Tests.csproj -
 ~~~
 
 `tools/split_portable_release.py` generates the installer's manifest, embedded using `ReleaseManifestPath`. Runtime packaging uses existing audited installations; release tools do not train or silently download new models.
+
+Run the Windows CI entry with `python tools/check_windows_release.py --output <new-directory>`. It covers installer faults, model installation failures, diagnostic privacy and relocated stdio/VSQX replay without loading weights. Build inputs and signing are documented in [release build instructions](docs/release_build.md).
+
+The full historical research suite needs additional unpublished artifacts. Public product checks do not depend on those artifacts.
 
 Stable `PhoneSegment`, posterior JSON and explicit fixture/replay contracts remain supported. X-SAMPA is an export representation, not the recognizer truth layer.
 

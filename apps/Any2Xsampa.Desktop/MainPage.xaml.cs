@@ -133,7 +133,7 @@ public sealed partial class MainPage : Page
         }catch(Exception error){Log("上次会话未恢复："+error.Message);}
     }
     private void Log(string line) { log.Enqueue(line);while(log.Count>70)log.Dequeue();ActivityLog.Text=string.Join(Environment.NewLine,log); }
-    private void Error(Exception e) { StatusBar.Severity=InfoBarSeverity.Error;StatusBar.Title="操作未完成";StatusBar.Message=e.Message;Log(e.Message); }
+    private void Error(Exception e) { service.Diagnostics.Record("desktop", "failed", e);StatusBar.Severity=InfoBarSeverity.Error;StatusBar.Title="操作未完成";StatusBar.Message=e.Message;Log(e.Message); }
     private async Task RefreshModels()
     {
         try
@@ -148,7 +148,7 @@ public sealed partial class MainPage : Page
             string? selected=(ModelBox.SelectedItem as ModelChoice)?.Id;
             ModelBox.ItemsSource=choices;
             if(selected is not null)ModelBox.SelectedItem=choices.FirstOrDefault(m=>m.Id==selected);
-            GpuStatus.Text=await LocalTaskService.GpuStatusAsync();
+            GpuStatus.Text=await LocalTaskService.GpuStatusAsync(service.Diagnostics);
             ModelStatus.Text=choices.Count==0?"尚未配置真实模型；不会自动使用 fixture。":"运行包已核验；请选择模型。质量状态与可加载状态分开。";
         }catch(Exception e){Error(e);ModelStatus.Text="环境检查失败；未启动推理。";}
     }
@@ -550,6 +550,22 @@ public sealed partial class MainPage : Page
             await service.CallAsync("draft",new{result_path=resultPath,result_sha256=resultHash,edits});if(version==editVersion)dirty=false;DraftStatus.Text="草稿已保存（非真值）";
         }finally{draftGate.Release();}
     }
+    private async void ExportDiagnostics_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var picker = new FolderPicker(); picker.FileTypeFilter.Add("*");
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
+            var folder = await picker.PickSingleFolderAsync(); if (folder is null) return;
+            string file = Path.Combine(folder.Path, $"Any2Xsampa-diagnostics-{DateTime.UtcNow:yyyyMMdd-HHmmssfff}.zip");
+            await service.ExportDiagnosticsAsync(file);
+            StatusBar.Severity = InfoBarSeverity.Success;
+            StatusBar.Title = "诊断已导出";
+            StatusBar.Message = "已保存到所选目录；不包含音频、原始日志或完整路径，未自动上传。";
+        }
+        catch (Exception ex) { Error(ex); }
+    }
+
     private async void Doctor_Click(object sender,RoutedEventArgs e)
     {if(active is not null)return;try{var d=await service.CallAsync("doctor",new{});Log(d.ToString());await RefreshModels();}catch(Exception ex){Error(ex);}}
     private async void Unload_Click(object sender,RoutedEventArgs e)

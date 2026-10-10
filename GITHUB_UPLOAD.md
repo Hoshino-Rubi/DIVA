@@ -1,58 +1,47 @@
-# Publishing Any2Xsampa to GitHub
+# Publishing pre-1.0.1a
 
-This directory is an independently prepared source copy, not the original research workspace.
-It excludes model weights, virtual environments, caches, personal audio and manual projects.
-Do not run `git add .` in the original research directory.
+This source checkout uses the existing repository history. The development branch
+is release-pre-1.0.1a, based on the published pre-1.0.0 commit. Do not recreate the
+repository, force-push main, or rewrite the old tag.
 
-## Source repository
+## Source and main
 
-The existing local copy has a `main` branch, committed history and an `origin` remote. This task staged the new changes but did not create a new commit, authenticate or push. For that checkout, use its existing history/remote; do not recreate the repository.
-If using the source ZIP, extract it and initialize Git:
+Review the branch diff and Windows checks, then commit/push this branch and open a
+pull request into main. Merging the PR brings the English README and README_CN.md
+to the default branch. Keep repository visibility and the application source
+license as separate owner decisions.
 
-~~~bat
-git init -b main
-git config user.name "YOUR_GITHUB_NAME"
-git config user.email "YOUR_COMMIT_EMAIL"
-git add .
-git commit -m "Initial source and desktop preview"
-gh auth login --hostname github.com --git-protocol https --web
-gh repo create any2xsampa --private --source=. --remote=origin --push
+~~~text
+git status --short
+git diff --check
+git push -u origin release-pre-1.0.1a
+gh pr create --base main --head release-pre-1.0.1a --title "Prepare pre-1.0.1a reliability release" --body-file <prepared-PR-description>
 ~~~
 
-Replace the identity and repository name. Use `--public` instead of `--private` only when you intend to publish publicly.
-For an existing empty repository, add its URL as `origin` and push `main` instead of running `gh repo create`.
-Do not force-push over an existing repository's history. Never paste credentials into code or chat.
+The commands above are maintainer instructions; preparing these files does not
+push or publish anything.
 
-If your local network needs a proxy, use its actual address:
+## Release
 
-~~~bat
-set HTTPS_PROXY=http://127.0.0.1:18080
-set HTTP_PROXY=http://127.0.0.1:18080
-~~~
+After the reviewed commit is present remotely, create a new tag named
+pre-1.0.1a on that commit. Mark the Release as a pre-release. Use
+docs/releases/pre-1.0.1a.md as the English body; its Chinese link points to this
+exact tag.
 
-These commands are instructions only; no remote publication has been performed.
+Upload all 15 files from the separately verified
+Any2Xsampa-Release-assets-pre-1.0.1a directory. They include Setup, three
+application volumes, four optional offline model files, model notices/licenses,
+the split manifest, both release descriptions and SHA256SUMS.txt.
 
-## Desktop Release
+Do not attach the unsplit internal ZIP, private build inputs, study results,
+audio, credentials or the original workspace. Do not upload this maintainer
+guide as a release asset. Public checksums cover the other 14 attachments and
+exclude the checksum file itself.
 
-The separately prepared `Any2Xsampa-Release-assets-20261008` directory is ready for attachment upload after its verification completes.
-Create a preview Release and upload every file from that directory. Do not recompress the directory or upload the development workspace.
-The installer and its three ZIP volumes must all be provided. Optional offline model volumes remain Release attachments, **not Git files**.
+Automatic model installation uses the same fixed upstream sources as pre-1.0.0.
+The four offline model attachments are byte-identical and reusable. Install the
+application into a new directory; the installer preserves old installations.
 
-Use `RELEASE_README.md` for the English Release description. It links to `RELEASE_README_CN.md`.
-The application downloads pinned weights directly from their upstream sources; uploading offline model files is not a prerequisite for automatic online setup.
-See `UPLOAD_TO_GITHUB.md` in the attachment directory for the asset layout and `SHA256SUMS.txt` for hashes.
-
-Unlike the earlier workspace-bound build, this preview includes isolated Python runtimes and self-contained .NET/Windows App SDK files.
-Local installation, relocation and saved-result export have been verified; signing and another-machine GUI verification remain incomplete.
-No formal joint transcription accuracy is claimed.
-
-## Licenses and development
-
-The owner has not selected a license for the application's own source yet.
-Third-party notices do not license your code on your behalf. GAME weights use CC BY-NC-SA 4.0, not the MIT license of GAME code.
-See [third-party notices](docs/distribution/THIRD_PARTY_NOTICES.md).
-
-The historical `requirements.lock.txt` records the full development environment, not minimal end-user requirements.
-Research tools can require caches omitted from this repository. Normal desktop and CLI operation use the shared local stdio engine.
-
-Internal audit records contain local paths and are intentionally not included in the source archive.
+This build is unsigned. Signing and publication are distinct actions, not
+implied by a successful local build. Do not silently replace old release assets.
+See docs/release_build.md for the signing sequence and verification limits.

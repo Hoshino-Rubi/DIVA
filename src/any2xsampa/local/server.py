@@ -68,7 +68,7 @@ class Server:
         except Exception as e:
             import traceback
             traceback.print_exc(file=sys.stderr)
-            self.emit("error", task_id, code=type(e).__name__, message=str(e), retry_performed=False)
+            self.emit("error", task_id, code=getattr(e, "code", type(e).__name__), message=str(e), retry_performed=False)
         finally:
             with self.state_lock:
                 self.pending.pop(task_id, None)

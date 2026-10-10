@@ -50,6 +50,12 @@ class OwnedJob:
             self.kernel.CloseHandle(self.handle)
             self.handle = None
 
+class WorkerError(RuntimeError):
+    def __init__(self, code: str, message: str):
+        super().__init__(message)
+        self.code = code if isinstance(code, str) and code.isidentifier() else "RuntimeError"
+
+
 class WorkerClient:
     def __init__(self, python: str, log: Path, *, runtime: bool = True,
                  module: str = "any2xsampa.local.server"):
@@ -59,6 +65,7 @@ class WorkerClient:
                "NUMBA_NUM_THREADS": "4", "NUMEXPR_NUM_THREADS": "4"}
         command = [python, "-X", "utf8", "-m", module] + (["--runtime"] if runtime else [])
         self.log = log
+        self.session_id = uuid.uuid4().hex
         log.parent.mkdir(parents=True, exist_ok=True)
         self.process = subprocess.Popen(command, cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE, text=True, encoding="utf-8", bufsize=1,
@@ -107,6 +114,13 @@ class WorkerClient:
 
     def call(self, action: str, params: dict, cancel: threading.Event, progress, *, timeout: float = 930):
         task_id = uuid.uuid4().hex
+        if "_output" in params:
+            from .common import write
+            write(Path(params["_output"]) / "worker-session.json", {
+                "schema_version": "local_worker_session_v1", "session_id": self.session_id,
+                "task_id": task_id, "pid": self.process.pid, "command": action,
+                "log_path": str(self.log.resolve()), "log_scope": "worker_session",
+            })
         self.send({"id": task_id, "command": action, "params": params})
         deadline = time.monotonic() + timeout
         cancel_at = None
@@ -140,7 +154,7 @@ class WorkerClient:
             elif kind == "cancelled":
                 raise Cancelled(event.get("message", "Cancelled"))
             elif kind == "error":
-                raise RuntimeError(event.get("message", "Worker failed"))
+                raise WorkerError(event.get("code", "RuntimeError"), event.get("message", "Worker failed"))
 
     def close(self):
         if self.process.poll() is None:

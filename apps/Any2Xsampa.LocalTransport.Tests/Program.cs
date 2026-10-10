@@ -2,6 +2,8 @@ using Any2Xsampa_Desktop.Services;
 using System.Text.Json;
 using System.Security.Cryptography;
 
+if(args.Length==2 && args[0]=="--diagnostics") { await DiagnosticChecks.Run(args[1]); return; }
+
 if(args.Length==4 && args[0]=="--portable-setup")
 {
     using var portable=new LocalTaskService(args[1]);

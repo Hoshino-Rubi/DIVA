@@ -18,10 +18,56 @@ from packaging.requirements import Requirement
 from packaging.utils import canonicalize_name
 from packaging.markers import default_environment
 
-PX=ROOT/".state/runs/limited-data-20260906T050251"
-GAME=ROOT/".state/runs/note-game-qualification-20261002T113704Z"
-FROZEN=ROOT/".state/runs/guarded-retention-20260919T041500/CANDIDATE_FREEZE.json"
+PX: Path
+GAME: Path
+FROZEN: Path
+INPUTS: dict
 CHUNK=1024**3
+
+
+def load_inputs(file):
+    global PX, GAME, FROZEN, INPUTS
+    value=read(file)
+    if value.get("schema_version") != "portable_build_inputs_v1":
+        raise ValueError("Unsupported build input manifest")
+    anchor=(file.parent/value["artifact_root"]).resolve()
+    for key in ("phoneticxeus_root", "game_root", "candidate_freeze"):
+        relative=value.get(key)
+        if not isinstance(relative, str) or Path(relative).is_absolute() or ".." in Path(relative).parts:
+            raise ValueError("Build input path must stay inside artifact_root: " + key)
+    PX=(anchor/value["phoneticxeus_root"]).resolve()
+    GAME=(anchor/value["game_root"]).resolve()
+    FROZEN=(anchor/value["candidate_freeze"]).resolve()
+    required={PX/"model/snapshot-lock.json", GAME/"model/snapshot-lock.json", FROZEN}
+    bound=set()
+    for row in value["bindings"]:
+        target=(anchor/row["path"]).resolve()
+        if not target.is_relative_to(anchor) or not target.is_file() or sha(target)!=row["sha256"]:
+            raise ValueError("Build input binding changed: " + row["path"])
+        bound.add(target)
+    if not required <= bound:
+        raise ValueError("Missing required snapshot or candidate binding")
+    for role in ("core", "phonetic"):
+        item=value["runtimes"][role]
+        directory=(anchor/item["directory"]).resolve()
+        index=(anchor/item["inventory"]).resolve()
+        if not directory.is_relative_to(anchor) or index not in bound:
+            raise ValueError("Runtime inventory must be bound")
+        inventory=read(index)
+        if inventory.get("schema_version")!="portable_runtime_inventory_v1" or not inventory.get("files"):
+            raise ValueError("Invalid runtime inventory")
+        expected=set()
+        for row in inventory["files"]:
+            target=(directory/row["path"]).resolve()
+            if not target.is_relative_to(directory) or not target.is_file() or target.is_symlink() or sha(target)!=row["sha256"]:
+                raise ValueError("Runtime input changed: " + role + "/" + row["path"])
+            expected.add(target.relative_to(directory).as_posix())
+        actual={p.relative_to(directory).as_posix() for p in directory.rglob("*") if p.is_file() and kept(p.relative_to(directory))}
+        if actual!=expected:
+            raise ValueError("Runtime file inventory changed: " + role)
+        item["resolved_directory"]=directory
+    INPUTS=value
+    return value
 
 
 def write(file,value):
@@ -223,10 +269,23 @@ def main():
     p.add_argument("--assets",type=Path,required=True)
     p.add_argument("--desktop",type=Path,required=True)
     p.add_argument("--review",type=Path,required=True)
+    p.add_argument("--inputs",type=Path,required=True,help="Hash-bound release input manifest")
     a=p.parse_args()
     out,assets=a.output.resolve(),a.assets.resolve()
     if out.exists() or assets.exists():raise FileExistsError("Use new build directories")
+    load_inputs(a.inputs.resolve())
     review=read(a.review)
+    if review.get("schema_version")!="portable_release_review_v1" or review.get("model_forwards")!=0 or review.get("training_updates")!=0:
+        raise ValueError("Expected a zero-model release review")
+    if review.get("input_manifest_sha256")!=sha(a.inputs):
+        raise ValueError("Build inputs are not bound to this code review")
+    if not review.get("verification") or not review.get("source_sha256") or not review.get("desktop_files"):
+        raise ValueError("Missing build verification evidence")
+    desktop=a.desktop.resolve()
+    for row in review["desktop_files"]:
+        path=(desktop/row["path"]).resolve()
+        if not path.is_relative_to(desktop) or sha(path)!=row["sha256"]:
+            raise ValueError("Desktop publish changed")
     for name,digest in review["source_sha256"].items():
         if sha(ROOT/name)!=digest:raise ValueError("Review invalidated: "+name)
     for row in review["verification"]:
@@ -234,16 +293,21 @@ def main():
     out.mkdir(parents=True);assets.mkdir(parents=True)
     copy_tree(a.desktop.resolve(),out,exclude=("runtime","models",".state"))
     copy_tree(ROOT/"src",out/"src")
-    copy_tree(ROOT/"docs/distribution",out)
+    copy_tree(ROOT/"docs/distribution",out,exclude=("build-inputs.example.json",))
+    copy(ROOT/"release-version.json",out/"release-version.json")
     source_code=[x for x in (out/"src").rglob("*.py")]
     if any(str(ROOT).encode() in x.read_bytes() for x in source_code):
         raise ValueError("Product source embeds workspace path")
+    for name,digest in review["source_sha256"].items():
+        if name.startswith("src/") and sha(out/name)!=digest:
+            raise ValueError("Copied source differs from reviewed source: "+name)
+    for row in review["desktop_files"]:
+        if sha(out/row["path"])!=row["sha256"]:
+            raise ValueError("Copied desktop differs from reviewed publish")
     print("copy core runtime",flush=True)
-    runtime(venv_home(ROOT/".venv"),ROOT/".venv/Lib/site-packages",out/"runtime/core","3.14",
-            packages=["onnxruntime-gpu","librosa","soundfile"])
+    copy_tree(INPUTS["runtimes"]["core"]["resolved_directory"], out/"runtime/core")
     print("copy phonetic runtime",flush=True)
-    runtime(venv_home(PX/"runtime"),PX/"runtime/Lib/site-packages",
-            out/"runtime/phonetic","3.12")
+    copy_tree(INPUTS["runtimes"]["phonetic"]["resolved_directory"], out/"runtime/phonetic")
     print("models and fixed offline assets",flush=True)
     models(out,assets)
     candidate(out)
@@ -256,9 +320,10 @@ def main():
         encoding="ascii")
     print("BUILD_READY",out,flush=True)
     write(out/"BUILD.json",{"schema_version":"portable_build_v1","model_forwards":0,"model_downloads":0,
-                           "runtime_source":"existing audited CPython and installed dependencies",
+                           "runtime_source":"explicit SHA-bound runtime inventories",
                            "runtime_manifest_files":["runtime/core/DEPENDENCIES.json","runtime/phonetic/DEPENDENCIES.json"],
                            "candidate_origin_sha256":sha(FROZEN),"review_sha256":sha(out/"runtime-review.json"),
+                           "input_manifest_sha256":sha(a.inputs),"release":read(ROOT/"release-version.json")["tag"],
                            "runtime_development_static_libs_excluded":True})
 
 if __name__=="__main__":main()
