@@ -1,7 +1,7 @@
 name: Windows release checks
 on:
   push:
-    branches: [main, release-pre-1.0.1a, release-v1.0.1]
+    branches: [main, release-pre-1.0.1a, release-v1.0.1, release-v1.0.2]
   pull_request:
   workflow_dispatch:
 permissions:

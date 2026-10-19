@@ -68,6 +68,16 @@ var stable = normal.manifest with {
     download_base_url = "https://github.com/Hoshino-Rubi/any2xsampa/releases/download/v1.0.1/"
 };
 Installer.Validate(stable); Check(true, "stable manifest accepted");
+var diva = stable with { release_tag = "v1.0.2", download_base_url = "https://github.com/Hoshino-Rubi/DIVA/releases/download/v1.0.2/" };
+Installer.Validate(diva); Check(true, "DIVA origin accepted alongside legacy origin");
+foreach (string invalid in new[] {
+    "https://github.com/Hoshino-Rubi/DIVA/releases/download/v1.0.1/",
+    "https://github.com/Hoshino-Rubi/DIVA/releases/download/v1.0.2/?token=x",
+    "https://github.com/Hoshino-Rubi/DIVA/releases/download/v1.0.2/../",
+    "https://github.com/Hoshino-Rubi/DIVA-evil/releases/download/v1.0.2/",
+    "https://github.com.evil.invalid/Hoshino-Rubi/DIVA/releases/download/v1.0.2/",
+    "http://github.com/Hoshino-Rubi/DIVA/releases/download/v1.0.2/" })
+    Reject(() => Installer.Validate(diva with { download_base_url = invalid }), "DIVA exact origin/tag validation");
 Reject(() => Installer.Validate(stable with { download_base_url = "https://example.invalid/v1.0.1/" }), "untrusted download origin");
 Reject(() => Installer.Validate(stable with { release_tag = "v1.0.2" }), "wrong tag download origin");
 var fake = new FakeReleaseHandler(normal.directory, normal.manifest.parts);

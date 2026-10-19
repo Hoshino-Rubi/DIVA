@@ -16,8 +16,8 @@
   <mp:PhoneIdentity PhoneProductId="E853BF93-9275-4659-8D77-B5AFC2B701BF" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Any2Xsampa.Desktop</DisplayName>
-    <PublisherDisplayName>any2xsampa</PublisherDisplayName>
+    <DisplayName>DIVA</DisplayName>
+    <PublisherDisplayName>DIVA</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -35,8 +35,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Any2Xsampa.Desktop"
-        Description="Any2Xsampa.Desktop"
+        DisplayName="DIVA"
+        Description="Dialect Intonation &amp; Vocal Automation"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

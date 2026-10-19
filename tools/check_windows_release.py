@@ -16,7 +16,7 @@ TESTS = [
     "test_model_install.py", "test_worker_log_ownership.py", "test_local_engine.py",
     "test_local_desktop_layout.py", "test_local_whole_audio.py", "test_local_score.py",
     "test_game_vsqx.py", "test_game_notes.py", "test_portable_release_policy.py", "test_release_build.py",
-    "test_release_version.py",
+    "test_release_version.py", "test_product_branding.py",
     "test_local_storage.py",
     "test_stream_portable_release.py",
 ]

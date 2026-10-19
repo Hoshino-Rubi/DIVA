@@ -30,6 +30,7 @@ def test_streamed_volumes_form_valid_archive_without_full_copy(tmp_path):
     result = module.stream_release(source, output, "v1.0.1", part_bytes=256,
                                    max_archive_bytes=4096, reserve_bytes=0)
     parts = result["parts"]
+    assert result["download_base_url"] == "https://github.com/Hoshino-Rubi/DIVA/releases/download/v1.0.1/"
     assert len(parts) > 1 and all(p["bytes"] <= 256 for p in parts)
     joined = b"".join((output/p["name"]).read_bytes() for p in parts)
     assert hashlib.sha256(joined).hexdigest() == result["archive_sha256"]

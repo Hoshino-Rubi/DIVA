@@ -89,7 +89,7 @@ public static class PartDownloader
         var url = new Uri(manifest.download_base_url + Uri.EscapeDataString(part.name));
         using var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.TryAddWithoutValidation("Accept-Encoding", "identity");
-        request.Headers.UserAgent.ParseAdd("Any2Xsampa-Setup/" + manifest.release_tag!.TrimStart('v'));
+        request.Headers.UserAgent.ParseAdd("DIVA-Setup/" + manifest.release_tag!.TrimStart('v'));
         if (offset != 0) request.Headers.Range = new RangeHeaderValue(offset, null);
         using var headerLimit = CancellationTokenSource.CreateLinkedTokenSource(cancel);
         headerLimit.CancelAfter(TimeSpan.FromSeconds(30));

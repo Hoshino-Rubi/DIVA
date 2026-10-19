@@ -475,7 +475,7 @@ public sealed partial class MainPage : Page
         {
             var picker=new FolderPicker();picker.FileTypeFilter.Add("*");WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
             var folder=await picker.PickSingleFolderAsync();if(folder is null)return;
-            string output=Path.Combine(folder.Path,$"Any2Xsampa-{DateTime.Now:yyyyMMdd-HHmmssfff}.vsqx");
+            string output=Path.Combine(folder.Path,$"DIVA-{DateTime.Now:yyyyMMdd-HHmmssfff}.vsqx");
             var response=await service.CallAsync("export_score",new{score_path=scorePath,score_sha256=scoreHash,output});
             StatusBar.Severity=InfoBarSeverity.Success;StatusBar.Message="已导出 VSQX："+response.GetProperty("output").GetString();
         }
@@ -595,7 +595,7 @@ public sealed partial class MainPage : Page
             var picker = new FolderPicker(); picker.FileTypeFilter.Add("*");
             WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
             var folder = await picker.PickSingleFolderAsync(); if (folder is null) return;
-            string file = Path.Combine(folder.Path, $"Any2Xsampa-diagnostics-{DateTime.UtcNow:yyyyMMdd-HHmmssfff}.zip");
+            string file = Path.Combine(folder.Path, $"DIVA-diagnostics-{DateTime.UtcNow:yyyyMMdd-HHmmssfff}.zip");
             await service.ExportDiagnosticsAsync(file);
             StatusBar.Severity = InfoBarSeverity.Success;
             StatusBar.Title = "诊断已导出";

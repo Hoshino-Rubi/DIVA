@@ -11,7 +11,7 @@ from any2xsampa.services.inference import InferenceRequest, InferenceService, Re
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Universal dialect singing-to-phones frontend MVP")
+    parser = argparse.ArgumentParser(description="DIVA (Dialect Intonation & Vocal Automation): local singing-to-IPA and VSQX pipeline")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     open_parser = subparsers.add_parser("infer-open", help="Infer phones from audio without lyrics.")

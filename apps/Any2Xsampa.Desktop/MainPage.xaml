@@ -40,7 +40,7 @@
   </VisualStateManager.VisualStateGroups>
 
   <StackPanel Spacing="4">
-   <TextBlock Text="Any2Xsampa · 本地音素工作台" FontSize="25" FontWeight="SemiBold" TextWrapping="Wrap"/>
+   <TextBlock Text="DIVA · 本地音素与 VSQX 工作台" FontSize="25" FontWeight="SemiBold" TextWrapping="Wrap"/>
   </StackPanel>
 
   <!-- Primary actions stay outside the scrolling content, in their own Auto row. -->
