@@ -48,7 +48,7 @@ def split(archive: Path, output: Path, expected_sha256: str, release_tag: str | 
         value["schema_version"] = "portable_split_release_v2"
         value["release_tag"] = release_tag
         value["download_base_url"] = (
-            "https://github.com/Hoshino-Rubi/any2xsampa/releases/download/"
+            "https://github.com/Hoshino-Rubi/DIVA/releases/download/"
             + release_tag + "/"
         )
     manifest_path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

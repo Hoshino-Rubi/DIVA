@@ -213,7 +213,7 @@ def stream_release(source: Path, output: Path, release_tag: str, *,
                  archive_bytes=writer.total, archive_sha256=full.hexdigest(),
                  expanded_bytes=sum(sizes.values()), file_count=len(files), parts=writer.parts,
                  release_tag=release_tag,
-                 download_base_url="https://github.com/Hoshino-Rubi/any2xsampa/releases/download/"+release_tag+"/")
+                 download_base_url="https://github.com/Hoshino-Rubi/DIVA/releases/download/"+release_tag+"/")
     with manifest.open("x", encoding="utf-8") as handle:
         json.dump(value, handle, indent=2)
         handle.write("\n")

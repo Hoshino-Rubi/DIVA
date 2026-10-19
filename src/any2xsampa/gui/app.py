@@ -932,7 +932,7 @@ class Any2XSampaGuiApp:
         self.history_status_var = tk.StringVar(self.root, value="No recent runs.")
 
     def _build_widgets(self) -> None:
-        self.root.title("Any2Xsampa")
+        self.root.title("DIVA")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         outer = ttk.Frame(self.root, padding=8)
         outer.pack(fill="both", expand=True)
@@ -1146,7 +1146,7 @@ class Any2XSampaGuiApp:
         self._set_stage("failed")
         self._set_text(self.result_text, f"Job failed.\n{message}")
         try:
-            messagebox.showerror("Any2Xsampa job failed", message)
+            messagebox.showerror("DIVA job failed", message)
         except tk.TclError:
             pass
 
@@ -1177,7 +1177,7 @@ class Any2XSampaGuiApp:
             self._set_busy(False)
             self._update_current_history(status, error=message, update=update)
             try:
-                messagebox.showerror("Any2Xsampa job failed", message)
+                messagebox.showerror("DIVA job failed", message)
             except tk.TclError:
                 pass
         elif status in {"queued", "running"}:
@@ -1439,7 +1439,7 @@ def _result_summary_short(result: Mapping[str, Any]) -> str:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Any2Xsampa Tk GUI")
+    parser = argparse.ArgumentParser(description="DIVA Tk GUI (legacy any2xsampa-gui entry point)")
     parser.add_argument("--api-base-url", default=os.environ.get("ANY2XSAMPA_API_URL", "http://127.0.0.1:8000"))
     parser.add_argument("--history", default=None, help="Path to persisted recent-run JSON")
     args = parser.parse_args(argv)

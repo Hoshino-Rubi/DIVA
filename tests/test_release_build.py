@@ -131,7 +131,7 @@ def test_split_manifest_binds_stable_tag_and_exact_parts(tmp_path):
     result=tool.split(archive,output,digest(archive),"v1.0.1")
     assert result["schema_version"]=="portable_split_release_v2"
     assert result["release_tag"]=="v1.0.1"
-    assert result["download_base_url"]=="https://github.com/Hoshino-Rubi/any2xsampa/releases/download/v1.0.1/"
+    assert result["download_base_url"]=="https://github.com/Hoshino-Rubi/DIVA/releases/download/v1.0.1/"
     assert (output/result["parts"][0]["name"]).read_bytes()==archive.read_bytes()
     other=tmp_path/"invalid";other.mkdir()
     with pytest.raises(ValueError,match="stable release tag"):

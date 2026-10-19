@@ -37,8 +37,10 @@ public static class Installer
         if (value.schema_version == "portable_split_release_v2")
         {
             if (!Regex.IsMatch(value.release_tag ?? "", "^v[0-9]+\\.[0-9]+\\.[0-9]+$")
-                || value.download_base_url != "https://github.com/Hoshino-Rubi/any2xsampa/releases/download/"
-                    + value.release_tag + "/")
+                || (value.download_base_url != "https://github.com/Hoshino-Rubi/DIVA/releases/download/"
+                    + value.release_tag + "/"
+                    && value.download_base_url != "https://github.com/Hoshino-Rubi/any2xsampa/releases/download/"
+                    + value.release_tag + "/"))
                 throw new InvalidDataException("正式版下载地址必须绑定版本和指定仓库");
         }
         else if (value.release_tag is not null || value.download_base_url is not null)

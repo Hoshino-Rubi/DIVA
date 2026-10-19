@@ -1,18 +1,26 @@
-# Any2Xsampa
+# DIVA
 
 [English](README.md)
 
+**DIVA（Dialect Intonation & Vocal Automation）**，原名 Any2Xsampa，是将歌声音频整理为可在 VOCALOID 中编辑的 VSQX 工程的本地制作流水线。以 phones / 国际音标（IPA）为中间层，X-SAMPA 仅作为导出表示；目标是减少粤语、闽南语等汉语方言歌声制作中的手工音素输入。
+
+当前实现结合基于 PhoneticXeus 的音素识别、项目专用 guarded candidate 和 GAME 音符转录。方言覆盖与识别质量仍受下文边界限制，不承诺完美对齐，也尚未提供端到端合成人声音频渲染。
+
 本地音频 → IPA / phones → 音符 → VSQX / X-SAMPA。桌面程序与 CLI 共用本地子进程引擎，正常使用无需启动 HTTP 或 gRPC 服务。
 
-## Windows x64 · v1.0.1
+## 名称过渡
 
-从 v1.0.1 Release 下载 **Any2Xsampa-Setup-v1.0.1.exe** 并运行。安装器下载固定版本分卷，校验大小和 SHA256 后安装；支持显式续传，失败不自动重试。公共自动安装要求 Release 已发布且可匿名访问。
+从 **v1.0.2** 起产品名为 DIVA，仓库迁至 [Hoshino-Rubi/DIVA](https://github.com/Hoshino-Rubi/DIVA)。旧版 **v1.0.1** 二进制仍显示 Any2Xsampa，包括 `Any2Xsampa-Setup-v1.0.1.exe`，不受此次修改影响。`any2xsampa` Python 包和命令、内部可执行文件名、环境变量及数据目录保留旧名以兼容现有使用。无需搬动设置、模型或已有结果。详见[品牌迁移说明](docs/branding_migration.md)。
+
+## Windows x64 · v1.0.2
+
+从 [v1.0.2 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2) 下载 **DIVA-Setup-v1.0.2.exe** 并运行。安装器下载固定版本分卷，校验大小和 SHA256 后安装；支持显式续传，失败不自动重试。公共自动安装要求 Release 已发布且可匿名访问。
 
 离线时，把以下三个文件放在安装器旁边：
 
-- `Any2Xsampa-Windows-x64-v1.0.1.zip.001`
-- `Any2Xsampa-Windows-x64-v1.0.1.zip.002`
-- `Any2Xsampa-Windows-x64-v1.0.1.zip.003`
+- `DIVA-Windows-x64-v1.0.2.zip.001`
+- `DIVA-Windows-x64-v1.0.2.zip.002`
+- `DIVA-Windows-x64-v1.0.2.zip.003`
 
 双击安装器，选择可写目录。安装器会自动校验并解压；不要直接运行分卷或只复制桌面 EXE。无需另装 Python、.NET、CUDA Toolkit，也不用启动服务器。
 

@@ -24,7 +24,7 @@ public static class ReleaseUpdates
         var current = Version.Parse(currentTag.TrimStart('v'));
         var incoming = Version.Parse(tag[1..]);
         return new(tag, incoming > current,
-            new Uri("https://github.com/Hoshino-Rubi/any2xsampa/releases/tag/" + tag));
+            new Uri("https://github.com/Hoshino-Rubi/DIVA/releases/tag/" + tag));
     }
 
     public static async Task<ReleaseUpdate> CheckAsync(CancellationToken cancel, HttpClient? client = null)
@@ -36,8 +36,8 @@ public static class ReleaseUpdates
         try
         {
             using var request = new HttpRequestMessage(HttpMethod.Get,
-                "https://api.github.com/repos/Hoshino-Rubi/any2xsampa/releases/latest");
-            request.Headers.UserAgent.ParseAdd("Any2Xsampa/" + CurrentTag.TrimStart('v'));
+                "https://api.github.com/repos/Hoshino-Rubi/DIVA/releases/latest");
+            request.Headers.UserAgent.ParseAdd("DIVA/" + CurrentTag.TrimStart('v'));
             using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, limit.Token);
             response.EnsureSuccessStatusCode();
             await using var input = await response.Content.ReadAsStreamAsync(limit.Token);

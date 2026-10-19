@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Any2Xsampa · 本地音素工作台"
+    Title="DIVA · 本地音素与 VSQX 工作台"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
         <MicaBackdrop />
@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TitleBar x:Name="AppTitleBar" Title="Any2Xsampa · 本地音素工作台">
+        <TitleBar x:Name="AppTitleBar" Title="DIVA · 本地音素与 VSQX 工作台">
             <TitleBar.IconSource>
                 <ImageIconSource ImageSource="Assets/AppIcon.ico" />
             </TitleBar.IconSource>

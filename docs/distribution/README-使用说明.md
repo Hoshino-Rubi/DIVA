@@ -1,6 +1,8 @@
-# Any2Xsampa Windows x64 · v1.0.1
+# DIVA · Windows x64 使用说明
 
-下载 Any2Xsampa-Setup-v1.0.1.exe，运行后获取固定版本分卷、校验 SHA256 后安装。离线时，把三个 Any2Xsampa-Windows-x64-v1.0.1.zip.001 / .002 / .003 放在安装器旁边。公共自动安装需要已发布的公开 Release。
+DIVA（Dialect Intonation & Vocal Automation）原名 Any2Xsampa。本说明对应 DIVA v1.0.2，仓库为 https://github.com/Hoshino-Rubi/DIVA。历史版本与文件名保持不变，不要重命名旧分卷、模型或数据目录。内部程序仍名为 Any2Xsampa.Desktop.exe，CLI 仍为 any2xsampa.cmd。
+
+下载 DIVA-Setup-v1.0.2.exe，运行后获取固定版本分卷、校验 SHA256 后安装。离线时，把三个 DIVA-Windows-x64-v1.0.2.zip.001 / .002 / .003 放在安装器旁边。公共自动安装需要已发布的公开 Release。
 
 选择新的可写目录。可选择旧版安装目录，只复制哈希验证通过的模型，旧版和结果不修改。双击 Any2Xsampa.Desktop.exe，无需另装 Python、.NET、CUDA Toolkit 或服务器。
 

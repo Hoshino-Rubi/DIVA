@@ -9,7 +9,7 @@ public sealed partial class MainWindow : Window
     {
         InitializeComponent();
 
-        Title = "Any2Xsampa · 本地音素工作台";
+        Title = "DIVA · 本地音素与 VSQX 工作台";
         AppWindow.Resize(new Windows.Graphics.SizeInt32(1320, 900));
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);

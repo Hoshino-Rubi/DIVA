@@ -36,7 +36,8 @@ def test_single_source_generator_detects_drift(tmp_path):
         target = tmp_path / name; target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / name, target)
     file = tmp_path / "src/any2xsampa/__init__.py"
-    file.write_text(file.read_text().replace("1.0.1", "0.0.1"))
+    version = json.loads((tmp_path / "release-version.json").read_text(encoding="utf-8"))["python_version"]
+    file.write_text(file.read_text().replace(version, "0.0.1"))
     import pytest
     with pytest.raises(ValueError, match="mirrors"):
         module.sync(tmp_path, check=True)

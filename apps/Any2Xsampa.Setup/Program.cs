@@ -39,7 +39,7 @@ internal static class Program
         {
             if (args.Length > 0)
                 Console.Error.WriteLine(ex.Message);
-            else MessageBox.Show(ex.Message, "Any2Xsampa 安装失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else MessageBox.Show(ex.Message, "DIVA 安装失败", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return 1;
         }
     }
@@ -64,14 +64,14 @@ internal sealed class SetupForm : Form
     public SetupForm(ReleaseManifest value)
     {
         manifest = value;
-        Text = "Any2Xsampa " + (manifest.release_tag ?? "") + " 安装";
+        Text = "DIVA " + (manifest.release_tag ?? "") + " 安装";
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(730, 445);
         MinimumSize = new Size(650, 480);
         StartPosition = FormStartPosition.CenterScreen;
         Font = new Font("Microsoft YaHei UI", 10);
         var layout = new TableLayoutPanel { Dock = DockStyle.Fill, Padding = new Padding(20), RowCount = 9, ColumnCount = 1 };
-        layout.Controls.Add(new Label { Text = "Any2Xsampa · 本地音素与 VSQX 工作台", Font = new Font(Font.FontFamily, 15, FontStyle.Bold), AutoSize = true });
+        layout.Controls.Add(new Label { Text = "DIVA · 本地音素与 VSQX 工作台", Font = new Font(Font.FontFamily, 15, FontStyle.Bold), AutoSize = true });
         layout.Controls.Add(new Label { Text = manifest.schema_version == "portable_split_release_v2"
             ? "只需此安装器：将从固定 GitHub Release 下载分卷、校验 SHA256 后安装。\n已下载的分卷保留在本机缓存；也可把三个分卷放在安装器旁边离线安装。"
             : "请将安装器与三个 .zip.001 / .002 / .003 分卷放在同一文件夹。\n程序会校验 SHA256 并解压；无需另外安装 Python 或 .NET。", AutoSize = true });
@@ -102,7 +102,7 @@ internal sealed class SetupForm : Form
             using var dialog = new FolderBrowserDialog { Description = "选择此版本的安装目录；将保留模型和结果。" };
             if (dialog.ShowDialog(this) != DialogResult.OK) return;
             if (MessageBox.Show(this, "删除未修改的程序文件？模型、结果和共享缓存将保留。请先关闭应用。",
-                "卸载 Any2Xsampa", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+                "卸载 DIVA", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
             install.Enabled = remove.Enabled = false;
             try { var result = await Task.Run(() => Installer.Uninstall(manifest, dialog.SelectedPath));
                 status.Text = $"已删除 {result.removed} 个程序文件；模型和用户数据保留。"; }

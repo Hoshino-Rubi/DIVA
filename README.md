@@ -1,19 +1,27 @@
-# Any2Xsampa
+# DIVA
 
 [简体中文](README_CN.md)
+
+**DIVA (Dialect Intonation & Vocal Automation)**, formerly Any2Xsampa, is a local vocal-production pipeline for preparing singing audio as VOCALOID-editable VSQX projects. Phones and the International Phonetic Alphabet (IPA) form its intermediate layer; X-SAMPA is an export representation. DIVA aims to reduce manual phonetic entry for Chinese dialect singing, including Cantonese and Hokkien.
+
+The current implementation combines PhoneticXeus-based phone recognition, a project-specific guarded candidate and GAME note transcription. Dialect coverage and transcription quality remain subject to the limitations below. It does not promise perfect alignment or provide end-to-end synthesized vocal audio rendering.
 
 Local audio → IPA / phones → notes → VSQX / X-SAMPA.
 The Windows desktop app and CLI share a local subprocess engine. Normal use does **not** require an HTTP or gRPC server.
 
-## Windows x64 · v1.0.1
+## Naming transition
 
-Download **Any2Xsampa-Setup-v1.0.1.exe** and run it. Setup downloads the fixed application volumes, checks their sizes and SHA256, then installs into a new folder. Partial downloads support explicit resumption; failures do not start retry loops. Public automatic installation requires an anonymously accessible, published Release.
+DIVA is the product name starting with **v1.0.2**, at [Hoshino-Rubi/DIVA](https://github.com/Hoshino-Rubi/DIVA). The old **v1.0.1** binaries still display Any2Xsampa and are unchanged, including `Any2Xsampa-Setup-v1.0.1.exe`. The `any2xsampa` Python package and commands, internal executable names, environment variables and data directories retain their existing names for compatibility. No settings, models or saved results need to be moved. See the [branding migration notes](docs/branding_migration.md).
+
+## Windows x64 · v1.0.2
+
+Download **DIVA-Setup-v1.0.2.exe** from the [v1.0.2 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2) and run it. Setup downloads the fixed application volumes, checks their sizes and SHA256, then installs into a new folder. Partial downloads support explicit resumption; failures do not start retry loops. Public automatic installation requires an anonymously accessible, published Release.
 
 For offline installation, keep these beside Setup:
 
-- `Any2Xsampa-Windows-x64-v1.0.1.zip.001`
-- `Any2Xsampa-Windows-x64-v1.0.1.zip.002`
-- `Any2Xsampa-Windows-x64-v1.0.1.zip.003`
+- `DIVA-Windows-x64-v1.0.2.zip.001`
+- `DIVA-Windows-x64-v1.0.2.zip.002`
+- `DIVA-Windows-x64-v1.0.2.zip.003`
 
 Run the installer and choose a writable directory. It verifies the volumes and extracts the complete application. Do not run a volume directly or copy only the desktop EXE.
 Python, .NET and required libraries are bundled; no separate server or CUDA Toolkit installation is needed.
@@ -93,7 +101,7 @@ See [VSQX documentation](docs/vsqx_generation.md), [distribution instructions](d
 ## Development verification
 
 ~~~text
-python -m pytest tests/test_model_install.py tests/test_game_vsqx.py tests/test_local_score.py tests/test_local_engine.py tests/test_local_whole_audio.py tests/test_local_desktop_layout.py -q -p no:cacheprovider
+python -m pytest tests/test_product_branding.py tests/test_model_install.py tests/test_game_vsqx.py tests/test_local_score.py tests/test_local_engine.py tests/test_local_whole_audio.py tests/test_local_desktop_layout.py -q -p no:cacheprovider
 dotnet build apps/Any2Xsampa.Desktop/Any2Xsampa.Desktop.csproj --no-restore -c Debug -p:Platform=x64 -p:WindowsPackageType=None
 dotnet run --project apps/Any2Xsampa.Setup.Tests/Any2Xsampa.Setup.Tests.csproj -- <new-test-output-directory>
 ~~~
