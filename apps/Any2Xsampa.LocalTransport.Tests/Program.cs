@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 if(args.Length==2 && args[0]=="--diagnostics") { await DiagnosticChecks.Run(args[1]); return; }
 if(args.Length==1 && args[0]=="--release")
 {
-    if(ReleaseUpdates.CurrentTag!="v1.0.2")throw new Exception("Compiled release identity mismatch");
+    if(ReleaseUpdates.CurrentTag!="v1.0.3")throw new Exception("Compiled release identity mismatch");
     var same=ReleaseUpdates.Parse("""{"tag_name":"v1.0.1","draft":false,"prerelease":false,"html_url":"https://untrusted.invalid"}""", "v1.0.1");
     var newer=ReleaseUpdates.Parse("""{"tag_name":"v1.0.2","draft":false,"prerelease":false}""", "v1.0.1");
     if(same.IsNewer||!newer.IsNewer||newer.Page.AbsoluteUri!="https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2")

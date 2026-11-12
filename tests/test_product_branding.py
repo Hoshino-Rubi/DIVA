@@ -29,7 +29,8 @@ def test_readme_explains_new_brand_and_unchanged_published_downloads() -> None:
         assert FULL_NAME in text
         assert "docs/branding_migration.md" in text
         assert "Any2Xsampa-Setup-v1.0.1.exe" in text
-        assert "DIVA-Setup-v1.0.2.exe" in text
+        release = tomllib.loads(read("pyproject.toml"))["project"]["version"]
+        assert f"DIVA-Setup-v{release}.exe" in text
         assert "https://github.com/Hoshino-Rubi/DIVA" in text
         assert "any2xsampa.cmd" in text
         assert "ANY2XSAMPA_DATA_HOME" in text
@@ -53,11 +54,14 @@ def test_cli_help_is_branded_without_renaming_entry_points() -> None:
 
 def test_desktop_titles_and_new_export_names_use_diva() -> None:
     window = ET.parse(ROOT / "apps/Any2Xsampa.Desktop/MainWindow.xaml").getroot()
-    assert window.attrib["Title"] == TITLE
-    assert next(window.iter(f"{UI}TitleBar")).attrib["Title"] == TITLE
+    title_bar = next(window.iter(f"{UI}TitleBar"))
+    assert title_bar.attrib["{using:Any2Xsampa_Desktop.Services}UiText.Title"] == TITLE
     page = ET.parse(ROOT / "apps/Any2Xsampa.Desktop/MainPage.xaml").getroot()
-    assert any(node.attrib.get("Text") == TITLE for node in page.iter(f"{UI}TextBlock"))
-    assert f'Title = "{TITLE}";' in read("apps/Any2Xsampa.Desktop/MainWindow.xaml.cs")
+    assert any(node.attrib.get("{using:Any2Xsampa_Desktop.Services}UiText.Text") == "DIVA"
+               for node in page.iter(f"{UI}TextBlock"))
+    window_source = read("apps/Any2Xsampa.Desktop/MainWindow.xaml.cs")
+    assert f'Title = UiLanguage.Text("{TITLE}", "DIVA · Local Phones & VSQX Workbench");' in window_source
+    assert "UiLanguage.Changed += UpdateTitle" in window_source
     source = read("apps/Any2Xsampa.Desktop/MainPage.xaml.cs")
     assert '$"DIVA-{DateTime.Now:yyyyMMdd-HHmmssfff}.vsqx"' in source
     assert '$"DIVA-diagnostics-{DateTime.UtcNow:yyyyMMdd-HHmmssfff}.zip"' in source

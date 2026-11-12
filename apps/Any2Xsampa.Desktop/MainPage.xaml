@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page x:Class="Any2Xsampa_Desktop.MainPage"
  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
- xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Loaded="Page_Loaded">
- <Grid x:Name="PageLayout" Padding="20" RowSpacing="12" AllowDrop="True" DragOver="Audio_DragOver" Drop="Audio_Drop">
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:l="using:Any2Xsampa_Desktop.Services" Loaded="Page_Loaded">
+ <Grid x:Name="PageLayout" Padding="16" RowSpacing="10" Background="{ThemeResource LayerFillColorDefaultBrush}" AllowDrop="True" DragOver="Audio_DragOver" Drop="Audio_Drop">
   <Grid.RowDefinitions>
-   <RowDefinition Height="Auto"/>
-   <RowDefinition Height="Auto"/>
-   <RowDefinition Height="*"/>
-   <RowDefinition Height="Auto"/>
+   <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
   </Grid.RowDefinitions>
   <VisualStateManager.VisualStateGroups>
    <VisualStateGroup>
     <VisualState x:Name="StackedPanels">
      <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0"/></VisualState.StateTriggers>
+     <VisualState.Setters>
+      <Setter Target="ReviewViewport.VerticalScrollBarVisibility" Value="Auto"/>
+      <Setter Target="PhoneList.Height" Value="160"/>
+     </VisualState.Setters>
     </VisualState>
     <VisualState x:Name="SideBySidePanels">
-     <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="1100"/></VisualState.StateTriggers>
+     <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="800"/></VisualState.StateTriggers>
      <VisualState.Setters>
       <Setter Target="ReviewColumn.Width" Value="*"/>
-      <Setter Target="ReviewPanel.(Grid.Row)" Value="0"/>
-      <Setter Target="ReviewPanel.(Grid.Column)" Value="1"/>
+      <Setter Target="SecondWorkspaceRow.Height" Value="0"/>
+      <Setter Target="ReviewViewport.(Grid.Row)" Value="0"/>
+      <Setter Target="ReviewViewport.(Grid.Column)" Value="1"/>
      </VisualState.Setters>
     </VisualState>
    </VisualStateGroup>
@@ -28,168 +31,222 @@
      <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0"/></VisualState.StateTriggers>
     </VisualState>
     <VisualState x:Name="WideControls">
-     <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="800"/></VisualState.StateTriggers>
+     <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="1200"/></VisualState.StateTriggers>
      <VisualState.Setters>
       <Setter Target="ModelBox.(Grid.ColumnSpan)" Value="1"/>
       <Setter Target="DeviceBox.(Grid.Row)" Value="0"/>
       <Setter Target="DeviceBox.(Grid.Column)" Value="1"/>
-      <Setter Target="EnvironmentActions.Orientation" Value="Horizontal"/>
      </VisualState.Setters>
     </VisualState>
    </VisualStateGroup>
   </VisualStateManager.VisualStateGroups>
 
-  <StackPanel Spacing="4">
-   <TextBlock Text="DIVA · 本地音素与 VSQX 工作台" FontSize="25" FontWeight="SemiBold" TextWrapping="Wrap"/>
-  </StackPanel>
+  <Grid ColumnSpacing="16">
+   <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+   <StackPanel Spacing="2" VerticalAlignment="Center">
+    <TextBlock l:UiText.Text="DIVA" FontSize="28" FontWeight="SemiBold"/>
+    <TextBlock l:UiText.Text="从音频到音素与 VSQX" FontSize="13" Opacity=".7" TextWrapping="Wrap"/>
+   </StackPanel>
+   <ComboBox x:Name="LanguageBox" Grid.Column="1" Width="210" l:UiText.Header="界面语言" l:UiText.AutomationName="界面语言" SelectionChanged="Language_Changed">
+    <ComboBoxItem Tag="system" l:UiText.Content="跟随系统 / System"/>
+    <ComboBoxItem Tag="en" l:UiText.Content="English"/>
+    <ComboBoxItem Tag="zh" l:UiText.Content="中文"/>
+   </ComboBox>
+  </Grid>
 
-  <!-- Primary actions stay outside the scrolling content, in their own Auto row. -->
-  <Border Grid.Row="1" Padding="12" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-   <StackPanel Spacing="8">
-   <StackPanel Orientation="Horizontal" Spacing="14">
-    <TextBlock Text="识别范围" VerticalAlignment="Center"/>
-    <RadioButton x:Name="WholeMode" Content="整首" GroupName="InferenceScope" IsChecked="True"/>
-    <RadioButton x:Name="ClipMode" Content="当前片段" GroupName="InferenceScope"/>
-    <CheckBox x:Name="AutoVsqxBox" Content="识别后自动生成 VSQX" IsChecked="True"/>
-   </StackPanel>
-   <Grid x:Name="TaskActions" ColumnSpacing="10">
-    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-    <Button x:Name="RunButton" Content="开始识别并生成" Click="Recognize_Click" Style="{StaticResource AccentButtonStyle}"
-            AutomationProperties.Name="开始真实音素识别" ToolTipService.ToolTip="运行所选真实模型（Ctrl+Enter），不会改用回放数据">
-     <Button.KeyboardAccelerators><KeyboardAccelerator Key="Enter" Modifiers="Control"/></Button.KeyboardAccelerators>
-    </Button>
-    <Button x:Name="CancelButton" Grid.Column="1" Content="取消当前任务" Click="Cancel_Click" IsEnabled="False"/>
-    <ProgressRing x:Name="BusyRing" Grid.Column="2" Width="26" Height="26" IsActive="False"/>
-    <ProgressBar x:Name="WholeProgress" Grid.Column="3" Maximum="100" Minimum="0" Height="8" VerticalAlignment="Center" Visibility="Collapsed"/>
+  <!-- Task controls remain visible on every tab. -->
+  <Border Grid.Row="1" Padding="12,8" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+   <Grid ColumnSpacing="16" RowSpacing="2">
+    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel Orientation="Horizontal" Spacing="12">
+     <TextBlock l:UiText.Text="识别范围" VerticalAlignment="Center"/>
+     <RadioButton x:Name="WholeMode" l:UiText.Content="整首" GroupName="InferenceScope" IsChecked="True"/>
+     <RadioButton x:Name="ClipMode" l:UiText.Content="当前片段" GroupName="InferenceScope"/>
+    </StackPanel>
+    <CheckBox x:Name="AutoVsqxBox" Grid.Row="1" l:UiText.Content="识别后自动生成 VSQX" IsChecked="True"/>
+    <Grid x:Name="TaskActions" Grid.Column="1" Grid.RowSpan="2" ColumnSpacing="8" RowSpacing="6" VerticalAlignment="Center">
+     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+     <Button x:Name="RunButton" l:UiText.Content="开始识别" Click="Recognize_Click" Style="{StaticResource AccentButtonStyle}"
+             l:UiText.AutomationName="开始真实音素识别" l:UiText.ToolTip="运行所选真实模型（Ctrl+Enter），不会改用回放数据">
+      <Button.KeyboardAccelerators><KeyboardAccelerator Key="Enter" Modifiers="Control"/></Button.KeyboardAccelerators>
+     </Button>
+     <Button x:Name="CancelButton" Grid.Column="1" l:UiText.Content="取消" Click="Cancel_Click" IsEnabled="False"/>
+     <ProgressRing x:Name="BusyRing" Grid.Column="2" Width="22" Height="22" IsActive="False" l:UiText.AutomationName="任务进行中"/>
+     <ProgressBar x:Name="WholeProgress" Grid.Row="1" Grid.ColumnSpan="3" Maximum="100" Minimum="0" Height="4" Visibility="Collapsed" l:UiText.AutomationName="识别进度"/>
+    </Grid>
    </Grid>
-   </StackPanel>
   </Border>
 
-  <!-- All variable-height configuration, playback and review content can scroll. -->
-  <ScrollViewer x:Name="WorkspaceScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto"
-                HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled" HorizontalContentAlignment="Stretch">
-   <StackPanel Spacing="18" Padding="0,0,12,12">
-    <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-     <StackPanel Spacing="12">
-      <Grid ColumnSpacing="12">
-       <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-       <Button Content="打开 WAV / 拖入" Click="Browse_Click"/>
-       <TextBox x:Name="AudioPathBox" Grid.Column="1" IsReadOnly="True" PlaceholderText="选择 PCM WAV 文件"/>
-      </Grid>
-      <Grid RowSpacing="8" ColumnSpacing="12">
-       <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-       <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="180"/></Grid.ColumnDefinitions>
-       <ComboBox x:Name="ModelBox" Grid.ColumnSpan="2" Header="真实模型（必须明确选择）" HorizontalAlignment="Stretch" DisplayMemberPath="Label" SelectionChanged="Model_Changed"/>
-       <ComboBox x:Name="DeviceBox" Grid.Row="1" Header="设备" SelectedIndex="0" HorizontalAlignment="Stretch">
-        <ComboBoxItem Content="CUDA" Tag="cuda"/><ComboBoxItem Content="CPU（兼容模型）" Tag="cpu"/>
-       </ComboBox>
-      </Grid>
-      <TextBlock x:Name="ModelStatus" Text="正在检查本地运行包……" TextWrapping="Wrap"/>
-      <Border Padding="12" CornerRadius="6" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-       <StackPanel Spacing="8">
-        <TextBlock Text="模型安装" FontWeight="SemiBold"/>
-        <TextBlock x:Name="ModelSetupStatus" Text="正在检查模型文件……" TextWrapping="Wrap"/>
-        <ProgressBar x:Name="ModelDownloadProgress" Minimum="0" Maximum="100" Visibility="Collapsed"/>
-        <TextBox x:Name="ModelProxyBox" Header="下载代理（可选）" PlaceholderText="例如 http://127.0.0.1:18080；留空使用系统代理"/>
-        <CheckBox x:Name="AutoDownloadBox" Content="启动时自动下载缺失模型" IsChecked="True" Checked="AutoDownload_Changed" Unchecked="AutoDownload_Changed"/>
-        <StackPanel Orientation="Horizontal" Spacing="8">
-         <Button x:Name="InstallModelsButton" Content="下载 / 继续下载模型" Click="InstallModels_Click"/>
-         <Button x:Name="ImportModelsButton" Content="导入离线模型文件夹" Click="ImportModels_Click"/>
-        </StackPanel>
-        <TextBlock Text="PhoneticXeus：Apache-2.0；GAME 权重：CC BY-NC-SA 4.0（限非商业使用）。模型文件校验成功后才启用，识别阶段断网。" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
-       </StackPanel>
-      </Border>
-      <Expander Header="模型环境与已有结果回放" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-       <StackPanel Spacing="10">
-        <StackPanel x:Name="EnvironmentActions" Orientation="Vertical" Spacing="8">
-         <Button Content="检查环境" Click="Doctor_Click"/>
-         <Button Content="检查程序更新" Click="CheckUpdate_Click" ToolTipService.ToolTip="仅检查公开正式版，不会自动下载或替换程序"/>
-         <Button Content="导出诊断包" Click="ExportDiagnostics_Click" ToolTipService.ToolTip="保存脱敏错误码、模型文件状态与资源信息；不会上传，可在模型未就绪时使用"/>
-         <Button Content="释放模型显存" Click="Unload_Click"/>
-         <Button Content="显式回放 JSON" Click="Replay_Click" ToolTipService.ToolTip="只回放已有结果，不执行真实模型推理"/>
-        </StackPanel>
-        <TextBlock x:Name="GpuStatus" Text="GPU 状态尚未检查" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
-       </StackPanel>
-      </Expander>
-     </StackPanel>
-    </Border>
-
-    <Grid x:Name="WorkspacePanels" RowSpacing="18" ColumnSpacing="18">
-     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <Pivot x:Name="WorkspaceTabs" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+   <PivotItem l:UiText.Header="工作区">
+    <Grid x:Name="WorkspacePanels" RowSpacing="10" ColumnSpacing="12">
+     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition x:Name="SecondWorkspaceRow" Height="*"/></Grid.RowDefinitions>
      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition x:Name="ReviewColumn" Width="0"/></Grid.ColumnDefinitions>
-     <StackPanel x:Name="AudioPanel" Spacing="12" VerticalAlignment="Top">
-      <TextBlock Text="音频与片段" FontSize="20" FontWeight="SemiBold"/>
-      <Border Height="140" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="6">
-       <Canvas x:Name="Waveform" SizeChanged="Waveform_SizeChanged" PointerPressed="Waveform_PointerPressed" Background="Transparent"/>
+     <ScrollViewer x:Name="WorkspaceScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled" HorizontalContentAlignment="Stretch">
+      <Border Padding="12" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+       <StackPanel x:Name="AudioPanel" Spacing="10">
+        <TextBlock l:UiText.Text="音频与片段" FontSize="18" FontWeight="SemiBold"/>
+        <Grid ColumnSpacing="8">
+         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+         <Button l:UiText.Content="打开 WAV" Click="Browse_Click" l:UiText.ToolTip="选择 WAV 文件，也可将文件拖入窗口"/>
+         <TextBox x:Name="AudioPathBox" Grid.Column="1" IsReadOnly="True" l:UiText.Placeholder="选择 PCM WAV 文件" l:UiText.AutomationName="音频文件路径"/>
+        </Grid>
+        <Grid RowSpacing="8" ColumnSpacing="8">
+         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="150"/></Grid.ColumnDefinitions>
+         <ComboBox x:Name="ModelBox" Grid.ColumnSpan="2" l:UiText.Header="真实音素模型" HorizontalAlignment="Stretch" DisplayMemberPath="Label" SelectionChanged="Model_Changed"/>
+         <ComboBox x:Name="DeviceBox" Grid.Row="1" l:UiText.Header="设备" SelectedIndex="0" HorizontalAlignment="Stretch">
+          <ComboBoxItem l:UiText.Content="CUDA" Tag="cuda"/><ComboBoxItem l:UiText.Content="CPU（兼容模型）" Tag="cpu"/>
+         </ComboBox>
+        </Grid>
+        <TextBlock x:Name="ModelStatus" l:UiText.Text="正在检查本地运行包……" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+        <Border Height="108" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="6">
+         <Canvas x:Name="Waveform" SizeChanged="Waveform_SizeChanged" PointerPressed="Waveform_PointerPressed" Background="Transparent" l:UiText.AutomationName="音频波形，点击选择片段起点"/>
+        </Border>
+        <Grid ColumnSpacing="8">
+         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+         <NumberBox x:Name="StartBox" l:UiText.Header="起点（秒）" l:UiText.ToolTip="也可点击波形选择起点" Value="0" Minimum="0" SmallChange=".1" SpinButtonPlacementMode="Compact" ValueChanged="Range_Changed"/>
+         <NumberBox x:Name="DurationBox" Grid.Column="1" l:UiText.Header="时长（0.1–20 秒）" Value="8" Minimum=".1" Maximum="20" SmallChange=".1" SpinButtonPlacementMode="Compact" ValueChanged="Range_Changed"/>
+        </Grid>
+        <MediaPlayerElement x:Name="Player" MinHeight="104" AreTransportControlsEnabled="True"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+         <Button l:UiText.Content="试听片段" Click="Play_Click"/><Button l:UiText.Content="停止" Click="Stop_Click"/><CheckBox x:Name="LoopBox" l:UiText.Content="循环"/>
+        </StackPanel>
+        <TextBlock x:Name="AudioStatus" l:UiText.Text="尚未选择音频" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+       </StackPanel>
       </Border>
-      <Grid ColumnSpacing="12">
-       <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-       <NumberBox x:Name="StartBox" Header="开始（秒；也可点击波形）" Value="0" Minimum="0" SmallChange=".1" SpinButtonPlacementMode="Compact" ValueChanged="Range_Changed"/>
-       <NumberBox x:Name="DurationBox" Grid.Column="1" Header="时长（0.1–20 秒）" Value="8" Minimum=".1" Maximum="20" SmallChange=".1" SpinButtonPlacementMode="Compact" ValueChanged="Range_Changed"/>
-      </Grid>
-      <MediaPlayerElement x:Name="Player" Height="56" AreTransportControlsEnabled="True"/>
-      <StackPanel Orientation="Horizontal" Spacing="8">
-       <Button Content="试听片段" Click="Play_Click"/><Button Content="停止" Click="Stop_Click"/><CheckBox x:Name="LoopBox" Content="循环"/>
-      </StackPanel>
-      <TextBlock x:Name="AudioStatus" Text="尚未选择音频" TextWrapping="Wrap" Opacity=".7"/>
-      <Expander Header="任务日志" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-       <ScrollViewer MaxHeight="160" VerticalScrollBarVisibility="Auto">
-        <TextBlock x:Name="ActivityLog" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12" IsTextSelectionEnabled="True"/>
-       </ScrollViewer>
-      </Expander>
-     </StackPanel>
+     </ScrollViewer>
 
-     <StackPanel x:Name="ReviewPanel" Grid.Row="1" Spacing="10" VerticalAlignment="Top">
-      <TextBlock Text="识别与审核" FontSize="20" FontWeight="SemiBold"/>
-      <TextBlock x:Name="ResultStatus" Text="暂无结果。点击音素行试听附近；时间是发射线索，不是已确认的音素边界。" TextWrapping="Wrap"/>
-      <Grid ColumnSpacing="8">
-       <Grid.ColumnDefinitions><ColumnDefinition Width="90"/><ColumnDefinition Width="80"/><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-       <TextBlock Text="原音频时间"/><TextBlock Grid.Column="1" Text="机器 IPA"/><TextBlock Grid.Column="2" Text="X-SAMPA"/><TextBlock Grid.Column="3" Text="人工 IPA 草稿（自动保存）" TextWrapping="Wrap"/>
+     <ScrollViewer x:Name="ReviewViewport" Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled" HorizontalContentAlignment="Stretch">
+     <Grid x:Name="ReviewPanel" RowSpacing="8" Padding="12" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+      <Grid.RowDefinitions>
+       <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <TextBlock l:UiText.Text="识别与审核" FontSize="18" FontWeight="SemiBold"/>
+      <ScrollViewer Grid.Row="1" MaxHeight="66" VerticalScrollBarVisibility="Auto">
+       <TextBlock x:Name="ResultStatus" l:UiText.Text="暂无结果。点击音素行试听附近；时间是发射线索，不是已确认的音素边界。" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+      </ScrollViewer>
+      <Grid Grid.Row="2" ColumnSpacing="6" Padding="12,0">
+       <Grid.ColumnDefinitions><ColumnDefinition Width="76"/><ColumnDefinition Width="62"/><ColumnDefinition Width="78"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+       <TextBlock l:UiText.Text="时间（秒）" TextWrapping="Wrap" FontSize="12"/>
+       <TextBlock Grid.Column="1" l:UiText.Text="机器 IPA" TextWrapping="Wrap" FontSize="12"/>
+       <TextBlock Grid.Column="2" l:UiText.Text="X-SAMPA" TextWrapping="Wrap" FontSize="12"/>
+       <TextBlock Grid.Column="3" l:UiText.Text="IPA 草稿 · 自动保存" TextWrapping="Wrap" FontSize="12"/>
       </Grid>
-      <ListView x:Name="PhoneList" Height="320" SelectionChanged="Phone_Selected" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto">
+      <ListView x:Name="PhoneList" Grid.Row="3" SelectionChanged="Phone_Selected" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" l:UiText.AutomationName="音素识别结果与 IPA 草稿">
        <ListView.ItemTemplate><DataTemplate>
-        <Grid ColumnSpacing="8" Padding="0,4">
-         <Grid.ColumnDefinitions><ColumnDefinition Width="90"/><ColumnDefinition Width="80"/><ColumnDefinition Width="100"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <Grid ColumnSpacing="6" Padding="0,3">
+         <Grid.ColumnDefinitions><ColumnDefinition Width="76"/><ColumnDefinition Width="62"/><ColumnDefinition Width="78"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
          <TextBlock Text="{Binding TimeLabel}" VerticalAlignment="Center" FontSize="12"/>
          <TextBlock Grid.Column="1" Text="{Binding MachineIpa}" VerticalAlignment="Center" FontSize="20"/>
          <TextBlock Grid.Column="2" Text="{Binding XSampa}" VerticalAlignment="Center" TextWrapping="Wrap"/>
-         <TextBox Grid.Column="3" Text="{Binding EditedIpa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="80"/>
+         <TextBox Grid.Column="3" Text="{Binding EditedIpa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="70" l:UiText.AutomationName="人工 IPA 草稿"/>
         </Grid>
        </DataTemplate></ListView.ItemTemplate>
       </ListView>
-      <CheckBox x:Name="UseDraftBox" Content="IPA / X-SAMPA 文本导出使用人工修改"/>
-      <TextBlock x:Name="DraftStatus" TextWrapping="Wrap"/>
-      <Border Padding="12" CornerRadius="6" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-       <StackPanel Spacing="8">
-        <TextBlock Text="音符与 VSQX" FontSize="18" FontWeight="SemiBold"/>
-        <TextBlock Text="GAME 从音频识别音高、起点和终点，与音素结果合成为 VSQX。支持整首；无需人工确认即可导出。" TextWrapping="Wrap"/>
-        <TextBox x:Name="NoteSnapshotBox" Header="GAME 模型目录（本地；CPU 四线程）" PlaceholderText="配置 local-notes.json 或选择已有模型目录"/>
-        <Button Content="选择 GAME 模型目录" Click="BrowseNoteModel_Click"/>
-        <TextBlock x:Name="NoteRuntimeStatus" TextWrapping="Wrap"/>
-        <NumberBox x:Name="ScoreTempo" Header="音频分析的节拍网格 BPM（保留实际秒数，不自动移调）" Value="120" Minimum="20" Maximum="400" SmallChange="1"/>
-        <StackPanel Spacing="8">
-         <Button x:Name="AnalyzeScoreButton" Content="生成 VSQX（GAME 音高与起止点）" Click="AnalyzeScore_Click"/>
-         <Button x:Name="ImportNotesButton" Content="使用已保存 GAME 音符（不重复推理）" Click="ImportNotes_Click"/>
-         <Button x:Name="ImportScoreButton" Content="导入已有 VSQX并生成音素草稿" Click="ImportScore_Click"/>
-         <Button x:Name="ExportScoreButton" Content="导出 VSQX（音高/时值保留）" Click="ExportScore_Click" Style="{StaticResource AccentButtonStyle}"/>
-        </StackPanel>
-        <TextBlock x:Name="ScoreStatus" Text="尚无音符数据；TXT 仅为辅助音素导出。" TextWrapping="Wrap"/>
-        <TextBlock Text="起点（秒）／时值（秒）／音高 MIDI／音素来源" Opacity=".7"/>
-        <ListView x:Name="ScoreList" Height="180" SelectionChanged="Score_Selected" HorizontalContentAlignment="Stretch">
-         <ListView.ItemTemplate><DataTemplate><TextBlock Text="{Binding Label}" TextWrapping="Wrap" Padding="0,4"/></DataTemplate></ListView.ItemTemplate>
-        </ListView>
+      <StackPanel Grid.Row="4" Spacing="2">
+       <CheckBox x:Name="UseDraftBox"><TextBlock l:UiText.Text="文本导出使用人工 IPA 修改" TextWrapping="Wrap"/></CheckBox>
+       <TextBlock x:Name="DraftStatus" TextWrapping="Wrap" FontSize="12"/>
+      </StackPanel>
+      <Grid Grid.Row="5" ColumnSpacing="6" RowSpacing="6">
+       <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+       <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+       <Button l:UiText.Content="导出 IPA" Click="ExportIpa_Click" HorizontalAlignment="Stretch"/>
+       <Button Grid.Column="1" l:UiText.Content="导出 X-SAMPA" Click="ExportXSampa_Click" HorizontalAlignment="Stretch"/>
+       <Button Grid.Row="1" Grid.ColumnSpan="2" l:UiText.Content="打开结果目录" Click="OpenOutput_Click" HorizontalAlignment="Stretch"/>
+      </Grid>
+     </Grid>
+     </ScrollViewer>
+    </Grid>
+   </PivotItem>
+
+   <PivotItem l:UiText.Header="音符与导出">
+    <Grid ColumnSpacing="12">
+     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+      <Border Padding="12" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+       <StackPanel Spacing="10">
+        <TextBlock l:UiText.Text="音符与 VSQX" FontSize="18" FontWeight="SemiBold"/>
+        <TextBlock l:UiText.Text="GAME 从音频识别音高、起点和终点，与音素结果合成为 VSQX。支持整首；无需人工确认即可导出。" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+        <TextBox x:Name="NoteSnapshotBox" l:UiText.Header="GAME 模型目录（本地；CPU 四线程）" l:UiText.Placeholder="配置 local-notes.json 或选择已有模型目录"/>
+        <Button Click="BrowseNoteModel_Click" HorizontalAlignment="Stretch"><TextBlock l:UiText.Text="选择 GAME 模型目录" TextWrapping="Wrap"/></Button>
+        <TextBlock x:Name="NoteRuntimeStatus" TextWrapping="Wrap" FontSize="12"/>
+        <NumberBox x:Name="ScoreTempo" l:UiText.Header="节拍网格 BPM" l:UiText.ToolTip="保留实际秒数；导出音高由音高模式决定" Value="120" Minimum="20" Maximum="400" SmallChange="1"/>
+        <ComboBox x:Name="ScorePitchMode" l:UiText.Header="导出音高模式" HorizontalAlignment="Stretch" SelectedIndex="1" SelectionChanged="ScorePitchMode_Changed">
+         <ComboBoxItem Tag="original" l:UiText.Content="原始音高"/>
+         <ComboBoxItem Tag="miku_v4c_octave" l:UiText.Content="Miku V4C 八度适配"/>
+         <ComboBoxItem Tag="manual" l:UiText.Content="手动移调"/>
+        </ComboBox>
+        <NumberBox x:Name="ScoreTranspose" l:UiText.Header="手动移调（半音）" Value="0" Minimum="-36" Maximum="36" SmallChange="1" LargeChange="12" SpinButtonPlacementMode="Compact" IsEnabled="False" ValueChanged="ScoreTranspose_Changed"/>
+        <Button x:Name="AnalyzeScoreButton" Click="AnalyzeScore_Click" HorizontalAlignment="Stretch"><TextBlock l:UiText.Text="生成 VSQX（GAME 音高与起止点）" TextWrapping="Wrap"/></Button>
+        <Button x:Name="ImportNotesButton" Click="ImportNotes_Click" HorizontalAlignment="Stretch"><TextBlock l:UiText.Text="使用已保存 GAME 音符（不重复推理）" TextWrapping="Wrap"/></Button>
+        <Button x:Name="ImportScoreButton" Click="ImportScore_Click" HorizontalAlignment="Stretch"><TextBlock l:UiText.Text="导入已有 VSQX 并生成音素草稿" TextWrapping="Wrap"/></Button>
+        <Button x:Name="ExportScoreButton" Click="ExportScore_Click" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"><TextBlock l:UiText.Text="导出 VSQX（按所选音高模式）" TextWrapping="Wrap"/></Button>
        </StackPanel>
       </Border>
-      <StackPanel Orientation="Horizontal" Spacing="8">
-       <Button Content="导出 IPA" Click="ExportIpa_Click"/><Button Content="导出 X-SAMPA" Click="ExportXSampa_Click"/><Button Content="打开结果目录" Click="OpenOutput_Click"/>
-      </StackPanel>
-     </StackPanel>
+     </ScrollViewer>
+     <Grid Grid.Column="1" Padding="12" RowSpacing="10" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+      <TextBlock l:UiText.Text="音符预览（原始识别／导入音高，移调仅用于导出）" TextWrapping="Wrap" FontSize="18" FontWeight="SemiBold"/>
+      <TextBlock x:Name="ScoreStatus" Grid.Row="1" l:UiText.Text="尚无音符数据；TXT 仅为辅助音素导出。" TextWrapping="Wrap"/>
+      <TextBlock Grid.Row="2" l:UiText.Text="起点（秒）／时值（秒）／音高 MIDI／音素来源" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+      <ListView x:Name="ScoreList" Grid.Row="3" SelectionChanged="Score_Selected" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" l:UiText.AutomationName="音符列表">
+       <ListView.ItemTemplate><DataTemplate><TextBlock Text="{Binding Label}" TextWrapping="Wrap" Padding="0,4"/></DataTemplate></ListView.ItemTemplate>
+      </ListView>
+     </Grid>
     </Grid>
-   </StackPanel>
-  </ScrollViewer>
+   </PivotItem>
 
-  <ScrollViewer Grid.Row="3" MaxHeight="96" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-   <InfoBar x:Name="StatusBar" IsOpen="True" IsClosable="False" Severity="Informational" Title="本地模式" Message="真实识别、结果回放和人工修改分别标记。"/>
+   <PivotItem l:UiText.Header="模型与设置">
+    <Grid ColumnSpacing="12">
+     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+      <Border Padding="12" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+       <StackPanel Spacing="10">
+        <TextBlock l:UiText.Text="模型安装" FontSize="18" FontWeight="SemiBold"/>
+        <TextBlock x:Name="ModelSetupStatus" l:UiText.Text="正在检查模型文件……" TextWrapping="Wrap"/>
+        <ProgressBar x:Name="ModelDownloadProgress" Minimum="0" Maximum="100" Visibility="Collapsed" l:UiText.AutomationName="模型下载进度"/>
+        <TextBox x:Name="ModelProxyBox" l:UiText.Header="下载代理（可选）" l:UiText.Placeholder="例如 http://127.0.0.1:18080；留空使用系统代理"/>
+        <CheckBox x:Name="AutoDownloadBox" IsChecked="False" Checked="AutoDownload_Changed" Unchecked="AutoDownload_Changed"><TextBlock l:UiText.Text="启动时自动下载缺失模型" TextWrapping="Wrap"/></CheckBox>
+        <Button x:Name="InstallModelsButton" Click="InstallModels_Click" HorizontalAlignment="Stretch"><TextBlock l:UiText.Text="下载 / 继续下载模型" TextWrapping="Wrap"/></Button>
+        <Button x:Name="ImportModelsButton" Click="ImportModels_Click" HorizontalAlignment="Stretch"><TextBlock l:UiText.Text="导入离线模型文件夹" TextWrapping="Wrap"/></Button>
+        <TextBlock l:UiText.Text="PhoneticXeus：Apache-2.0；GAME 权重：CC BY-NC-SA 4.0（限非商业使用）。模型文件校验成功后才启用，识别阶段断网。" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+       </StackPanel>
+      </Border>
+     </ScrollViewer>
+     <Grid Grid.Column="1" RowSpacing="12">
+      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+      <ScrollViewer MaxHeight="270" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+       <Border Padding="12" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+        <StackPanel Spacing="8">
+         <TextBlock l:UiText.Text="环境与诊断" FontSize="18" FontWeight="SemiBold"/>
+         <StackPanel x:Name="EnvironmentActions" Spacing="6">
+          <Button l:UiText.Content="检查环境" Click="Doctor_Click" HorizontalAlignment="Stretch"/>
+          <Button l:UiText.Content="检查程序更新" Click="CheckUpdate_Click" HorizontalAlignment="Stretch" l:UiText.ToolTip="仅检查公开正式版，不会自动下载或替换程序"/>
+          <Button l:UiText.Content="导出诊断包" Click="ExportDiagnostics_Click" HorizontalAlignment="Stretch" l:UiText.ToolTip="保存脱敏错误码、模型文件状态与资源信息；不会上传，可在模型未就绪时使用"/>
+          <Button l:UiText.Content="释放模型显存" Click="Unload_Click" HorizontalAlignment="Stretch"/>
+          <Button l:UiText.Content="显式回放 JSON" Click="Replay_Click" HorizontalAlignment="Stretch" l:UiText.ToolTip="只回放已有结果，不执行真实模型推理"/>
+         </StackPanel>
+         <TextBlock x:Name="GpuStatus" l:UiText.Text="GPU 状态尚未检查" TextWrapping="Wrap" FontSize="12" Opacity=".7"/>
+        </StackPanel>
+       </Border>
+      </ScrollViewer>
+      <Grid Grid.Row="1" Padding="12" RowSpacing="8" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+       <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+       <TextBlock l:UiText.Text="任务日志" FontSize="18" FontWeight="SemiBold"/>
+       <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <TextBlock x:Name="ActivityLog" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12" IsTextSelectionEnabled="True"/>
+       </ScrollViewer>
+      </Grid>
+     </Grid>
+    </Grid>
+   </PivotItem>
+  </Pivot>
+
+  <ScrollViewer Grid.Row="3" MaxHeight="72" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+   <InfoBar x:Name="StatusBar" IsOpen="True" IsClosable="False" Severity="Informational" l:UiText.Title="本地模式" l:UiText.Message="真实识别、结果回放和人工修改分别标记。"/>
   </ScrollViewer>
  </Grid>
 </Page>

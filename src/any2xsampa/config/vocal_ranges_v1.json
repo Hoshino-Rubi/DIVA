@@ -1,0 +1,15 @@
+{
+  "schema_version": "vocal_range_policy_v1",
+  "profiles": {
+    "miku_v4c": {
+      "recommended_min_midi": 61,
+      "recommended_max_midi": 73,
+      "manufacturer_range": "C#3-C#4 (Yamaha convention; MIDI 60 = C3)",
+      "source": "https://sonicwire.com/product/virtualsinger/special/mikuv4c?lang=en",
+      "octave_step_semitones": 12,
+      "maximum_transpose_semitones": 36,
+      "selection": "minimum_duration_weighted_squared_distance_outside_recommended_range_then_smallest_shift",
+      "individual_notes_clamped_or_octave_folded": false
+    }
+  }
+}

@@ -28,7 +28,8 @@ public sealed class PhoneRow : INotifyPropertyChanged
     public double End { get; init; }
     public string TimeLabel => $"{Start:F2}–{End:F2}";
     public string MachineIpa { get; init; } = "";
-    public string XSampa { get; init; } = "";
+    private string xsampa = "";
+    public string XSampa { get => string.IsNullOrEmpty(xsampa) ? UiLanguage.Text("缺少转换规则", "No conversion rule") : xsampa; init => xsampa=value; }
     private string editedIpa = "";
     public string EditedIpa
     {
@@ -36,12 +37,17 @@ public sealed class PhoneRow : INotifyPropertyChanged
         set { if (value == editedIpa) return; editedIpa=value; PropertyChanged?.Invoke(this,new(nameof(EditedIpa))); Changed?.Invoke(); }
     }
     public Action? Changed { get; set; }
+    public void RefreshLanguage() => PropertyChanged?.Invoke(this,new(nameof(XSampa)));
     public event PropertyChangedEventHandler? PropertyChanged;
 }
 public sealed record ModelChoice(string Id, string Label, bool Available, string Detail);
-public sealed record ScoreRow(double Start, double Duration, int Pitch, string Phones, bool Placeholder)
+public sealed record ScoreRow(double Start, double Duration, int Pitch, string Phones, bool Placeholder) : INotifyPropertyChanged
 {
-    public string Label => $"{Start:F2} s / {Duration:F2} s / MIDI {Pitch} / {(Placeholder ? "待定占位：" : "")}{Phones}";
+    public string Label => UiLanguage.Text(
+        $"{Start:F2} 秒 / {Duration:F2} 秒 / MIDI {Pitch} / {(Placeholder ? "待定占位：" : "")}{Phones}",
+        $"{Start:F2} s / {Duration:F2} s / MIDI {Pitch} / {(Placeholder ? "Placeholder: " : "")}{Phones}");
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void RefreshLanguage() => PropertyChanged?.Invoke(this,new(nameof(Label)));
 }
 
 public sealed partial class MainPage : Page
@@ -59,12 +65,17 @@ public sealed partial class MainPage : Page
     private double[] peaks = Array.Empty<double>();
     private bool initialized, closed, dirty, closingAuthorized;
     private bool setupPreferencesReady;
+    private bool languageReady, modelSetupEnabled, refreshingModelChoices;
+    private readonly Dictionary<DependencyObject, Action> presentations = new();
+    private Action? statusTitlePresentation, statusMessagePresentation;
+    private readonly List<(string Id, bool Available, string Detail)> modelChoices = new();
     private long editVersion;
     private readonly Queue<string> log = new();
     public MainPage(LocalTaskService service)
     {
         this.service=service;
         InitializeComponent();
+        InitializeLanguageSelection();
         PhoneList.ItemsSource=rows;
         ScoreList.ItemsSource=scoreRows;
         Player.SetMediaPlayer(media);
@@ -78,18 +89,18 @@ public sealed partial class MainPage : Page
                 if(e.TryGetProperty("total_bytes",out var size) && size.GetInt64()>0 && e.TryGetProperty("downloaded_bytes",out var done))
                 {
                     ModelDownloadProgress.Value=done.GetInt64()*100d/size.GetInt64();
-                    ModelSetupStatus.Text=$"{e.GetProperty("file").GetString()} · {done.GetInt64()/1048576d:F1}/{size.GetInt64()/1048576d:F1} MiB";
+                    Show(ModelSetupStatus, () => UiLanguage.Text($"{e.GetProperty("file").GetString()} · {done.GetInt64()/1048576d:F1}/{size.GetInt64()/1048576d:F1} MiB", $"{e.GetProperty("file").GetString()} · {done.GetInt64()/1048576d:F1}/{size.GetInt64()/1048576d:F1} MiB"));
                 }
-                StatusBar.Message=stage=="model_ready"?"模型已安装并校验":"正在安装模型，可取消；已下载部分会保留";
+                Message(() => stage=="model_ready"?UiLanguage.Text("模型已安装并校验", "Models installed and verified"):UiLanguage.Text("正在安装模型，可取消；已下载部分会保留", "Installing models; you can cancel and keep downloaded data"));
             }
             else if(e.TryGetProperty("chunk_total",out var total) && total.GetInt32()>0)
             {
                 var index=e.TryGetProperty("chunk_index",out var current)?current.GetInt32():0;
                 if(e.TryGetProperty("processed_seconds",out var processed) && e.TryGetProperty("total_seconds",out var seconds) && seconds.GetDouble()>0)
                     WholeProgress.Value=Math.Clamp(processed.GetDouble()/seconds.GetDouble()*100,0,100);
-                StatusBar.Message=$"{(stage is "pitch_analysis" or "note_transcription"?"音符识别":"整首识别")}：第 {index}/{total.GetInt32()} 段 · {stage}";
+                Message(() => UiLanguage.Text($"{(stage is "pitch_analysis" or "note_transcription"?"音符识别":"整首识别")}：第 {index}/{total.GetInt32()} 段 · {ProgressStage(stage)}", $"{(stage is "pitch_analysis" or "note_transcription"?"Note transcription":"Whole-song recognition")}: chunk {index}/{total.GetInt32()} · {ProgressStage(stage)}"));
             }
-            else StatusBar.Message=stage switch {"loading"=>"加载模型……","recognizing"=>"识别中……","saving"=>"保存与验证……","validating"=>"核验音频与运行包……",_=>stage};
+            else Message(() => ProgressStage(stage));
             Log(e.ToString());
         });
         playbackTimer.Tick += (_,_) =>
@@ -100,7 +111,78 @@ public sealed partial class MainPage : Page
                 else StopPlayback();
             }
         };
-        media.MediaFailed += (_,e)=>DispatcherQueue.TryEnqueue(()=>Error(new IOException("音频播放失败："+e.ErrorMessage)));
+        media.MediaFailed += (_,e)=>DispatcherQueue.TryEnqueue(()=>
+        {
+            Log(e.ErrorMessage);
+            Error(new PresentationException(() => UiLanguage.Text("音频播放失败。请选择有效的 PCM WAV 文件，并检查音频输出设备。", "Audio playback failed. Select a valid PCM WAV file and check the audio output device.")));
+        });
+    }
+
+    // Store presentation callbacks only: changing language never reloads task state or starts I/O.
+    private void Show(TextBlock target, Func<string> text)
+    { Action render=()=>target.Text=text(); presentations[target]=render; render(); }
+    private void Title(Func<string> text)
+    { statusTitlePresentation=()=>StatusBar.Title=text(); statusTitlePresentation(); }
+    private void Message(Func<string> text)
+    { statusMessagePresentation=()=>StatusBar.Message=text(); statusMessagePresentation(); }
+
+    private void InitializeLanguageSelection()
+    {
+        languageReady=false;
+        string preference=UiLanguage.Preference;
+        LanguageBox.SelectedItem=LanguageBox.Items.OfType<ComboBoxItem>().FirstOrDefault(x=>x.Tag?.ToString()==preference);
+        languageReady=true;
+        AutoDownloadBox.IsChecked=false;
+        AutoDownloadBox.IsEnabled=false;
+        AutoDownloadBox.Content=new TextBlock { Text=UiLanguage.Text("仅手动开始下载；启动时不会联网下载模型", "Downloads start manually; startup never downloads models"), TextWrapping=TextWrapping.Wrap };
+    }
+
+    private void Language_Changed(object sender, SelectionChangedEventArgs e)
+    {
+        if(!languageReady || LanguageBox.SelectedItem is not ComboBoxItem item)return;
+        string preference=item.Tag?.ToString()??"system";
+        try
+        {
+            UiLanguage.SetPreference(preference);
+        }
+        catch(Exception ex){Error(ex);}
+        RenderModelChoices();
+        foreach(var render in presentations.Values.ToArray())render();
+        statusTitlePresentation?.Invoke();statusMessagePresentation?.Invoke();
+        foreach(var row in rows)row.RefreshLanguage();
+        foreach(var row in scoreRows)row.RefreshLanguage();
+        AutoDownloadBox.Content=new TextBlock { Text=UiLanguage.Text("仅手动开始下载；启动时不会联网下载模型", "Downloads start manually; startup never downloads models"), TextWrapping=TextWrapping.Wrap };
+    }
+
+    private static string ProgressStage(string? stage) => stage switch
+    {
+        "loading"=>UiLanguage.Text("加载模型……", "Loading model…"),
+        "recognizing"=>UiLanguage.Text("识别中……", "Recognizing…"),
+        "saving"=>UiLanguage.Text("保存与验证……", "Saving and verifying…"),
+        "validating"=>UiLanguage.Text("核验音频与运行包……", "Checking audio and local runtime…"),
+        "pitch_analysis"=>UiLanguage.Text("分析音高……", "Analyzing pitch…"),
+        "note_transcription"=>UiLanguage.Text("识别音符……", "Transcribing notes…"),
+        _=>UiLanguage.Text("正在处理……", "Processing…")
+    };
+
+    private sealed class PresentationException(Func<string> text) : InvalidOperationException(text())
+    { public string LocalizedMessage => text(); }
+
+    private static string MissingNoteSetup() => UiLanguage.Text(
+        "GAME 音符模型尚未就绪。请导入离线模型文件夹或选择已有 GAME 模型目录；也可关闭自动生成 VSQX，仅识别音素。启动不会下载模型。",
+        "The GAME note model is not ready. Import an offline model folder or select an existing GAME model directory. You can also turn off automatic VSQX generation to recognize phones only. Startup never downloads models.");
+
+    private static string FriendlyError(Exception error)
+    {
+        if(error is PresentationException localized)return localized.LocalizedMessage;
+        string detail=error.ToString();
+        if(error is TimeoutException || detail.Contains("timed out",StringComparison.OrdinalIgnoreCase) || detail.Contains("timeout",StringComparison.OrdinalIgnoreCase))
+            return UiLanguage.Text("连接超时。请检查网络或代理后手动继续下载；已下载部分会保留，也可导入离线模型文件夹。不会自动重试。", "The connection timed out. Check your network or proxy, then resume manually; downloaded data is kept. You can also import an offline model folder. No automatic retry.");
+        if(detail.Contains("urlopen",StringComparison.OrdinalIgnoreCase) || detail.Contains("HTTP",StringComparison.OrdinalIgnoreCase) || detail.Contains("SSL",StringComparison.OrdinalIgnoreCase) || detail.Contains("network",StringComparison.OrdinalIgnoreCase) || detail.Contains("connection",StringComparison.OrdinalIgnoreCase) || detail.Contains("socket",StringComparison.OrdinalIgnoreCase))
+            return UiLanguage.Text("无法连接下载服务。请检查网络和代理设置后手动继续，或导入离线模型文件夹；已下载部分会保留。", "Cannot reach the download service. Check your network and proxy, then resume manually, or import an offline model folder. Downloaded data is kept.");
+        if(error is FileNotFoundException or DirectoryNotFoundException || detail.Contains("WinError",StringComparison.OrdinalIgnoreCase) || detail.Contains("snapshot",StringComparison.OrdinalIgnoreCase) || detail.Contains("model",StringComparison.OrdinalIgnoreCase) || detail.Contains("模型",StringComparison.Ordinal))
+            return UiLanguage.Text("本地模型或运行文件尚未就绪。请在模型安装区手动下载、导入离线模型，或选择已有模型目录后重试；启动不会自动下载。", "Local model or runtime files are not ready. Use Model setup to download manually, import offline models, or select an existing model folder, then retry. Startup never downloads files.");
+        return UiLanguage.Text("操作未完成。请检查输入和本地配置后重试；可导出诊断包查看错误详情。", "The operation could not be completed. Check your input and local configuration, then retry. Export diagnostics for error details.");
     }
 
     private async void Page_Loaded(object sender,RoutedEventArgs e)
@@ -124,6 +206,7 @@ public sealed partial class MainPage : Page
         };
         await RefreshModels();
         await RefreshNoteRuntime();
+        await InitializeModelSetup();
         if (App.StartupReportPath is string startupReport)
         {
             try
@@ -134,12 +217,15 @@ public sealed partial class MainPage : Page
                 bool ready = doctor.GetProperty("transport").GetString() == "stdio"
                     && RunButton.ActualWidth > 0 && RunButton.ActualHeight > 0
                     && RunButton.Visibility == Visibility.Visible;
+                var uiChecks = await CaptureStartupUiAsync(startupReport);
+                ready &= uiChecks.Passed;
                 using var report = new FileStream(startupReport, FileMode.CreateNew, FileAccess.Write);
                 await JsonSerializer.SerializeAsync(report, new {
                     status = ready ? "passed" : "failed", version = ReleaseUpdates.CurrentTag,
                     real_winui_window_loaded = true, local_worker_ready = true,
                     inference_button_visible = RunButton.ActualWidth > 0 && RunButton.ActualHeight > 0,
                     run_button_width = RunButton.ActualWidth, run_button_height = RunButton.ActualHeight,
+                    ui_checks = uiChecks,
                     model_forwards = 0, model_downloads = 0,
                     state_separate_from_program = !service.StateDirectory.StartsWith(service.Root + Path.DirectorySeparatorChar,
                         StringComparison.OrdinalIgnoreCase)
@@ -154,7 +240,6 @@ public sealed partial class MainPage : Page
             finally { DispatcherQueue.TryEnqueue(() => App.Window.Close()); }
             return;
         }
-        await InitializeModelSetup();
         try
         {
             string session=Path.Combine(service.StateDirectory,"local-ui-session.json");
@@ -168,27 +253,69 @@ public sealed partial class MainPage : Page
                     if(saved.RootElement.TryGetProperty("score_delivery",out var delivery))await LoadScore(delivery);
                 }
             }
-        }catch(Exception error){Log("上次会话未恢复："+error.Message);}
+        }catch(Exception error){Log(UiLanguage.Text("上次会话未恢复：", "Previous session could not be restored: ")+error.Message);}
     }
     private void Log(string line) { log.Enqueue(line);while(log.Count>70)log.Dequeue();ActivityLog.Text=string.Join(Environment.NewLine,log); }
-    private void Error(Exception e) { service.Diagnostics.Record("desktop", "failed", e);StatusBar.Severity=InfoBarSeverity.Error;StatusBar.Title="操作未完成";StatusBar.Message=e.Message;Log(e.Message); }
+    private void Error(Exception e) { service.Diagnostics.Record("desktop", "failed", e);StatusBar.Severity=InfoBarSeverity.Error;Title(() => UiLanguage.Text("操作未完成", "Operation incomplete"));Message(() => FriendlyError(e));Log(e.Message); }
     private async Task RefreshModels()
     {
         try
         {
             var data=await service.CallAsync("models",new{});
-            var choices=data.GetProperty("models").EnumerateArray().Select(m=>
+            modelChoices.Clear();
+            foreach(var m in data.GetProperty("models").EnumerateArray())
             {
                 bool ok=m.GetProperty("available").GetBoolean();string id=m.GetProperty("id").GetString()!;
                 string detail=ok?m.GetProperty("quality").GetString()!:m.GetProperty("reason").GetString()!;
-                return new ModelChoice(id,id+(ok?" · "+detail:" · 不可用"),ok,detail);
-            }).ToList();
-            string? selected=(ModelBox.SelectedItem as ModelChoice)?.Id;
+                modelChoices.Add((id,ok,detail));
+            }
+            RenderModelChoices();
+            string gpu=await LocalTaskService.GpuStatusAsync(service.Diagnostics);
+            Show(GpuStatus, () => LocalizeGpuStatus(gpu));
+            Show(ModelStatus, () => modelChoices.Count==0 || !modelChoices.Any(m=>m.Available)
+                ?UiLanguage.Text("尚无可用真实模型。请手动下载或导入离线模型；启动不会下载，也不会自动使用 fixture。", "No real model is ready. Download manually or import offline models; startup never downloads models or falls back to fixtures.")
+                :UiLanguage.Text("运行包已核验；请选择模型。质量状态与可加载状态分开。", "Runtime verified; please select a model. Loadability and recognition quality are separate."));
+        }catch(Exception e){Error(e);Show(ModelStatus, () => UiLanguage.Text("环境检查失败；未启动推理。", "Environment check failed; inference has not started."));}
+    }
+
+    private void RenderModelChoices()
+    {
+        string? selected=(ModelBox.SelectedItem as ModelChoice)?.Id;
+        var choices=modelChoices.Select(m=>
+        {
+            string quality=LocalizeModelQuality(m.Detail);
+            string detail=m.Available
+                ?UiLanguage.Text($"本地模型已就绪；质量标记：{quality}（可加载不代表准确率已验证）", $"Local model ready; quality tag: {quality} (loadability does not establish accuracy)")
+                :UiLanguage.Text("模型文件尚未就绪。请手动下载或导入离线模型；不会自动下载。", "Model files are not ready. Download manually or import offline models; downloads never start automatically.");
+            return new ModelChoice(m.Id,m.Id+" · "+(m.Available?UiLanguage.Text("可用", "Available"):UiLanguage.Text("未就绪", "Not ready")),m.Available,detail);
+        }).ToList();
+        refreshingModelChoices=true;
+        try
+        {
             ModelBox.ItemsSource=choices;
             if(selected is not null)ModelBox.SelectedItem=choices.FirstOrDefault(m=>m.Id==selected);
-            GpuStatus.Text=await LocalTaskService.GpuStatusAsync(service.Diagnostics);
-            ModelStatus.Text=choices.Count==0?"尚未配置真实模型；不会自动使用 fixture。":"运行包已核验；请选择模型。质量状态与可加载状态分开。";
-        }catch(Exception e){Error(e);ModelStatus.Text="环境检查失败；未启动推理。";}
+        }
+        finally { refreshingModelChoices=false; }
+    }
+
+    private static string LocalizeModelQuality(string quality) => quality
+        .Replace("研究候选", UiLanguage.Text("研究候选", "Research candidate"), StringComparison.Ordinal)
+        .Replace("非质量验收通过", UiLanguage.Text("非质量验收通过", "Not quality-approved"), StringComparison.Ordinal);
+
+    private static string LocalizeGpuStatus(string text)
+    {
+        // The transport supplies localized snapshots. Reuse the captured probe without running it again.
+        if(text.StartsWith("GPU 状态不可用：",StringComparison.Ordinal) || text.StartsWith("GPU status unavailable:",StringComparison.Ordinal))
+            return UiLanguage.Text("GPU 状态不可用；请检查显卡驱动。未运行模型。", "GPU status unavailable; check the GPU driver. No model was run.");
+        string chinese=text.Replace("GPU (name / used MiB / total MiB): ", "GPU 快照（名称 / 已用 MiB / 总 MiB）：")
+            .Replace("GPU status timed out. No model was run.", "GPU 状态查询超时；未运行模型")
+            .Replace("GPU status unavailable: ", "GPU 状态不可用：")
+            .Replace("; budget: 7 GiB per process / 14 GiB total GPU", "；进程预算 7 GiB / 整卡 14 GiB");
+        string english=text.Replace("GPU 快照（名称 / 已用 MiB / 总 MiB）：", "GPU (name / used MiB / total MiB): ")
+            .Replace("GPU 状态查询超时；未运行模型", "GPU status timed out. No model was run.")
+            .Replace("GPU 状态不可用：", "GPU status unavailable: ")
+            .Replace("；进程预算 7 GiB / 整卡 14 GiB", "; budget: 7 GiB per process / 14 GiB total GPU");
+        return UiLanguage.Text(chinese,english);
     }
 
     private string SetupPreferencesPath => Path.Combine(service.StateDirectory, "model-setup-preferences.json");
@@ -198,21 +325,28 @@ public sealed partial class MainPage : Page
         try
         {
             var info=await service.CallAsync("model_setup_status",new{});
-            bool enabled=info.GetProperty("enabled").GetBoolean();
+            bool enabled=modelSetupEnabled=info.GetProperty("enabled").GetBoolean();
             InstallModelsButton.IsEnabled=ImportModelsButton.IsEnabled=enabled;
-            AutoDownloadBox.IsChecked=info.GetProperty("auto_download").GetBoolean();
+            AutoDownloadBox.IsChecked=false;
+            AutoDownloadBox.IsEnabled=false;
             if(File.Exists(SetupPreferencesPath))
             {
                 using var doc=JsonDocument.Parse(await File.ReadAllTextAsync(SetupPreferencesPath));
-                AutoDownloadBox.IsChecked=doc.RootElement.GetProperty("auto_download").GetBoolean();
-                ModelProxyBox.Text=doc.RootElement.GetProperty("proxy").GetString() ?? "";
+                if(doc.RootElement.TryGetProperty("proxy",out var proxy))ModelProxyBox.Text=proxy.GetString() ?? "";
             }
             setupPreferencesReady=true;
             bool ready=info.GetProperty("ready").GetBoolean();
-            ModelSetupStatus.Text=!enabled?"此开发版本未配置自动下载清单。":ready?"模型文件已完整核验；识别阶段不联网。":"缺少模型，首次安装需要约 2.4 GiB 下载空间。";
-            if(enabled && !ready && AutoDownloadBox.IsChecked==true)await InstallModels();
+            Show(ModelSetupStatus, () => !enabled?UiLanguage.Text("此版本未配置模型安装清单；可选择已有本地模型。启动不会下载。", "No model installation catalog is configured; select existing local models. Startup never downloads files.")
+                :ready?UiLanguage.Text("模型文件已完整核验；识别阶段不联网。", "Model files verified; recognition runs offline.")
+                :UiLanguage.Text("模型尚未安装。请手动点击“下载 / 继续下载模型”，或导入离线模型文件夹（约 2.4 GiB）。启动不会下载。", "Models are not installed. Click Download / Resume models manually, or import an offline model folder (about 2.4 GiB). Startup never downloads files."));
+            if(!ready)
+            {
+                StatusBar.Severity=InfoBarSeverity.Warning;
+                Title(() => UiLanguage.Text("需要安装本地模型", "Local models need setup"));
+                Message(() => UiLanguage.Text("请手动下载或导入离线模型后开始识别；本次启动没有下载模型。", "Download manually or import offline models before recognition; this startup has not downloaded any models."));
+            }
         }
-        catch(Exception ex){Error(ex);ModelSetupStatus.Text="模型安装检查失败："+ex.Message;}
+        catch(Exception ex){Error(ex);Show(ModelSetupStatus, () => UiLanguage.Text("无法检查本地模型。请检查模型目录或导入离线模型；启动不会下载。", "Local models could not be checked. Check the model directory or import offline models; startup never downloads files."));}
     }
 
     private async Task SaveSetupPreferences()
@@ -220,7 +354,7 @@ public sealed partial class MainPage : Page
         if(!setupPreferencesReady)return;
         Directory.CreateDirectory(Path.GetDirectoryName(SetupPreferencesPath)!);
         string tmp=SetupPreferencesPath+".tmp";
-        await File.WriteAllTextAsync(tmp,JsonSerializer.Serialize(new{auto_download=AutoDownloadBox.IsChecked==true,proxy=ModelProxyBox.Text.Trim()}));
+        await File.WriteAllTextAsync(tmp,JsonSerializer.Serialize(new{auto_download=false,proxy=ModelProxyBox.Text.Trim()}));
         File.Move(tmp,SetupPreferencesPath,true);
     }
 
@@ -235,7 +369,7 @@ public sealed partial class MainPage : Page
         if(active is not null)return;
         active=new CancellationTokenSource();
         SetBusy(true);ModelDownloadProgress.Visibility=Visibility.Visible;ModelDownloadProgress.Value=0;
-        StatusBar.Severity=InfoBarSeverity.Informational;StatusBar.Title=offline is null?"安装模型":"导入离线模型";
+        StatusBar.Severity=InfoBarSeverity.Informational;Title(() => offline is null?UiLanguage.Text("安装模型", "Installing models"):UiLanguage.Text("导入离线模型", "Importing offline models"));
         try
         {
             await SaveSetupPreferences();
@@ -243,13 +377,19 @@ public sealed partial class MainPage : Page
             if(offline is not null)p["offline_dir"]=offline;
             await service.CallAsync("install_models",p,active.Token);
             await RefreshModels();NoteSnapshotBox.Text="";await RefreshNoteRuntime();
-            ModelDownloadProgress.Value=100;ModelSetupStatus.Text="模型安装完成，文件哈希均已核验。请选择真实模型后识别。";
-            StatusBar.Severity=InfoBarSeverity.Success;StatusBar.Message="模型就绪。";
+            ModelDownloadProgress.Value=100;Show(ModelSetupStatus, () => UiLanguage.Text("模型安装完成，文件哈希均已核验。请选择真实模型后识别。", "Models installed and file hashes verified. Select a real model to recognize audio."));
+            StatusBar.Severity=InfoBarSeverity.Success;Message(() => UiLanguage.Text("模型就绪。", "Models ready."));
         }
         catch(OperationCanceledException)
-        {ModelSetupStatus.Text="已取消安装，下载部分保留；点击“继续下载”可恢复。";StatusBar.Severity=InfoBarSeverity.Warning;StatusBar.Message=ModelSetupStatus.Text;}
+        {Show(ModelSetupStatus, () => UiLanguage.Text("已取消安装，下载部分保留；点击“继续下载”可恢复。", "Installation cancelled; downloaded data is kept. Click Resume to continue."));StatusBar.Severity=InfoBarSeverity.Warning;Message(() => ModelSetupStatus.Text);}
         catch(Exception ex)
-        {Error(ex);ModelSetupStatus.Text="安装未完成："+ex.Message+"。可配置代理后继续下载，或导入离线模型文件夹。";}
+        {
+            service.Diagnostics.Record("desktop", "failed", ex);Log(ex.Message);
+            StatusBar.Severity=InfoBarSeverity.Warning;
+            Title(() => UiLanguage.Text("安装未完成", "Installation incomplete"));
+            Show(ModelSetupStatus, () => FriendlyError(ex));
+            Message(() => ModelSetupStatus.Text);
+        }
         finally{active.Dispose();active=null;SetBusy(false);}
     }
 
@@ -259,7 +399,7 @@ public sealed partial class MainPage : Page
         if(active is not null)return;
         try
         {
-            var picker=new FolderPicker();picker.FileTypeFilter.Add("*");
+            var picker=new FolderPicker { CommitButtonText=UiLanguage.Text("导入离线模型", "Import offline models") };picker.FileTypeFilter.Add("*");
             WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
             var folder=await picker.PickSingleFolderAsync();
             if(folder is not null)await InstallModels(folder.Path);
@@ -268,10 +408,10 @@ public sealed partial class MainPage : Page
     }
 
     private void Model_Changed(object sender,SelectionChangedEventArgs e)
-    { if(ModelBox.SelectedItem is ModelChoice m)ModelStatus.Text=m.Detail; }
+    { if(!refreshingModelChoices && ModelBox.SelectedItem is ModelChoice)Show(ModelStatus, () => (ModelBox.SelectedItem as ModelChoice)?.Detail??""); }
     private FileOpenPicker OpenPicker(string extension)
     {
-        var p=new FileOpenPicker();p.FileTypeFilter.Add(extension);
+        var p=new FileOpenPicker { CommitButtonText=UiLanguage.Text("选择", "Select") };p.FileTypeFilter.Add(extension);
         WinRT.Interop.InitializeWithWindow.Initialize(p,App.WindowHandle);return p;
     }
     private async void Browse_Click(object sender,RoutedEventArgs e)
@@ -285,8 +425,8 @@ public sealed partial class MainPage : Page
         if(!string.IsNullOrEmpty(resultPath))
         {
             await SaveDraft();draftDebounce?.Cancel();rows.Clear();resultPath="";resultHash="";outputDir="";dirty=false;
-            scoreRows.Clear();scorePath="";scoreHash="";scoreSource="";ScoreStatus.Text="尚无音符数据。";
-            ResultStatus.Text="已切换音频；旧结果保留在原目录，不与新音频混用。";DraftStatus.Text="";
+            scoreRows.Clear();scorePath="";scoreHash="";scoreSource="";Show(ScoreStatus, () => UiLanguage.Text("尚无音符数据。", "No note data yet."));
+            Show(ResultStatus, () => UiLanguage.Text("已切换音频；旧结果保留在原目录，不与新音频混用。", "Audio changed; previous results remain in their original folder and are not used with this audio."));Show(DraftStatus, () => "");
         }
         var info=await service.CallAsync("inspect_audio",new{audio=file});
         var storage=await StorageFile.GetFileFromPathAsync(file);
@@ -294,8 +434,9 @@ public sealed partial class MainPage : Page
         audio=file;AudioPathBox.Text=file;audioDuration=info.GetProperty("duration").GetDouble();
         peaks=info.GetProperty("peaks").EnumerateArray().Select(x=>x.GetDouble()).ToArray();
         StartBox.Maximum=Math.Max(0,audioDuration-.1);StartBox.Value=0;DurationBox.Value=Math.Min(8,audioDuration);
-        AudioStatus.Text=$"{audioDuration:F2} 秒 · {info.GetProperty("sample_rate").GetInt32()} Hz · 原文件只读";
-        if(info.TryGetProperty("waveform_warning",out var warning))AudioStatus.Text+=" · "+warning.GetString();
+        bool waveformWarning=info.TryGetProperty("waveform_warning",out _);
+        Show(AudioStatus, () => UiLanguage.Text($"{audioDuration:F2} 秒 · {info.GetProperty("sample_rate").GetInt32()} Hz · 原文件只读", $"{audioDuration:F2} seconds · {info.GetProperty("sample_rate").GetInt32()} Hz · Original file is read-only")
+            +(waveformWarning?UiLanguage.Text(" · 波形预览仅支持 16-bit PCM；音频未修改", " · Waveform preview requires 16-bit PCM; audio was not modified"):""));
         DrawWaveform();
     }
     private void Audio_DragOver(object sender,DragEventArgs e)
@@ -306,7 +447,7 @@ public sealed partial class MainPage : Page
         {
             if(active is not null || !e.DataView.Contains(StandardDataFormats.StorageItems))return;
             var files=await e.DataView.GetStorageItemsAsync();
-            if(files.Count!=1 || files[0] is not StorageFile file || !file.FileType.Equals(".wav",StringComparison.OrdinalIgnoreCase))throw new IOException("请拖入一个 PCM WAV 文件。");
+            if(files.Count!=1 || files[0] is not StorageFile file || !file.FileType.Equals(".wav",StringComparison.OrdinalIgnoreCase))throw new PresentationException(() => UiLanguage.Text("请拖入一个 PCM WAV 文件。", "Drop a single PCM WAV file."));
             await SetAudio(file.Path);
         }catch(Exception ex){Error(ex);}
     }
@@ -345,36 +486,43 @@ public sealed partial class MainPage : Page
     private void Phone_Selected(object sender,SelectionChangedEventArgs e)
     { if(PhoneList.SelectedItem is PhoneRow row)Play(Math.Max(0,row.Start-.18),Math.Min(audioDuration,row.End+.18)); }
     private void SetBusy(bool busy)
-    {RunButton.IsEnabled=!busy;CancelButton.IsEnabled=busy;BusyRing.IsActive=busy;ModelBox.IsEnabled=!busy;DeviceBox.IsEnabled=!busy;PhoneList.IsEnabled=!busy;WholeMode.IsEnabled=!busy;ClipMode.IsEnabled=!busy;AnalyzeScoreButton.IsEnabled=!busy;ImportScoreButton.IsEnabled=!busy;ExportScoreButton.IsEnabled=!busy;ScoreTempo.IsEnabled=!busy;ImportNotesButton.IsEnabled=!busy;NoteSnapshotBox.IsEnabled=!busy;AutoVsqxBox.IsEnabled=!busy;InstallModelsButton.IsEnabled=!busy;ImportModelsButton.IsEnabled=!busy;AutoDownloadBox.IsEnabled=!busy;ModelProxyBox.IsEnabled=!busy;WholeProgress.Visibility=busy && WholeMode.IsChecked==true?Visibility.Visible:Visibility.Collapsed;if(!busy)WholeProgress.Value=0;}
+    {
+        ScorePitchMode.IsEnabled=!busy;
+        ScoreTranspose.IsEnabled=!busy && SelectedScorePitchMode=="manual";
+        SetTaskControlsBusy(busy);
+    }
+
+    private void SetTaskControlsBusy(bool busy)
+    {RunButton.IsEnabled=!busy;CancelButton.IsEnabled=busy;BusyRing.IsActive=busy;ModelBox.IsEnabled=!busy;DeviceBox.IsEnabled=!busy;PhoneList.IsEnabled=!busy;WholeMode.IsEnabled=!busy;ClipMode.IsEnabled=!busy;AnalyzeScoreButton.IsEnabled=!busy;ImportScoreButton.IsEnabled=!busy;ExportScoreButton.IsEnabled=!busy;ScoreTempo.IsEnabled=!busy;ImportNotesButton.IsEnabled=!busy;NoteSnapshotBox.IsEnabled=!busy;AutoVsqxBox.IsEnabled=!busy;InstallModelsButton.IsEnabled=!busy && modelSetupEnabled;ImportModelsButton.IsEnabled=!busy && modelSetupEnabled;AutoDownloadBox.IsEnabled=false;ModelProxyBox.IsEnabled=!busy;WholeProgress.Visibility=busy && WholeMode.IsChecked==true?Visibility.Visible:Visibility.Collapsed;if(!busy)WholeProgress.Value=0;}
     private async Task<bool> RunTask(string action,object parameters)
     {
         if(active is not null)return false;
-        active=new CancellationTokenSource();SetBusy(true);StatusBar.Severity=InfoBarSeverity.Informational;StatusBar.Title=action=="recognize-whole"?"整首真实推理":action=="recognize"?"片段真实推理":action is "build_score" or "import_score"?"生成 VSQX":"显式回放（零推理）";
+        active=new CancellationTokenSource();SetBusy(true);StatusBar.Severity=InfoBarSeverity.Informational;Title(() => action=="recognize-whole"?UiLanguage.Text("整首真实推理", "Whole-song inference"):action=="recognize"?UiLanguage.Text("片段真实推理", "Clip inference"):action is "build_score" or "import_score"?UiLanguage.Text("生成 VSQX", "Generating VSQX"):UiLanguage.Text("显式回放（零推理）", "Explicit replay (no inference)"));
         try
         {
             await SaveDraft();
             var result=await service.CallAsync(action,parameters,active.Token);
             if(action is "build_score" or "import_score")await LoadScore(result);
             else await LoadResult(result.GetProperty("result_path").GetString()!);
-            StatusBar.Severity=InfoBarSeverity.Success;StatusBar.Message="完成；结果已保存。";
+            StatusBar.Severity=InfoBarSeverity.Success;Message(() => UiLanguage.Text("完成；结果已保存。", "Done; results saved."));
             return true;
         }
-        catch(OperationCanceledException){StatusBar.Severity=InfoBarSeverity.Warning;StatusBar.Message="任务已取消；没有自动重试。";}
+        catch(OperationCanceledException){StatusBar.Severity=InfoBarSeverity.Warning;Message(() => UiLanguage.Text("任务已取消；没有自动重试。", "Task cancelled; no automatic retry."));}
         catch(Exception e){Error(e);}
         finally{active.Dispose();active=null;SetBusy(false);}
         return false;
     }
     private async void Recognize_Click(object sender,RoutedEventArgs e)
     {
-        if(ModelBox.SelectedItem is not ModelChoice {Available:true} model){Error(new InvalidOperationException("请先明确选择可用的真实模型。"));return;}
-        if(string.IsNullOrEmpty(audio)){Error(new InvalidOperationException("请先选择音频。"));return;}
+        if(ModelBox.SelectedItem is not ModelChoice {Available:true} model){Error(new PresentationException(() => UiLanguage.Text("请先明确选择可用的真实模型。缺少模型时请手动下载或导入离线模型。", "Select an available real model first. Download manually or import offline models if needed.")));return;}
+        if(string.IsNullOrEmpty(audio)){Error(new PresentationException(() => UiLanguage.Text("请先选择音频。", "Select an audio file first.")));return;}
         string device=(DeviceBox.SelectedItem as ComboBoxItem)?.Tag?.ToString()??"cuda";
         try
         {
             if(AutoVsqxBox.IsChecked==true)
             {
                 var runtime=await service.CallAsync("note_runtime",NoteRuntimeParameters());
-                if(!runtime.GetProperty("available").GetBoolean())throw new InvalidOperationException(runtime.GetProperty("reason").GetString());
+                if(!runtime.GetProperty("available").GetBoolean())throw new PresentationException(MissingNoteSetup);
             }
             bool success=WholeMode.IsChecked==true
                 ? await RunTask("recognize-whole",new{audio,model=model.Id,device})
@@ -398,8 +546,8 @@ public sealed partial class MainPage : Page
 
     private async void AnalyzeScore_Click(object sender,RoutedEventArgs e)
     {
-        if(string.IsNullOrEmpty(resultPath)){Error(new InvalidOperationException("请先完成识别或回放，再分析音高和时值。"));return;}
-        if(!double.IsFinite(ScoreTempo.Value)){Error(new InvalidOperationException("请输入有效 BPM。"));return;}
+        if(string.IsNullOrEmpty(resultPath)){Error(new PresentationException(() => UiLanguage.Text("请先完成识别或回放，再分析音高和时值。", "Complete recognition or replay before analyzing pitch and duration.")));return;}
+        if(!double.IsFinite(ScoreTempo.Value)){Error(new PresentationException(() => UiLanguage.Text("请输入有效 BPM。", "Enter a valid BPM.")));return;}
         await GenerateGameScore();
     }
 
@@ -417,9 +565,9 @@ public sealed partial class MainPage : Page
             var info=await service.CallAsync("note_runtime",NoteRuntimeParameters());
             bool ready=info.GetProperty("available").GetBoolean();
             if(ready)NoteSnapshotBox.Text=info.GetProperty("snapshot").GetString()!;
-            NoteRuntimeStatus.Text=ready?"GAME 已配置 · CPU 四线程 · 运行时无需联网":info.GetProperty("reason").GetString();
+            Show(NoteRuntimeStatus, () => ready?UiLanguage.Text("GAME 已配置 · CPU 四线程 · 运行时无需联网", "GAME configured · four CPU threads · runs offline"):MissingNoteSetup());
         }
-        catch(Exception ex){NoteRuntimeStatus.Text=ex.Message;}
+        catch(Exception ex){Log(ex.Message);Show(NoteRuntimeStatus, MissingNoteSetup);}
     }
 
     private async void BrowseNoteModel_Click(object sender,RoutedEventArgs e)
@@ -427,7 +575,7 @@ public sealed partial class MainPage : Page
         if(active is not null)return;
         try
         {
-            var picker=new FolderPicker();picker.FileTypeFilter.Add("*");
+            var picker=new FolderPicker { CommitButtonText=UiLanguage.Text("选择 GAME 模型", "Select GAME model") };picker.FileTypeFilter.Add("*");
             WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
             var folder=await picker.PickSingleFolderAsync();if(folder is null)return;
             NoteSnapshotBox.Text=folder.Path;await RefreshNoteRuntime();
@@ -446,7 +594,7 @@ public sealed partial class MainPage : Page
     private async void ImportNotes_Click(object sender,RoutedEventArgs e)
     {
         if(active is not null)return;
-        if(string.IsNullOrEmpty(resultPath)){Error(new InvalidOperationException("先加载音素结果，再选择同一音频的 GAME 音符 JSON。"));return;}
+        if(string.IsNullOrEmpty(resultPath)){Error(new PresentationException(() => UiLanguage.Text("先加载音素结果，再选择同一音频的 GAME 音符 JSON。", "Load phone results first, then select GAME note JSON for the same audio.")));return;}
         try
         {
             var file=await OpenPicker(".json").PickSingleFileAsync();
@@ -458,7 +606,7 @@ public sealed partial class MainPage : Page
     private async void ImportScore_Click(object sender,RoutedEventArgs e)
     {
         if(active is not null)return;
-        if(string.IsNullOrEmpty(resultPath)){Error(new InvalidOperationException("请先加载识别结果，再导入已有 VSQX。"));return;}
+        if(string.IsNullOrEmpty(resultPath)){Error(new PresentationException(() => UiLanguage.Text("请先加载识别结果，再导入已有 VSQX。", "Load recognition results before importing an existing VSQX.")));return;}
         try
         {
             var file=await OpenPicker(".vsqx").PickSingleFileAsync();if(file is null)return;
@@ -467,19 +615,50 @@ public sealed partial class MainPage : Page
         catch(Exception ex){Error(ex);}
     }
 
+    private string SelectedScorePitchMode => (ScorePitchMode.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "miku_v4c_octave";
+
+    private void ScorePitchMode_Changed(object sender,SelectionChangedEventArgs e)
+    {
+        if(ScoreTranspose is not null)
+            ScoreTranspose.IsEnabled=ScorePitchMode.IsEnabled && SelectedScorePitchMode=="manual";
+    }
+
+    private void ScoreTranspose_Changed(NumberBox sender,NumberBoxValueChangedEventArgs e)
+    {
+        double value=double.IsFinite(e.NewValue)?Math.Clamp(Math.Round(e.NewValue),-36,36):0;
+        if(sender.Value!=value)sender.Value=value;
+    }
+
     private async void ExportScore_Click(object sender,RoutedEventArgs e)
     {
         if(active is not null)return;
-        if(string.IsNullOrEmpty(scorePath)){Error(new InvalidOperationException("请先分析音高/时值，或导入已有 VSQX。"));return;}
+        if(string.IsNullOrEmpty(scorePath)){Error(new PresentationException(() => UiLanguage.Text("请先分析音高/时值，或导入已有 VSQX。", "Analyze pitch and duration, or import an existing VSQX first.")));return;}
+        active=new CancellationTokenSource();SetBusy(true);
         try
         {
-            var picker=new FolderPicker();picker.FileTypeFilter.Add("*");WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
+            var picker=new FolderPicker { CommitButtonText=UiLanguage.Text("导出到此文件夹", "Export to this folder") };picker.FileTypeFilter.Add("*");WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
             var folder=await picker.PickSingleFolderAsync();if(folder is null)return;
             string output=Path.Combine(folder.Path,$"DIVA-{DateTime.Now:yyyyMMdd-HHmmssfff}.vsqx");
-            var response=await service.CallAsync("export_score",new{score_path=scorePath,score_sha256=scoreHash,output});
-            StatusBar.Severity=InfoBarSeverity.Success;StatusBar.Message="已导出 VSQX："+response.GetProperty("output").GetString();
+            var parameters=new Dictionary<string,object>
+            {
+                ["score_path"]=scorePath,["score_sha256"]=scoreHash,["output"]=output,
+                ["pitch_mode"]=SelectedScorePitchMode
+            };
+            if(SelectedScorePitchMode=="manual")
+                parameters["transpose_semitones"]=(int)Math.Clamp(Math.Round(double.IsFinite(ScoreTranspose.Value)?ScoreTranspose.Value:0),-36,36);
+            var response=await service.CallAsync("export_score",parameters,active.Token);
+            var adaptation=response.GetProperty("pitch_adaptation");
+            int transpose=adaptation.GetProperty("transpose_semitones").GetInt32();
+            var after=adaptation.GetProperty("after");
+            int below=after.GetProperty("below_range_note_count").GetInt32(),above=after.GetProperty("above_range_note_count").GetInt32();
+            string exported=response.GetProperty("output").GetString()!;
+            StatusBar.Severity=InfoBarSeverity.Success;
+            Message(() => UiLanguage.Text(
+                $"已导出 VSQX：{exported}；实际移调 {transpose:+0;-0;0} 半音；剩余音域外：低于 {below}，高于 {above}。",
+                $"VSQX exported: {exported}; actual transposition: {transpose:+0;-0;0} semitones; remaining out of range: {below} below, {above} above."));
         }
         catch(Exception ex){Error(ex);}
+        finally{active.Dispose();active=null;SetBusy(false);}
     }
 
     private void Score_Selected(object sender,SelectionChangedEventArgs e)
@@ -493,8 +672,9 @@ public sealed partial class MainPage : Page
         byte[] bytes=await File.ReadAllBytesAsync(file);using var doc=JsonDocument.Parse(bytes);var data=doc.RootElement;
         string digest=Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
         if(digest!=response.GetProperty("score_sha256").GetString() || data.GetProperty("result_sha256").GetString()!=resultHash)
-            throw new IOException("音符数据与识别结果版本不一致。");
+            throw new PresentationException(() => UiLanguage.Text("音符数据与识别结果版本不一致。", "Note data and recognition results belong to different versions."));
         scoreRows.Clear();scorePath=file;scoreHash=digest;scoreSource=data.GetProperty("source").GetString()!;
+        ScorePitchMode.SelectedIndex=scoreSource=="supplied_vsqx_phone_draft"?0:1;
         int placeholders=0;
         foreach(var note in data.GetProperty("notes").EnumerateArray())
         {
@@ -503,9 +683,9 @@ public sealed partial class MainPage : Page
             string phones=string.Join(" ",note.GetProperty("v4c_phonemes").EnumerateArray().Select(x=>x.GetString()));
             scoreRows.Add(new ScoreRow(start,duration,pitch,phones,placeholder));
         }
-        ScoreStatus.Text=scoreSource=="supplied_vsqx_phone_draft"
-            ?$"已导入 {scoreRows.Count} 个音符；原 VSQX 另存只读备份，并生成独立音素草稿。音高、时值、歌词和轨道结构保持；机器音素按时间关联。"
-            :$"{(scoreSource=="audio_game"?"GAME":"pYIN")}：{scoreRows.Count} 个音符，{placeholders} 个音符缺少可用发音而使用中性占位。VSQX 已生成，音高、起点和时值已自动读回核对。";
+        Show(ScoreStatus, () => scoreSource=="supplied_vsqx_phone_draft"
+            ?UiLanguage.Text($"已导入 {scoreRows.Count} 个音符；原 VSQX 另存只读备份，并生成独立音素草稿。音高、时值、歌词和轨道结构保持；机器音素按时间关联。", $"Imported {scoreRows.Count} notes; the original VSQX has a separate read-only backup and an independent phone draft. Pitch, timing, lyrics and track structure are retained; machine phones are linked by time.")
+            :UiLanguage.Text($"{(scoreSource=="audio_game"?"GAME":"pYIN")}：{scoreRows.Count} 个音符，{placeholders} 个音符缺少可用发音而使用中性占位。VSQX 已生成，音高、起点和时值已自动读回核对。", $"{(scoreSource=="audio_game"?"GAME":"pYIN")}: {scoreRows.Count} notes; {placeholders} use neutral placeholders because usable pronunciation evidence is missing. VSQX generated; pitch, onset and duration were read back and checked automatically."));
         string session=Path.Combine(service.StateDirectory,"local-ui-session.json");
         await File.WriteAllTextAsync(session+".tmp",JsonSerializer.Serialize(new{result_path=resultPath,score_delivery=response}));
         File.Move(session+".tmp",session,true);
@@ -520,7 +700,7 @@ public sealed partial class MainPage : Page
         {
             string sourceHash=Convert.ToHexString(await SHA256.HashDataAsync(sourceStream)).ToLowerInvariant();
             if(sourceHash!=data.GetProperty("input").GetProperty("sha256").GetString())
-                throw new IOException("结果绑定的原音频已改变；拒绝将旧音素对应到新声音。");
+                throw new PresentationException(() => UiLanguage.Text("结果绑定的原音频已改变；拒绝将旧音素对应到新声音。", "The original audio bound to these results has changed; old phones cannot be linked to different audio."));
         }
         if(audio!=source)await SetAudio(source);
         double begin=data.GetProperty("input").GetProperty("start_sec").GetDouble();
@@ -532,11 +712,11 @@ public sealed partial class MainPage : Page
         var projection=await service.CallAsync("preview_xsampa",new{result_path=file,result_sha256=digest});
         var xsampas=projection.GetProperty("xsampa").EnumerateArray().Select(x=>x.GetString()!).ToArray();
         if(xsampas.Length!=data.GetProperty("segments").GetArrayLength())
-            throw new IOException("X-SAMPA 导出预览数量不匹配；原始结果未改变。");
+            throw new PresentationException(() => UiLanguage.Text("X-SAMPA 导出预览数量不匹配；原始结果未改变。", "The X-SAMPA export preview count does not match; original results are unchanged."));
         int i=0;foreach(var s in data.GetProperty("segments").EnumerateArray())
         {
             string ipa=s.GetProperty("normalized_ipa").GetString()!,xs=xsampas[i];
-            rows.Add(new PhoneRow{Index=i++,Start=s.GetProperty("start_sec").GetDouble(),End=s.GetProperty("end_sec").GetDouble(),MachineIpa=ipa,EditedIpa=ipa,XSampa=string.IsNullOrEmpty(xs)?"缺少转换规则":xs});
+            rows.Add(new PhoneRow{Index=i++,Start=s.GetProperty("start_sec").GetDouble(),End=s.GetProperty("end_sec").GetDouble(),MachineIpa=ipa,EditedIpa=ipa,XSampa=xs});
         }
         resultPath=file;resultHash=digest;outputDir=Path.GetDirectoryName(file)!;
         string draft=Path.Combine(outputDir,"review-draft.json");
@@ -547,7 +727,7 @@ public sealed partial class MainPage : Page
             {
                 var edits=d.RootElement.GetProperty("edits").EnumerateArray().ToArray();
                 if(edits.Length!=rows.Count || edits.Where((x,index)=>x.GetProperty("index").GetInt32()!=index).Any())
-                    throw new IOException("草稿索引不连续或数量错配；未应用草稿。");
+                    throw new PresentationException(() => UiLanguage.Text("草稿索引不连续或数量错配；未应用草稿。", "Draft indices or count do not match; the draft was not applied."));
                 foreach(var edit in edits)rows[edit.GetProperty("index").GetInt32()].EditedIpa=edit.GetProperty("ipa").GetString()!;
             }
         }
@@ -555,14 +735,15 @@ public sealed partial class MainPage : Page
         int missing=projection.GetProperty("unmapped_phone_count").GetInt32();
         double missingRatio=projection.GetProperty("unmapped_phone_ratio").GetDouble();
         int missingTypes=projection.GetProperty("unmapped_label_counts").EnumerateObject().Count();
-        ResultStatus.Text=$"来源：{data.GetProperty("mode").GetString()} · {rows.Count} 个音素 · X-SAMPA 导出缺失 {missing}/{rows.Count}（{missingRatio:P1}，{missingTypes} 类）。转换覆盖不代表识别准确率；时间为发射线索。";
-        DraftStatus.Text="机器结果只读；修改将另存草稿";UseDraftBox.IsChecked=false;dirty=false;
-        scoreRows.Clear();scorePath="";scoreHash="";scoreSource="";ScoreStatus.Text="尚无音符数据；请分析音高/时值，或导入已有 VSQX。";
+        string resultMode=data.GetProperty("mode").GetString()??"";
+        Show(ResultStatus, () => UiLanguage.Text($"来源：{resultMode} · {rows.Count} 个音素 · X-SAMPA 导出缺失 {missing}/{rows.Count}（{missingRatio:P1}，{missingTypes} 类）。转换覆盖不代表识别准确率；时间为发射线索。", $"Source: {resultMode} · {rows.Count} phones · X-SAMPA export missing {missing}/{rows.Count} ({missingRatio:P1}, {missingTypes} types). Conversion coverage does not establish recognition accuracy; times are emission cues."));
+        Show(DraftStatus, () => UiLanguage.Text("机器结果只读；修改将另存草稿", "Machine results are read-only; edits are saved as a separate draft"));UseDraftBox.IsChecked=false;dirty=false;
+        scoreRows.Clear();scorePath="";scoreHash="";scoreSource="";Show(ScoreStatus, () => UiLanguage.Text("尚无音符数据；请分析音高/时值，或导入已有 VSQX。", "No note data yet; analyze pitch and duration, or import an existing VSQX."));
         string scoreLink=Path.Combine(outputDir,"score-link.json");
         if(File.Exists(scoreLink))
         {
             try{using var link=JsonDocument.Parse(await File.ReadAllTextAsync(scoreLink));await LoadScore(link.RootElement);}
-            catch(Exception ex){ScoreStatus.Text="音符数据未恢复："+ex.Message;}
+            catch(Exception ex){Log(ex.Message);Show(ScoreStatus, () => UiLanguage.Text($"音符数据未恢复：{FriendlyError(ex)}", $"Note data was not restored: {FriendlyError(ex)}"));}
         }
         string session=Path.Combine(service.StateDirectory,"local-ui-session.json");
         Directory.CreateDirectory(Path.GetDirectoryName(session)!);
@@ -572,9 +753,9 @@ public sealed partial class MainPage : Page
     private async void QueueDraft()
     {
         dirty=true;editVersion++;
-        draftDebounce?.Cancel();var timer=draftDebounce=new CancellationTokenSource();DraftStatus.Text="待保存……";
+        draftDebounce?.Cancel();var timer=draftDebounce=new CancellationTokenSource();Show(DraftStatus, () => UiLanguage.Text("待保存……", "Waiting to save…"));
         try{await Task.Delay(600,timer.Token);if(!closed)await SaveDraft();}
-        catch(OperationCanceledException){}catch(Exception e){Error(e);DraftStatus.Text="保存失败";}
+        catch(OperationCanceledException){}catch(Exception e){Error(e);Show(DraftStatus, () => UiLanguage.Text("保存失败", "Save failed"));}
     }
     private async Task SaveDraft()
     {
@@ -584,22 +765,22 @@ public sealed partial class MainPage : Page
         {
             long version=editVersion;
             var edits=rows.Select(r=>new{index=r.Index,ipa=r.EditedIpa.Trim()}).ToArray();
-            if(edits.Any(x=>string.IsNullOrWhiteSpace(x.ipa))){DraftStatus.Text="空音素未保存";throw new InvalidOperationException("人工草稿包含空音素；请补全后保存或导出。机器结果未改变。");}
-            await service.CallAsync("draft",new{result_path=resultPath,result_sha256=resultHash,edits});if(version==editVersion)dirty=false;DraftStatus.Text="草稿已保存（非真值）";
+            if(edits.Any(x=>string.IsNullOrWhiteSpace(x.ipa))){Show(DraftStatus, () => UiLanguage.Text("空音素未保存", "Empty phones were not saved"));throw new PresentationException(() => UiLanguage.Text("人工草稿包含空音素；请补全后保存或导出。机器结果未改变。", "The review draft contains empty phones; fill them in before saving or exporting. Machine results are unchanged."));}
+            await service.CallAsync("draft",new{result_path=resultPath,result_sha256=resultHash,edits});if(version==editVersion)dirty=false;Show(DraftStatus, () => UiLanguage.Text("草稿已保存（非真值）", "Draft saved (not ground truth)"));
         }finally{draftGate.Release();}
     }
     private async void ExportDiagnostics_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            var picker = new FolderPicker(); picker.FileTypeFilter.Add("*");
+            var picker = new FolderPicker { CommitButtonText=UiLanguage.Text("导出诊断包", "Export diagnostics") }; picker.FileTypeFilter.Add("*");
             WinRT.Interop.InitializeWithWindow.Initialize(picker, App.WindowHandle);
             var folder = await picker.PickSingleFolderAsync(); if (folder is null) return;
             string file = Path.Combine(folder.Path, $"DIVA-diagnostics-{DateTime.UtcNow:yyyyMMdd-HHmmssfff}.zip");
             await service.ExportDiagnosticsAsync(file);
             StatusBar.Severity = InfoBarSeverity.Success;
-            StatusBar.Title = "诊断已导出";
-            StatusBar.Message = "已保存到所选目录；不包含音频、原始日志或完整路径，未自动上传。";
+            Title(() => UiLanguage.Text("诊断已导出", "Diagnostics exported"));
+            Message(() => UiLanguage.Text("已保存到所选目录；不包含音频、原始日志或完整路径，未自动上传。", "Saved to the selected folder; excludes audio, raw logs and full paths. Nothing was uploaded."));
         }
         catch (Exception ex) { Error(ex); }
     }
@@ -613,30 +794,30 @@ public sealed partial class MainPage : Page
         {
             var update = await ReleaseUpdates.CheckAsync(CancellationToken.None);
             var dialog = new ContentDialog {
-                XamlRoot = XamlRoot, Title = update.IsNewer ? $"发现 {update.Tag}" : "已是当前正式版",
-                Content = $"本机 {ReleaseUpdates.CurrentTag}；公开正式版 {update.Tag}。旧安装和结果不会被覆盖。",
-                CloseButtonText = "关闭", PrimaryButtonText = update.IsNewer ? "打开下载页" : ""
+                XamlRoot = XamlRoot, Title = update.IsNewer ? UiLanguage.Text($"发现 {update.Tag}", $"Found {update.Tag}") : UiLanguage.Text("已是当前正式版", "Already on the current stable release"),
+                Content = UiLanguage.Text($"本机 {ReleaseUpdates.CurrentTag}；公开正式版 {update.Tag}。旧安装和结果不会被覆盖。", $"Installed: {ReleaseUpdates.CurrentTag}; public stable release: {update.Tag}. Existing installations and results will not be overwritten."),
+                CloseButtonText = UiLanguage.Text("关闭", "Close"), PrimaryButtonText = update.IsNewer ? UiLanguage.Text("打开下载页", "Open download page") : ""
             };
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
                 await Launcher.LaunchUriAsync(update.Page);
         }
-        catch (Exception ex) { Error(new IOException("更新检查失败；程序和模型未改变。", ex)); }
+        catch (Exception ex) { service.Diagnostics.Record("update-check", "failed", ex);Error(new PresentationException(() => UiLanguage.Text("更新检查失败。请检查网络或代理后重试；程序和模型未改变。", "Update check failed. Check your network or proxy, then retry; the program and models are unchanged."))); }
         finally { button.IsEnabled = true; }
     }
 
     private async void Doctor_Click(object sender,RoutedEventArgs e)
     {if(active is not null)return;try{var d=await service.CallAsync("doctor",new{});Log(d.ToString());await RefreshModels();}catch(Exception ex){Error(ex);}}
     private async void Unload_Click(object sender,RoutedEventArgs e)
-    {if(active is not null){Error(new InvalidOperationException("请先取消或完成当前任务。"));return;}try{await service.CallAsync("unload",new{});ModelStatus.Text="已释放本应用的模型 worker 与显存；未结束其他进程。";}catch(Exception ex){Error(ex);}}
+    {if(active is not null){Error(new PresentationException(() => UiLanguage.Text("请先取消或完成当前任务。", "Cancel or finish the current task first.")));return;}try{await service.CallAsync("unload",new{});Show(ModelStatus, () => UiLanguage.Text("已释放本应用的模型 worker 与显存；未结束其他进程。", "This app's model worker and GPU memory were released; other processes were left running."));}catch(Exception ex){Error(ex);}}
     private async Task Export(string format)
     {
         if(string.IsNullOrEmpty(resultPath))return;
         try
         {
-            await SaveDraft();var picker=new FolderPicker();picker.FileTypeFilter.Add("*");WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
+            await SaveDraft();var picker=new FolderPicker { CommitButtonText=UiLanguage.Text("导出到此文件夹", "Export to this folder") };picker.FileTypeFilter.Add("*");WinRT.Interop.InitializeWithWindow.Initialize(picker,App.WindowHandle);
             var folder=await picker.PickSingleFolderAsync();if(folder is null)return;
             string file=Path.Combine(folder.Path,$"phones-{DateTime.Now:yyyyMMdd-HHmmssfff}.{format}.txt");
-            await service.CallAsync("export",new{result_path=resultPath,format,output=file,use_draft=UseDraftBox.IsChecked==true});StatusBar.Message="已导出："+file;
+            await service.CallAsync("export",new{result_path=resultPath,format,output=file,use_draft=UseDraftBox.IsChecked==true});Message(() => UiLanguage.Text($"已导出：{file}", $"Exported: {file}"));
         }catch(Exception e){Error(e);}
     }
     private async void ExportIpa_Click(object sender,RoutedEventArgs e)=>await Export("ipa");

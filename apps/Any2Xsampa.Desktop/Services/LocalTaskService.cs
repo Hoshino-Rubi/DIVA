@@ -33,7 +33,7 @@ public sealed class LocalTaskService : IDisposable
         {
             ObjectDisposedException.ThrowIf(disposed, this);
             if (process is { HasExited: false }) return;
-            if (!File.Exists(configPath)) throw new FileNotFoundException("找不到本地运行配置 local-app.json；无需启动任何服务器。", configPath);
+            if (!File.Exists(configPath)) throw new FileNotFoundException(UiLanguage.Text("找不到本地运行配置 local-app.json；无需启动任何服务器。", "Local configuration local-app.json is missing. No server is required."), configPath);
             using var config = JsonDocument.Parse(await File.ReadAllTextAsync(configPath, ct));
             Root = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(configPath)!, config.RootElement.GetProperty("root").GetString()!));
             string? dataHome = Environment.GetEnvironmentVariable("ANY2XSAMPA_DATA_HOME");
@@ -48,7 +48,7 @@ public sealed class LocalTaskService : IDisposable
             StateDirectory = string.IsNullOrWhiteSpace(dataHome) ? Path.Combine(Root, ".state")
                 : Path.Combine(Path.GetFullPath(dataHome), "state");
             var python = Path.GetFullPath(Path.Combine(Root, config.RootElement.GetProperty("python").GetString()!));
-            if (!File.Exists(python)) throw new FileNotFoundException("本地 Python 运行时不存在。", python);
+            if (!File.Exists(python)) throw new FileNotFoundException(UiLanguage.Text("本地 Python 运行时不存在。", "The local Python runtime is missing."), python);
             var start = new ProcessStartInfo(python) { UseShellExecute=false, CreateNoWindow=true, WorkingDirectory=Root,
                 RedirectStandardInput=true, RedirectStandardOutput=true, RedirectStandardError=true,
                 StandardInputEncoding=new UTF8Encoding(false), StandardOutputEncoding=Encoding.UTF8, StandardErrorEncoding=Encoding.UTF8 };
@@ -61,7 +61,7 @@ public sealed class LocalTaskService : IDisposable
             if (config.RootElement.TryGetProperty("models", out var models))
             {
                 var registry = Path.GetFullPath(Path.Combine(Root, models.GetString()!));
-                if (!File.Exists(registry)) throw new FileNotFoundException("找不到此版本的模型注册表。", registry);
+                if (!File.Exists(registry)) throw new FileNotFoundException(UiLanguage.Text("找不到此版本的模型注册表。", "The model registry for this version is missing."), registry);
                 start.Environment["ANY2XSAMPA_MODELS"] = registry;
             }
             start.Environment.Remove("PYTHONHOME");
@@ -100,7 +100,7 @@ public sealed class LocalTaskService : IDisposable
                 else if (kind == "error") promise.TrySetException(new LocalTaskException(e.GetProperty("code").GetString() ?? "OtherError", e.GetProperty("message").GetString() ?? "Worker failed"));
                 else if (kind == "cancelled") promise.TrySetCanceled();
             }
-            throw new IOException("本地 worker 已退出；未自动重跑任务。");
+            throw new IOException(UiLanguage.Text("本地 worker 已退出；未自动重跑任务。", "The local worker exited. The task was not retried."));
         }
         catch (Exception e)
         {
@@ -180,12 +180,12 @@ public sealed class LocalTaskService : IDisposable
             var stdout=probe.StandardOutput.ReadToEndAsync();var stderr=probe.StandardError.ReadToEndAsync();
             using var limit=new CancellationTokenSource(TimeSpan.FromSeconds(8));
             try { await probe.WaitForExitAsync(limit.Token); }
-            catch(OperationCanceledException){probe.Kill(entireProcessTree:true);return "GPU 状态查询超时；未运行模型";}
+            catch(OperationCanceledException){probe.Kill(entireProcessTree:true);return UiLanguage.Text("GPU 状态查询超时；未运行模型", "GPU status timed out. No model was run.");}
             var text=(await stdout).Trim();var error=(await stderr).Trim();
             if (probe.ExitCode == 0) diagnostics?.RecordGpu(text);
-            return probe.ExitCode==0 ? "GPU 快照（名称 / 已用 MiB / 总 MiB）："+text+"；进程预算 7 GiB / 整卡 14 GiB" : "GPU 状态不可用："+error;
+            return probe.ExitCode==0 ? UiLanguage.Text("GPU 快照（名称 / 已用 MiB / 总 MiB）：", "GPU (name / used MiB / total MiB): ")+text+UiLanguage.Text("；进程预算 7 GiB / 整卡 14 GiB", "; budget: 7 GiB per process / 14 GiB total GPU") : UiLanguage.Text("GPU 状态不可用：", "GPU status unavailable: ")+error;
         }
-        catch(Exception e) when(e is System.ComponentModel.Win32Exception or IOException) { return "GPU 状态不可用："+e.Message; }
+        catch(Exception e) when(e is System.ComponentModel.Win32Exception or IOException) { return UiLanguage.Text("GPU 状态不可用：", "GPU status unavailable: ")+e.Message; }
     }
 
     private void FailPending(Exception error)
