@@ -30,6 +30,7 @@ public partial class App : Application
             if (StartupReportPath is string report)
                 System.IO.File.WriteAllText(report + ".exception.txt", e.Exception.ToString());
         };
+        UiLanguage.Initialize();
         InitializeComponent();
         Services = ConfigureServices();
     }

@@ -1,7 +1,7 @@
 {
   "schema_version": "release_version_v1",
-  "tag": "v1.0.2",
-  "python_version": "1.0.2",
-  "assembly_version": "1.0.2.0",
+  "tag": "v1.0.3",
+  "python_version": "1.0.3",
+  "assembly_version": "1.0.3.0",
   "prerelease": false
 }

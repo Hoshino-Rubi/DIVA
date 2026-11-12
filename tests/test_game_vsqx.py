@@ -57,9 +57,11 @@ def test_notes_export_preserves_pitch_rest_short_and_repeated_notes(evidence, tm
     source = read(notes_file)["notes"]
     assert [n["pitch"] for n in restored] == [48, 48, 75]
     assert len(restored) == 3 and result["placeholder_note_count"] == 0
+    preroll = result["vocaloid_preroll_seconds"]
+    assert result["vocaloid_preroll_ticks"] == 1920
     for a, b in zip(source, restored):
-        assert b["start_sec"] == pytest.approx(a["start_sec"], abs=result["maximum_time_rounding_sec"]+1e-6)
-        assert b["end_sec"] == pytest.approx(a["end_sec"], abs=result["maximum_time_rounding_sec"]+1e-6)
+        assert b["start_sec"]-preroll == pytest.approx(a["start_sec"], abs=result["maximum_time_rounding_sec"]+1e-6)
+        assert b["end_sec"]-preroll == pytest.approx(a["end_sec"], abs=result["maximum_time_rounding_sec"]+1e-6)
     assert restored[2]["start_sec"] > restored[1]["end_sec"] + .5
     assert before == (notes_file.read_bytes(), phones_file.read_bytes())
     proof = read(output.with_name(output.name+".provenance.json"))

@@ -4,11 +4,16 @@ from __future__ import annotations
 from copy import deepcopy
 from pathlib import Path
 import math
-from typing import Any
+from typing import Any, BinaryIO
+from xml.dom import Node, minidom
 from xml.etree import ElementTree as ET
 
 VSQ4_NS = "http://www.yamaha.co.jp/vocaloid/schema/vsq4/"
 MIKU_V4C_ENGINE_NAME = "Miku V4C"
+_CDATA_FIELDS = frozenset({
+    "vender", "version", "id", "name", "seqName", "comment", "y", "p",
+    "content", "filePath",
+})
 
 
 def _namespace(tag: str) -> str:
@@ -152,10 +157,96 @@ def build_vsqx_tree(draft: Any, *, template_path: str | Path | None = None) -> E
     return ET.ElementTree(root)
 
 
+def _native_xml_bytes(root: ET.Element) -> bytes:
+    """Restore the string-node representation used by native VSQ4 projects."""
+    document = minidom.parseString(ET.tostring(root, encoding="utf-8"))
+    try:
+        for node in document.getElementsByTagName("*"):
+            if node.localName not in _CDATA_FIELDS or any(
+                child.nodeType == Node.ELEMENT_NODE for child in node.childNodes
+            ):
+                continue
+            text_nodes = [
+                child for child in node.childNodes
+                if child.nodeType in (Node.TEXT_NODE, Node.CDATA_SECTION_NODE)
+            ]
+            value = "".join(child.data for child in text_nodes)
+            for child in text_nodes:
+                node.removeChild(child)
+            # A CDATA node cannot contain ]]>; adjacent nodes preserve its value.
+            pieces = value.split("]]>")
+            for index, piece in enumerate(pieces):
+                chunk = (">" if index else "") + piece
+                if index < len(pieces) - 1:
+                    chunk += "]]"
+                node.appendChild(document.createCDATASection(chunk))
+        return document.toxml(encoding="UTF-8", standalone=False)
+    finally:
+        document.unlink()
+
+
+def _add_missing_preroll(root: ET.Element, namespace: str) -> None:
+    """Keep song time when VSQ4 clamps a zero count-in to one measure."""
+    q = lambda name: _tag(name, namespace)
+    master = root.find(q("masterTrack"))
+    if master is None or master.findtext(q("preMeasure")) != "0":
+        return
+    signature = master.find(q("timeSig"))
+    if signature is None:
+        raise ValueError("VSQ4 count-in repair needs an initial time signature")
+    resolution = int(master.findtext(q("resolution"), "480"))
+    numerator = int(signature.findtext(q("nu"), "4"))
+    denominator = int(signature.findtext(q("de"), "4"))
+    if min(resolution, numerator, denominator) <= 0:
+        raise ValueError("Invalid VSQ4 count-in grid")
+    ticks, remainder = divmod(resolution * 4 * numerator, denominator)
+    if remainder:
+        raise ValueError("VSQ4 count-in cannot be represented in whole ticks")
+    master.find(q("preMeasure")).text = "1"
+    for node in root.iter():
+        if node.tag in {q("vsPart"), q("wavPart")}:
+            position = node.find(q("t"))
+            if position is not None:
+                position.text = str(int(position.text or "0") + ticks)
+    for event_name, position_name, offset in (("tempo", "t", ticks), ("timeSig", "m", 1)):
+        for event in master.findall(q(event_name)):
+            position = event.find(q(position_name))
+            if position is not None and int(position.text or "0") > 0:
+                position.text = str(int(position.text) + offset)
+
+
+def write_vsqx(
+    tree: ET.ElementTree, destination: BinaryIO | str | Path, *,
+    repair_zero_preroll: bool = False,
+) -> None:
+    """Match native VSQX names and CDATA without changing the caller's tree.
+
+    ElementTree discards CDATA on input and invents namespace prefixes on
+    output. Keep the namespace URI and every value while restoring the lexical
+    form of the known-good editor files, including empty string fields.
+    """
+    root = deepcopy(tree.getroot())
+    namespace = _namespace(root.tag)
+    if repair_zero_preroll and namespace == VSQ4_NS:
+        _add_missing_preroll(root, namespace)
+    if namespace:
+        prefix = "{" + namespace + "}"
+        for node in root.iter():
+            if isinstance(node.tag, str) and node.tag.startswith(prefix):
+                node.tag = node.tag[len(prefix):]
+        root.set("xmlns", namespace)
+    payload = _native_xml_bytes(root)
+    if isinstance(destination, (str, Path)):
+        with Path(destination).open("wb") as stream:
+            stream.write(payload)
+    else:
+        destination.write(payload)
+
+
 def export_vsqx_file(tree: ET.ElementTree, output_path: str | Path) -> Path:
     output = Path(output_path)
     output.parent.mkdir(parents=True, exist_ok=True)
-    tree.write(output, encoding="utf-8", xml_declaration=True)
+    write_vsqx(tree, output)
     return output
 
 
@@ -163,4 +254,4 @@ def export_vsqx_from_template(draft: Any, output_path: str | Path, *, template_p
     return export_vsqx_file(build_vsqx_tree(draft, template_path=template_path), output_path)
 
 
-__all__ = ["VSQ4_NS", "MIKU_V4C_ENGINE_NAME", "build_vsqx_tree", "export_vsqx_file", "export_vsqx_from_template"]
+__all__ = ["VSQ4_NS", "MIKU_V4C_ENGINE_NAME", "build_vsqx_tree", "write_vsqx", "export_vsqx_file", "export_vsqx_from_template"]

@@ -53,8 +53,10 @@ def test_audio_notes_keep_pitch_durations_and_all_phone_evidence(result_file,pit
     assert tree.findtext('.//v:tempo/v:v',namespaces=ns)=='12000'
     from any2xsampa.vocaloid.vsqx_alignment import parse_vsqx_timeline
     timeline=parse_vsqx_timeline(target)
-    assert timeline['notes'][0]['start_sec']==pytest.approx(.2,abs=1/240)
-    assert timeline['notes'][1]['start_sec']==pytest.approx(1.0,abs=1/240)
+    preroll=read(target.with_name(target.name+'.provenance.json'))['vocaloid_preroll_seconds']
+    assert preroll==2.0
+    assert timeline['notes'][0]['start_sec']-preroll==pytest.approx(.2,abs=1/240)
+    assert timeline['notes'][1]['start_sec']-preroll==pytest.approx(1.0,abs=1/240)
     assert all(n.find('v:p',ns).get('lock')=='1' for n in notes)
     assert read(target.with_name(target.name+'.provenance.json'))['transpose_semitones']==0
 

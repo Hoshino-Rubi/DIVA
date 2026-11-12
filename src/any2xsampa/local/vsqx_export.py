@@ -9,6 +9,7 @@ from typing import Any
 from xml.etree import ElementTree as ET
 
 from any2xsampa.vocaloid.phoneme_policy import validate_miku_v4c_note_phonemes
+from any2xsampa.vocaloid.vsqx import write_vsqx
 from any2xsampa.vocaloid.vsqx_alignment import parse_vsqx_timeline
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -208,7 +209,7 @@ def export_vsqx_from_result(
         output_fingerprints.append(_note_fingerprint(node, namespace, part_tick))
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    tree.write(output_file, encoding="utf-8", xml_declaration=True)
+    write_vsqx(tree, output_file)
     semantic_before = [item for item in original_fingerprints]
     semantic_after = [item for item in output_fingerprints]
     if semantic_before != semantic_after:

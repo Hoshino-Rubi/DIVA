@@ -7,6 +7,8 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+from typing import Callable, TypeVar
+import urllib.error
 import urllib.request
 from urllib.parse import urlsplit
 import zipfile
@@ -15,6 +17,8 @@ from .common import ROOT, check_cancel, read, sha
 from .storage import model_cache, state_dir
 
 BLOCK = 1024 * 1024
+DOWNLOAD_TIMEOUT = 30
+_T = TypeVar("_T")
 
 
 def inside(root: Path, relative: str) -> Path:
@@ -159,6 +163,23 @@ def _copy_verified(source, destination: Path, expected: dict, cancel, progress) 
         tmp.unlink(missing_ok=True)
 
 
+def _network_call(operation: Callable[[], _T]) -> _T:
+    """Translate transport errors only; local writes and validation stay distinct."""
+    try:
+        return operation()
+    except OSError as exc:
+        reason = exc.reason if isinstance(exc, urllib.error.URLError) else exc
+        if isinstance(exc, urllib.error.HTTPError):
+            detail = f"Model download failed (HTTP {exc.code})."
+        elif isinstance(reason, TimeoutError):
+            detail = f"Model download timed out ({DOWNLOAD_TIMEOUT}-second network timeout)."
+        else:
+            detail = "Model download failed because of a network connection error."
+        raise RuntimeError(
+            detail + " Check your connection or proxy, then try again. Partial download retained."
+        ) from exc
+
+
 def _download(item: dict, cache: Path, cancel, progress, opener) -> Path:
     complete = cache / (item["sha256"] + ".blob")
     if matches(complete, item):
@@ -177,7 +198,7 @@ def _download(item: dict, cache: Path, cancel, progress, opener) -> Path:
     if offset:
         headers["Range"] = f"bytes={offset}-"
     request = urllib.request.Request(item["url"], headers=headers)
-    with opener.open(request, timeout=5) as response:
+    with _network_call(lambda: opener.open(request, timeout=DOWNLOAD_TIMEOUT)) as response:
         if urlsplit(response.geturl()).scheme != "https":
             raise ValueError("Model download redirected outside HTTPS")
         code = response.status
@@ -191,7 +212,7 @@ def _download(item: dict, cache: Path, cancel, progress, opener) -> Path:
         if length is not None and int(length) != item["bytes"] - offset:
             raise ValueError("Remote model length changed")
         with partial.open("ab" if offset else "wb") as out:
-            while block := response.read(BLOCK):
+            while block := _network_call(lambda: response.read(BLOCK)):
                 check_cancel(cancel)
                 if offset + len(block) > item["bytes"]:
                     raise ValueError("Remote model exceeds pinned size")

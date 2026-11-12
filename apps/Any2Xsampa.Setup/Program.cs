@@ -89,7 +89,7 @@ internal sealed class SetupForm : Form
         previous.Controls.Add(oldFolder, 0, 0); previous.Controls.Add(oldBrowse, 1, 0);
         layout.Controls.Add(previous);
         layout.Controls.Add(progress);
-        status.Text = "首次自动下载加安装需约 12 GiB 临时可用空间。模型会在应用首次启动时下载，也可离线导入。";
+        status.Text = "首次自动下载加安装需约 12 GiB 临时可用空间。打开应用后请手动下载模型，或导入离线模型。";
         layout.Controls.Add(status);
         var actions = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.RightToLeft };
         actions.Controls.Add(cancel); actions.Controls.Add(open); actions.Controls.Add(install); actions.Controls.Add(remove);

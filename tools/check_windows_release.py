@@ -19,6 +19,8 @@ TESTS = [
     "test_release_version.py", "test_product_branding.py",
     "test_local_storage.py",
     "test_stream_portable_release.py",
+    "test_model_download_timeout.py", "test_desktop_workspace_layout.py",
+    "test_vsqx_native_serialization.py", "test_vocal_range_export.py",
 ]
 def write(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
@@ -47,13 +49,14 @@ def main():
     command("python-tests",[sys.executable,"-X","utf8","-m","pytest",
             *["tests/"+x for x in TESTS],"-q","-p","no:cacheprovider",
             "--basetemp="+str(out/"pytest-temp"),"--junitxml="+str(out/"pytest.xml")],env=test_env)
-    for name in ("Any2Xsampa.Setup.Tests","Any2Xsampa.LocalTransport.Tests"):
+    for name in ("Any2Xsampa.Setup.Tests","Any2Xsampa.LocalTransport.Tests","Any2Xsampa.Localization.Tests"):
         command(name+"-build",["dotnet","build","apps/"+name+"/"+name+".csproj","-c","Release",
                               "--ignore-failed-sources","-p:NuGetAudit=false"])
     dll=ROOT/"apps/Any2Xsampa.LocalTransport.Tests/bin/Release/net8.0/Any2Xsampa.LocalTransport.Tests.dll"
     command("setup-faults",["dotnet",ROOT/"apps/Any2Xsampa.Setup.Tests/bin/Release/net8.0/Any2Xsampa.Setup.Tests.dll",out/"installer"])
     command("diagnostics",["dotnet",dll,"--diagnostics",out/"diagnostics"])
     command("release-version",["dotnet",dll,"--release"])
+    command("desktop-languages",["dotnet",ROOT/"apps/Any2Xsampa.Localization.Tests/bin/Release/net8.0/Any2Xsampa.Localization.Tests.dll"])
     # Fresh path with spaces/Unicode; no repository cwd or inherited model registry.
     clean=out/"clean installation 中文"
     clean.mkdir()

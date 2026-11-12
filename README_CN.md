@@ -12,15 +12,15 @@
 
 从 **v1.0.2** 起产品名为 DIVA，仓库迁至 [Hoshino-Rubi/DIVA](https://github.com/Hoshino-Rubi/DIVA)。旧版 **v1.0.1** 二进制仍显示 Any2Xsampa，包括 `Any2Xsampa-Setup-v1.0.1.exe`，不受此次修改影响。`any2xsampa` Python 包和命令、内部可执行文件名、环境变量及数据目录保留旧名以兼容现有使用。无需搬动设置、模型或已有结果。详见[品牌迁移说明](docs/branding_migration.md)。
 
-## Windows x64 · v1.0.2
+## Windows x64 · v1.0.3
 
-从 [v1.0.2 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2) 下载 **DIVA-Setup-v1.0.2.exe** 并运行。安装器下载固定版本分卷，校验大小和 SHA256 后安装；支持显式续传，失败不自动重试。公共自动安装要求 Release 已发布且可匿名访问。
+从 [v1.0.3 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.3) 下载 **DIVA-Setup-v1.0.3.exe** 并运行。安装器下载固定版本分卷，校验大小和 SHA256 后安装；支持显式续传，失败不自动重试。公共自动安装要求 Release 已发布且可匿名访问。
 
 离线时，把以下三个文件放在安装器旁边：
 
-- `DIVA-Windows-x64-v1.0.2.zip.001`
-- `DIVA-Windows-x64-v1.0.2.zip.002`
-- `DIVA-Windows-x64-v1.0.2.zip.003`
+- `DIVA-Windows-x64-v1.0.3.zip.001`
+- `DIVA-Windows-x64-v1.0.3.zip.002`
+- `DIVA-Windows-x64-v1.0.3.zip.003`
 
 双击安装器，选择可写目录。安装器会自动校验并解压；不要直接运行分卷或只复制桌面 EXE。无需另装 Python、.NET、CUDA Toolkit，也不用启动服务器。
 
@@ -28,19 +28,21 @@
 
 当前构建未签名。实际验收范围见发布报告；软件正式版不代表识别准确率已获得认证。
 
-### 自动下载模型
+### 语言与模型安装
 
-首次启动从固定上游 HTTPS 地址下载 PhoneticXeus 和 GAME 权重，总计约 2.31 GiB。安装前核验大小和 SHA256，损坏文件不会伪装成可用模型。
+桌面语言支持跟随系统、English 和中文。默认跟随系统界面语言，无法匹配时使用英文；切换语言保留当前任务和设置。
 
-支持关闭启动时下载、HTTP(S) 代理、取消、断点续传与离线导入。连接失败不自动反复重试；未完成下载保留，可显式继续。识别阶段不联网。
+启动时不会下载模型。请在模型面板手动下载固定上游 HTTPS 地址的 PhoneticXeus 和 GAME 权重（总计约 2.31 GiB），或导入离线模型；安装前核验大小和 SHA256。支持 HTTP(S) 代理、取消和断点续传。连接失败不自动反复重试；未完成下载保留，可显式继续。识别阶段不联网。
 
-不能联网时另下载三个 `PhoneticXeus-model.safetensors.00x` 分卷和 `GAME-1.0.3-medium-onnx.zip`，放到一个文件夹，在应用中选择“导入离线模型文件夹”。无需手工拼接或解压。
+不能联网时，复用 [v1.0.2 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2) 的三个 `PhoneticXeus-model.safetensors.00x` 分卷和 `GAME-1.0.3-medium-onnx.zip`。权重没有变化；放到同一文件夹后选择“导入离线模型文件夹”，无需手工拼接或解压。
 
 ## 桌面操作
 
 1. 完成模型安装，打开 WAV，明确选择 `guarded-candidate-v2`。
 2. 选择整首或当前片段，保留“识别后自动生成 VSQX”。
 3. 点击“开始识别并生成”，完成后导出 VSQX。
+
+导出支持 MIKU V4C 八度适配、保留原调、手动按半音移调。自动生成的乐谱默认八度适配，导入乐谱默认保留原调。全部音符使用同一个移调量，保留音程与节奏，并显示仍超出目标音域的音符数。这是编曲设置，不会改写原始模型证据。详见 [v1.0.3 更新说明](docs/releases/v1.0.3_CN.md)。
 
 “音符与 VSQX”区域可复用已保存的 GAME 音符，不重复推理。取消仅影响本应用拥有的任务。真实模型不可用会明确失败，不会悄悄改用 fixture。
 

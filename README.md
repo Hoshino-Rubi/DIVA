@@ -13,15 +13,15 @@ The Windows desktop app and CLI share a local subprocess engine. Normal use does
 
 DIVA is the product name starting with **v1.0.2**, at [Hoshino-Rubi/DIVA](https://github.com/Hoshino-Rubi/DIVA). The old **v1.0.1** binaries still display Any2Xsampa and are unchanged, including `Any2Xsampa-Setup-v1.0.1.exe`. The `any2xsampa` Python package and commands, internal executable names, environment variables and data directories retain their existing names for compatibility. No settings, models or saved results need to be moved. See the [branding migration notes](docs/branding_migration.md).
 
-## Windows x64 · v1.0.2
+## Windows x64 · v1.0.3
 
-Download **DIVA-Setup-v1.0.2.exe** from the [v1.0.2 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2) and run it. Setup downloads the fixed application volumes, checks their sizes and SHA256, then installs into a new folder. Partial downloads support explicit resumption; failures do not start retry loops. Public automatic installation requires an anonymously accessible, published Release.
+Download **DIVA-Setup-v1.0.3.exe** from the [v1.0.3 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.3) and run it. Setup downloads the fixed application volumes, checks their sizes and SHA256, then installs into a new folder. Partial downloads support explicit resumption; failures do not start retry loops. Public automatic installation requires an anonymously accessible, published Release.
 
 For offline installation, keep these beside Setup:
 
-- `DIVA-Windows-x64-v1.0.2.zip.001`
-- `DIVA-Windows-x64-v1.0.2.zip.002`
-- `DIVA-Windows-x64-v1.0.2.zip.003`
+- `DIVA-Windows-x64-v1.0.3.zip.001`
+- `DIVA-Windows-x64-v1.0.3.zip.002`
+- `DIVA-Windows-x64-v1.0.3.zip.003`
 
 Run the installer and choose a writable directory. It verifies the volumes and extracts the complete application. Do not run a volume directly or copy only the desktop EXE.
 Python, .NET and required libraries are bundled; no separate server or CUDA Toolkit installation is needed.
@@ -30,20 +30,22 @@ Python, .NET and required libraries are bundled; no separate server or CUDA Tool
 
 This build is unsigned. Read the release acceptance report for the actual tested scope. Application stability is separate from recognition-accuracy certification.
 
-### Automatic model setup
+### Languages and model setup
 
-On first launch, the app downloads missing, revision-pinned PhoneticXeus and GAME weights from their upstream HTTPS sources (about 2.31 GiB total). File sizes and SHA256 hashes are verified before models become available.
+The desktop language selector supports System, English and Chinese. The default follows the system UI language; unsupported languages fall back to English. Settings are retained when the language changes.
 
-The setup panel supports disabling startup downloads, HTTP(S) proxies, cancellation, explicit resumption and offline import.
+Startup does not download models. Use the setup panel to download missing, revision-pinned PhoneticXeus and GAME weights from their upstream HTTPS sources (about 2.31 GiB total), or import offline models. File sizes and SHA256 hashes are verified before models become available. HTTP(S) proxies, cancellation and explicit resumption are supported.
 Failures do not trigger automatic retry loops; partial downloads are retained. Inference stays offline.
 
-For offline setup, download the three `PhoneticXeus-model.safetensors.00x` volumes and `GAME-1.0.3-medium-onnx.zip` from the Release. Put them in one folder, then select **Import offline models**. No manual concatenation or archive extraction is required.
+For offline setup, reuse the three `PhoneticXeus-model.safetensors.00x` volumes and `GAME-1.0.3-medium-onnx.zip` from the [v1.0.2 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2). The weights are unchanged. Put them in one folder, then select **Import offline models**. No manual concatenation or archive extraction is required.
 
 ## Desktop workflow
 
 1. Finish model setup, open a WAV file and explicitly select `guarded-candidate-v2`.
 2. Choose the whole file or an interval. Keep automatic VSQX generation enabled.
 3. Start recognition, then export the generated VSQX.
+
+VSQX export supports MIKU V4C octave adaptation, original pitch, or a manual semitone shift. Generated scores default to octave adaptation; imported scores default to their original pitches. Every note receives the same shift, preserving melodic intervals and timing. Out-of-range counts remain visible: this is an arrangement choice, not a correction of acoustic-model evidence. See the [v1.0.3 release notes](docs/releases/v1.0.3.md).
 
 The note panel can reuse saved GAME predictions without rerunning inference.
 Cancellation affects only application-owned jobs. Missing real models fail clearly; fixture data is never silently substituted for recognition.

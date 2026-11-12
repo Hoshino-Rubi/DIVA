@@ -9,7 +9,7 @@ from .common import finite, read, sha, write
 from .score_export import note_number, positive
 from any2xsampa.vocaloid.draft import VocalNoteDraft, VocalTrackDraft, VocalTrackDraftTrack
 from any2xsampa.vocaloid.phoneme_policy import validate_miku_v4c_note_phonemes
-from any2xsampa.vocaloid.vsqx import build_vsqx_tree
+from any2xsampa.vocaloid.vsqx import build_vsqx_tree, write_vsqx
 from any2xsampa.vocaloid.vsqx_alignment import parse_vsqx_timeline
 
 TEMPLATE = Path(__file__).resolve().parents[1] / "vocaloid/resources/vsq4_empty.vsqx"
@@ -56,21 +56,32 @@ def _draft_notes(score: dict[str, Any], scale: float) -> list[VocalNoteDraft]:
 
 
 def _verify_written(file: Path, notes: list[VocalNoteDraft], score: dict, scale: float) -> dict:
+    root = ET.parse(file).getroot()
+    ns = root.tag.split("}")[0] + "}"
+    master = root.find(ns + "masterTrack")
+    signature = master.find(ns + "timeSig")
+    preroll = (int(master.findtext(ns + "preMeasure", "0"))
+               * int(master.findtext(ns + "resolution", "480")) * 4
+               * int(signature.findtext(ns + "nu", "4"))
+               // int(signature.findtext(ns + "de", "4")))
     restored = parse_vsqx_timeline(file)["notes"]
     if len(restored) != len(notes):
         raise ValueError("VSQX note count failed independent readback")
     max_start = max_end = 0.0
     for original, draft, actual in zip(score["notes"], notes, restored, strict=True):
-        if (actual["pitch"] != draft.pitch or actual["start_tick"] != draft.start_tick
+        audio_tick = actual["start_tick"] - preroll
+        if (actual["pitch"] != draft.pitch or audio_tick != draft.start_tick
                 or actual["duration_ticks"] != draft.duration_ticks):
             raise ValueError("VSQX pitch/onset/duration changed during serialization")
-        a = abs(actual["start_tick"] / scale - original["start_sec"])
-        b = abs((actual["start_tick"] + actual["duration_ticks"]) / scale
+        a = abs(audio_tick / scale - original["start_sec"])
+        b = abs((audio_tick + actual["duration_ticks"]) / scale
                 - original["start_sec"] - original["duration_sec"])
         if max(a, b) > .5 / scale + 1e-8:
             raise ValueError("VSQX timing exceeds one-half-tick rounding tolerance")
         max_start, max_end = max(max_start, a), max(max_end, b)
     return {"pitch_and_timing_readback_passed": True,
+            "vocaloid_preroll_ticks": preroll,
+            "vocaloid_preroll_seconds": preroll / scale,
             "maximum_onset_roundtrip_error_sec": max_start,
             "maximum_offset_roundtrip_error_sec": max_end,
             "maximum_time_rounding_sec": .5 / scale,
@@ -116,7 +127,7 @@ def export_generated_score(score_path: Path, output: Path) -> dict:
     try:
         with output.open("xb") as handle:
             created.append(output)
-            tree.write(handle, encoding="utf-8", xml_declaration=True)
+            write_vsqx(tree, handle, repair_zero_preroll=True)
         check = _verify_written(output, notes, score, scale)
         proof = {"schema_version": "local_generated_vsqx_export_v2",
                  "score_path": str(score_path), "score_sha256": digest,

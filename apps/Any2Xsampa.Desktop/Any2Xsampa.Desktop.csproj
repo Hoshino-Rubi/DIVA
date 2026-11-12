@@ -34,6 +34,7 @@
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
     <Protobuf Include="Protos\miku_v4c_product.proto" GrpcServices="Client" />
+    <EmbeddedResource Include="Localization\StaticText.en.json" LogicalName="DIVA.Localization.StaticText.en.json" WithCulture="false" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

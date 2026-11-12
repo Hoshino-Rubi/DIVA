@@ -2,13 +2,15 @@
 from __future__ import annotations
 from datetime import datetime, timezone
 from pathlib import Path
-import shutil
 import sys
 import time
+from xml.etree import ElementTree as ET
 from .common import ROOT, Cancelled, check_cancel, read, sha, write
 from .process import WorkerClient
 from .score_export import make_score, export_score
 from .vsqx_export import export_vsqx_from_result
+from .vocal_range import apply_export_pitch
+from any2xsampa.vocaloid.vsqx import write_vsqx
 
 def _bound_result(params):
     file=Path(params["result_path"]).resolve()
@@ -146,7 +148,17 @@ def export_saved_score(params):
     proof=output.with_name(output.name+'.provenance.json')
     if output.exists() or proof.exists():raise FileExistsError("Refusing to overwrite existing VSQX or provenance")
     output.parent.mkdir(parents=True,exist_ok=True)
-    with source.open('rb') as src, output.open('xb') as dst:shutil.copyfileobj(src,dst)
+    tree=ET.parse(source)
+    adaptation = apply_export_pitch(tree, mode=params.get('pitch_mode', 'original'),
+                                    transpose_semitones=params.get('transpose_semitones'))
+    generated = delivery.get('source') in {'audio_game', 'audio_pyin_draft'}
+    namespace = tree.getroot().tag.split('}')[0] + '}'
+    repair = generated and tree.findtext('.//' + namespace + 'preMeasure') == '0'
+    with output.open('xb') as dst:write_vsqx(tree,dst,repair_zero_preroll=generated)
     write(proof,{"schema_version":"local_vsqx_copy_v1",**delivery,"export_path":str(output),
-                 "export_sha256":sha(output),"pitch_and_duration_preserved":True,"model_forwards":0})
-    return {"output":str(output),"note_count":delivery['note_count'],"model_forwards":0}
+                 "export_sha256":sha(output),
+                 "pitch_and_duration_preserved":adaptation['transpose_semitones']==0,
+                 "duration_preserved":True,"pitch_adaptation":adaptation,
+                 "zero_preroll_repaired":repair,"relative_note_timing_preserved":True,"model_forwards":0})
+    return {"output":str(output),"note_count":delivery['note_count'],"model_forwards":0,
+            "pitch_adaptation":adaptation}

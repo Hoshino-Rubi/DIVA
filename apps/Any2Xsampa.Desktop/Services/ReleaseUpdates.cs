@@ -20,7 +20,7 @@ public static class ReleaseUpdates
         string tag = release.GetProperty("tag_name").GetString() ?? "";
         if (release.GetProperty("draft").GetBoolean() || release.GetProperty("prerelease").GetBoolean()
             || !Regex.IsMatch(tag, "^v[0-9]+\\.[0-9]+\\.[0-9]+$"))
-            throw new InvalidDataException("返回的不是正式版");
+            throw new InvalidDataException(UiLanguage.Text("返回的不是正式版", "The response is not a stable release."));
         var current = Version.Parse(currentTag.TrimStart('v'));
         var incoming = Version.Parse(tag[1..]);
         return new(tag, incoming > current,
@@ -46,7 +46,7 @@ public static class ReleaseUpdates
             int read;
             while ((read = await input.ReadAsync(buffer, limit.Token)) != 0)
             {
-                if (output.Length + read > 1024 * 1024) throw new InvalidDataException("更新响应过大");
+                if (output.Length + read > 1024 * 1024) throw new InvalidDataException(UiLanguage.Text("更新响应过大", "The update response is too large."));
                 output.Write(buffer, 0, read);
             }
             return Parse(System.Text.Encoding.UTF8.GetString(output.ToArray()), CurrentTag);
