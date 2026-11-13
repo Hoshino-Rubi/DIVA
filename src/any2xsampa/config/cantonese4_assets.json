@@ -1,0 +1,181 @@
+{
+  "schema_version": "cantonese4_assets_v1",
+  "models": {
+    "small": {
+      "id": "AlienKevin/whisper-small-jyutping-without-tones-full",
+      "revision": "3d619480c894a879be6948a098ccdfc4d4bb5eef"
+    },
+    "base": {
+      "id": "AlienKevin/whisper-base-jyutping-without-tones-full-merged",
+      "revision": "cbd9056811979a03129bbebd1de75f57cc5aa2cf"
+    },
+    "separator": {
+      "id": "KimberleyJSN/melbandroformer",
+      "revision": "ac9b0614ab3cd7f77219e18ba494dfd93956c348"
+    }
+  },
+  "files": [
+    {
+      "path": "small/README.md",
+      "bytes": 1601,
+      "sha256": "c6687329d72e64f7bfd5e7dc8b9407914e4f8cd9d7944139fafc40fd482d9c75",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/README.md"
+    },
+    {
+      "path": "small/added_tokens.json",
+      "bytes": 34604,
+      "sha256": "9715fd2243b6f06a5858b5e32950d2853f73dd5bc201aafcf76f5082a2d8acd1",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/added_tokens.json"
+    },
+    {
+      "path": "small/config.json",
+      "bytes": 1322,
+      "sha256": "bd50e01529401e2e52e1f02cc3f202a4f7e3a27bd25482389d911a3decaf10ac",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/config.json"
+    },
+    {
+      "path": "small/generation_config.json",
+      "bytes": 3837,
+      "sha256": "f3df2555ca5d7331945a8c6c8bfc99c55efdd34c07463e5dc31ea485d2f7a99e",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/generation_config.json"
+    },
+    {
+      "path": "small/merges.txt",
+      "bytes": 493864,
+      "sha256": "78f27f801feb4283ae969d4cadacb28fc051b655647402b1a252c7079ea11c46",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/merges.txt"
+    },
+    {
+      "path": "small/normalizer.json",
+      "bytes": 52666,
+      "sha256": "bf1c507dc8724ca9cf9903640dacfb69dae2f00edee4f21ceba106a7392f26dd",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/normalizer.json"
+    },
+    {
+      "path": "small/preprocessor_config.json",
+      "bytes": 339,
+      "sha256": "a6a76d28c93edb273669eb9e0b0636a2bddbb1272c3261e47b7ca6dfdbac1b8d",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/preprocessor_config.json"
+    },
+    {
+      "path": "small/pytorch_model.bin",
+      "bytes": 967096009,
+      "sha256": "0caed5be1a1736d6fcc6efb72d6d8dc20af6e581d7ebf5228b25f21201a6d7f7",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/resolve/3d619480c894a879be6948a098ccdfc4d4bb5eef/pytorch_model.bin"
+    },
+    {
+      "path": "small/special_tokens_map.json",
+      "bytes": 2077,
+      "sha256": "b0aac6950381c4ae2f60b3f0fab04bcfe399a6a320cb3e4c7aee2d52924d733e",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/special_tokens_map.json"
+    },
+    {
+      "path": "small/tokenizer_config.json",
+      "bytes": 805,
+      "sha256": "14f84bdf4b9ecdbd4738ddc81c17a1baedfc02bb93c6e049c951e15a1b40b70d",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/tokenizer_config.json"
+    },
+    {
+      "path": "small/vocab.json",
+      "bytes": 1036584,
+      "sha256": "50d6a919f0a0601d56a04eb583c780d18553aa388254ba3158eb6a00f13e2c1a",
+      "url": "https://huggingface.co/AlienKevin/whisper-small-jyutping-without-tones-full/raw/3d619480c894a879be6948a098ccdfc4d4bb5eef/vocab.json"
+    },
+    {
+      "path": "base/README.md",
+      "bytes": 1602,
+      "sha256": "ca63722b0f7af6f89a7d54a738e8cbee026c8c95d665b9e4181224e2162d69c6",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/README.md"
+    },
+    {
+      "path": "base/added_tokens.json",
+      "bytes": 34604,
+      "sha256": "9715fd2243b6f06a5858b5e32950d2853f73dd5bc201aafcf76f5082a2d8acd1",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/added_tokens.json"
+    },
+    {
+      "path": "base/config.json",
+      "bytes": 1316,
+      "sha256": "92b33b819ce12479aad571e2de53e6342f6067c4c7d01366a550a473b32af090",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/config.json"
+    },
+    {
+      "path": "base/generation_config.json",
+      "bytes": 3776,
+      "sha256": "6843a1235055e389b1c2eaa5cc208c593c8e0f5cc1f4917cdf611c62e99a3bdd",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/generation_config.json"
+    },
+    {
+      "path": "base/merges.txt",
+      "bytes": 493864,
+      "sha256": "78f27f801feb4283ae969d4cadacb28fc051b655647402b1a252c7079ea11c46",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/merges.txt"
+    },
+    {
+      "path": "base/normalizer.json",
+      "bytes": 52666,
+      "sha256": "bf1c507dc8724ca9cf9903640dacfb69dae2f00edee4f21ceba106a7392f26dd",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/normalizer.json"
+    },
+    {
+      "path": "base/preprocessor_config.json",
+      "bytes": 339,
+      "sha256": "a6a76d28c93edb273669eb9e0b0636a2bddbb1272c3261e47b7ca6dfdbac1b8d",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/preprocessor_config.json"
+    },
+    {
+      "path": "base/pytorch_model.bin",
+      "bytes": 290455393,
+      "sha256": "1df1d4a1d2ef723cdec6cb457c8f158aafb714e792e06205505809c5d029ba5b",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/resolve/cbd9056811979a03129bbebd1de75f57cc5aa2cf/pytorch_model.bin"
+    },
+    {
+      "path": "base/special_tokens_map.json",
+      "bytes": 2077,
+      "sha256": "b0aac6950381c4ae2f60b3f0fab04bcfe399a6a320cb3e4c7aee2d52924d733e",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/special_tokens_map.json"
+    },
+    {
+      "path": "base/tokenizer_config.json",
+      "bytes": 804,
+      "sha256": "60f582a7f2855456bba9be70140f51be7c64e88e1258d80e10f17cd4a49e0e7d",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/tokenizer_config.json"
+    },
+    {
+      "path": "base/vocab.json",
+      "bytes": 1036584,
+      "sha256": "50d6a919f0a0601d56a04eb583c780d18553aa388254ba3158eb6a00f13e2c1a",
+      "url": "https://huggingface.co/AlienKevin/whisper-base-jyutping-without-tones-full-merged/raw/cbd9056811979a03129bbebd1de75f57cc5aa2cf/vocab.json"
+    },
+    {
+      "path": "separator/MelBandRoformer.ckpt",
+      "bytes": 913106900,
+      "sha256": "87201f4d31afb5bc79993230fc49446918425574db48c01c405e44f365c7559e",
+      "url": "https://huggingface.co/KimberleyJSN/melbandroformer/resolve/ac9b0614ab3cd7f77219e18ba494dfd93956c348/MelBandRoformer.ckpt"
+    },
+    {
+      "path": "separator/code/configs/config_vocals_mel_band_roformer.yaml",
+      "bytes": 733,
+      "sha256": "87aabb300193b019159269b69d6fe5f313aae4201a22b4af6268bc2846ab2fe1",
+      "url": "https://raw.githubusercontent.com/KimberleyJensen/Mel-Band-Roformer-Vocal-Model/25f44ffb55ee3c301281bba21b2d6d311cb69ae2/configs/config_vocals_mel_band_roformer.yaml"
+    },
+    {
+      "path": "separator/code/models/mel_band_roformer/__init__.py",
+      "bytes": 71,
+      "sha256": "bde4b0739ca79d0d85ee9cf1df6eea0558c8e17e06414fbb3600897ff6d24640",
+      "url": "https://raw.githubusercontent.com/KimberleyJensen/Mel-Band-Roformer-Vocal-Model/25f44ffb55ee3c301281bba21b2d6d311cb69ae2/models/mel_band_roformer/__init__.py"
+    },
+    {
+      "path": "separator/code/models/mel_band_roformer/attend.py",
+      "bytes": 2854,
+      "sha256": "9ffd7d06b22a53bb8e6162adf674e7298d2227e1eea4f6404cb89ff1bbefecbe",
+      "url": "https://raw.githubusercontent.com/KimberleyJensen/Mel-Band-Roformer-Vocal-Model/25f44ffb55ee3c301281bba21b2d6d311cb69ae2/models/mel_band_roformer/attend.py"
+    },
+    {
+      "path": "separator/code/models/mel_band_roformer/mel_band_roformer.py",
+      "bytes": 16726,
+      "sha256": "d0e958c58114872c3a0af54f97719e07690ff5d98473fcd8b48485f776737b8f",
+      "url": "https://raw.githubusercontent.com/KimberleyJensen/Mel-Band-Roformer-Vocal-Model/25f44ffb55ee3c301281bba21b2d6d311cb69ae2/models/mel_band_roformer/mel_band_roformer.py"
+    }
+  ]
+}

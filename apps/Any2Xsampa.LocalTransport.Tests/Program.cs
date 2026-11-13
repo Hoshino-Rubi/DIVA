@@ -5,7 +5,15 @@ using System.Security.Cryptography;
 if(args.Length==2 && args[0]=="--diagnostics") { await DiagnosticChecks.Run(args[1]); return; }
 if(args.Length==1 && args[0]=="--release")
 {
-    if(ReleaseUpdates.CurrentTag!="v1.0.3")throw new Exception("Compiled release identity mismatch");
+    var root=new DirectoryInfo(AppContext.BaseDirectory);
+    while(root is not null && !File.Exists(Path.Combine(root.FullName,"release-version.json")))
+        root=root.Parent;
+    if(root is null)throw new FileNotFoundException("Release manifest not found above the test assembly");
+    using var manifest=JsonDocument.Parse(File.ReadAllText(Path.Combine(root.FullName,"release-version.json")));
+    var identity=manifest.RootElement;
+    if(ReleaseUpdates.CurrentTag!=identity.GetProperty("tag").GetString()
+        || typeof(ReleaseUpdates).Assembly.GetName().Version!=Version.Parse(identity.GetProperty("assembly_version").GetString()!))
+        throw new Exception("Compiled release identity mismatch");
     var same=ReleaseUpdates.Parse("""{"tag_name":"v1.0.1","draft":false,"prerelease":false,"html_url":"https://untrusted.invalid"}""", "v1.0.1");
     var newer=ReleaseUpdates.Parse("""{"tag_name":"v1.0.2","draft":false,"prerelease":false}""", "v1.0.1");
     if(same.IsNewer||!newer.IsNewer||newer.Page.AbsoluteUri!="https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.2")
@@ -15,7 +23,7 @@ if(args.Length==1 && args[0]=="--release")
         try{ReleaseUpdates.Parse(JsonSerializer.Serialize(new{tag_name=invalid,draft=false,prerelease=false}),"v1.0.1");
             throw new Exception("Invalid tag accepted");}catch(InvalidDataException){}
     }
-    Console.WriteLine("""{"status":"passed","checks":5,"model_forwards":0}""");return;
+    Console.WriteLine(JsonSerializer.Serialize(new{status="passed",checks=5,model_forwards=0,release_tag=ReleaseUpdates.CurrentTag}));return;
 }
 
 if(args.Length==4 && args[0]=="--portable-setup")

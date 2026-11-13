@@ -167,7 +167,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     try:
-        if args.command in {"recognize", "replay", "export", "export-vsqx", "score", "import-score", "models", "doctor"}:
+        if args.command in {"recognize", "replay", "export", "export-vsqx", "score", "import-score", "models", "doctor",
+                            "cantonese4", "cantonese4-status", "cantonese4-prepare", "cantonese4-replay"}:
             from any2xsampa.local.cli import run
             result = run(args)
         elif args.command == "infer-candidate":

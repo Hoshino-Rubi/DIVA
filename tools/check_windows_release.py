@@ -21,6 +21,8 @@ TESTS = [
     "test_stream_portable_release.py",
     "test_model_download_timeout.py", "test_desktop_workspace_layout.py",
     "test_vsqx_native_serialization.py", "test_vocal_range_export.py",
+    "test_cantonese4_lexicon.py", "test_cantonese4_tasks.py",
+    "test_cantonese_desktop_ui.py", "test_cantonese4_runtime.py",
 ]
 def write(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
@@ -49,7 +51,8 @@ def main():
     command("python-tests",[sys.executable,"-X","utf8","-m","pytest",
             *["tests/"+x for x in TESTS],"-q","-p","no:cacheprovider",
             "--basetemp="+str(out/"pytest-temp"),"--junitxml="+str(out/"pytest.xml")],env=test_env)
-    for name in ("Any2Xsampa.Setup.Tests","Any2Xsampa.LocalTransport.Tests","Any2Xsampa.Localization.Tests"):
+    for name in ("Any2Xsampa.Setup.Tests","Any2Xsampa.LocalTransport.Tests","Any2Xsampa.Localization.Tests",
+                 "Any2Xsampa.Cantonese.Ui.Tests"):
         command(name+"-build",["dotnet","build","apps/"+name+"/"+name+".csproj","-c","Release",
                               "--ignore-failed-sources","-p:NuGetAudit=false"])
     dll=ROOT/"apps/Any2Xsampa.LocalTransport.Tests/bin/Release/net8.0/Any2Xsampa.LocalTransport.Tests.dll"
@@ -57,6 +60,7 @@ def main():
     command("diagnostics",["dotnet",dll,"--diagnostics",out/"diagnostics"])
     command("release-version",["dotnet",dll,"--release"])
     command("desktop-languages",["dotnet",ROOT/"apps/Any2Xsampa.Localization.Tests/bin/Release/net8.0/Any2Xsampa.Localization.Tests.dll"])
+    command("desktop-cantonese-ui",["dotnet",ROOT/"apps/Any2Xsampa.Cantonese.Ui.Tests/bin/Release/net8.0/Any2Xsampa.Cantonese.Ui.Tests.dll"])
     # Fresh path with spaces/Unicode; no repository cwd or inherited model registry.
     clean=out/"clean installation 中文"
     clean.mkdir()

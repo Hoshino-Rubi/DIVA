@@ -7,6 +7,21 @@ from .common import Cancelled
 from .engine import LocalEngine
 
 def add_parsers(sub):
+    p = sub.add_parser("cantonese4", help="Optional Cantonese vocal/Jyutping candidate; untimed IPA side result.")
+    p.add_argument("audio")
+    p.add_argument("--bundle-dir")
+    p.add_argument("--scope", choices=["whole_file", "clip"], default="whole_file")
+    p.add_argument("--start", type=float, default=0)
+    p.add_argument("--duration", type=float, default=8)
+    p.add_argument("--output-dir")
+    p = sub.add_parser("cantonese4-status", help="Check optional models without loading them.")
+    p.add_argument("--bundle-dir")
+    p = sub.add_parser("cantonese4-prepare", help="Explicitly obtain pinned separator source files; no model inference.")
+    p.add_argument("--bundle-dir")
+    p.add_argument("--proxy")
+    p = sub.add_parser("cantonese4-replay", help="Replay explicit raw Cantonese model outcomes; zero inference.")
+    p.add_argument("fixture")
+    p.add_argument("--output-dir", required=True)
     p = sub.add_parser("recognize", help="Real offline inference; never falls back to fixtures.")
     p.add_argument("audio")
     p.add_argument("--model", required=True)
@@ -68,6 +83,8 @@ def run(args):
     signal.signal(signal.SIGINT, lambda *_: cancel.set())
     try:
         action = args.command
+        if action in {"cantonese4-status", "cantonese4-prepare", "cantonese4-replay"}:
+            action = action.replace("-", "_")
         if action == "models" and args.models_command in {"status", "install"}:
             action = "model_setup_status" if args.models_command == "status" else "install_models"
         if action in {"score", "import-score"}:
