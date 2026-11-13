@@ -8,19 +8,21 @@
 
 本地音频 → IPA / phones → 音符 → VSQX / X-SAMPA。桌面程序与 CLI 共用本地子进程引擎，正常使用无需启动 HTTP 或 gRPC 服务。
 
+v1.0.4 新增独立的“粤语增强”页：复用已选 WAV 和整首/片段范围，选择解压后的可选模型文件夹，点击“准备模型”后“开始”，生成独立的粤拼、规则 IPA 与 X-SAMPA 结果。显式准备下载、模型与代码的许可区别及验证范围见 [v1.0.4 更新说明](docs/releases/v1.0.4_CN.md)；现有 phone 识别和自动 VSQX 流程保持独立。
+
 ## 名称过渡
 
 从 **v1.0.2** 起产品名为 DIVA，仓库迁至 [Hoshino-Rubi/DIVA](https://github.com/Hoshino-Rubi/DIVA)。旧版 **v1.0.1** 二进制仍显示 Any2Xsampa，包括 `Any2Xsampa-Setup-v1.0.1.exe`，不受此次修改影响。`any2xsampa` Python 包和命令、内部可执行文件名、环境变量及数据目录保留旧名以兼容现有使用。无需搬动设置、模型或已有结果。详见[品牌迁移说明](docs/branding_migration.md)。
 
-## Windows x64 · v1.0.3
+## Windows x64 · v1.0.4
 
-从 [v1.0.3 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.3) 下载 **DIVA-Setup-v1.0.3.exe** 并运行。安装器下载固定版本分卷，校验大小和 SHA256 后安装；支持显式续传，失败不自动重试。公共自动安装要求 Release 已发布且可匿名访问。
+从 [v1.0.4 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.4) 下载 **DIVA-Setup-v1.0.4.exe** 并运行。安装器下载固定版本分卷，校验大小和 SHA256 后安装；支持显式续传，失败不自动重试。公共自动安装要求 Release 已发布且可匿名访问。
 
 离线时，把以下三个文件放在安装器旁边：
 
-- `DIVA-Windows-x64-v1.0.3.zip.001`
-- `DIVA-Windows-x64-v1.0.3.zip.002`
-- `DIVA-Windows-x64-v1.0.3.zip.003`
+- `DIVA-Windows-x64-v1.0.4.zip.001`
+- `DIVA-Windows-x64-v1.0.4.zip.002`
+- `DIVA-Windows-x64-v1.0.4.zip.003`
 
 双击安装器，选择可写目录。安装器会自动校验并解压；不要直接运行分卷或只复制桌面 EXE。无需另装 Python、.NET、CUDA Toolkit，也不用启动服务器。
 

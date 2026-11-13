@@ -79,7 +79,7 @@
    </Grid>
   </Border>
 
-  <Pivot x:Name="WorkspaceTabs" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+  <Pivot x:Name="WorkspaceTabs" Grid.Row="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SelectionChanged="WorkspaceTabs_SelectionChanged">
    <PivotItem l:UiText.Header="工作区">
     <Grid x:Name="WorkspacePanels" RowSpacing="10" ColumnSpacing="12">
      <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition x:Name="SecondWorkspaceRow" Height="*"/></Grid.RowDefinitions>
@@ -242,6 +242,26 @@
       </Grid>
      </Grid>
     </Grid>
+   </PivotItem>
+   <PivotItem x:Name="CantoneseTab" Header="Cantonese">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+     <Border Padding="12" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+      <StackPanel Spacing="10">
+       <TextBlock Text="{Binding Text, ElementName=AudioPathBox}" TextTrimming="CharacterEllipsis" IsTextSelectionEnabled="True" Opacity=".7"/>
+       <Grid ColumnSpacing="8">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <Button x:Name="CantoneseModelButton" Content="Model folder" Click="CantoneseModel_Click"/>
+        <Button x:Name="CantonesePrepareButton" Grid.Column="1" Content="Prepare" Click="CantonesePrepare_Click"/>
+        <Button x:Name="CantoneseRunButton" Grid.Column="2" Content="Start" Click="CantoneseRun_Click" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"/>
+        <Button x:Name="CantoneseOpenButton" Grid.Column="3" Content="Open results" Click="CantoneseOpen_Click" HorizontalAlignment="Stretch" IsEnabled="False"/>
+       </Grid>
+       <TextBlock x:Name="CantoneseBundlePath" Text="models/cantonese4" TextTrimming="CharacterEllipsis" IsTextSelectionEnabled="True" FontSize="12" Opacity=".7"/>
+       <TextBlock x:Name="CantoneseStatus" TextWrapping="Wrap"/>
+       <TextBox x:Name="CantoneseJyutpingBox" Header="Jyutping" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="130" MaxHeight="260" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+       <TextBox x:Name="CantoneseIpaBox" Header="IPA" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="130" MaxHeight="260" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+      </StackPanel>
+     </Border>
+    </ScrollViewer>
    </PivotItem>
   </Pivot>
 

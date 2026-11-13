@@ -43,6 +43,7 @@ class Server:
             return
         if action == "capabilities":
             self.emit("result", task_id, data={"commands": ["recognize", "recognize-whole", "replay", "models", "doctor", "note_runtime", "model_setup_status", "install_models", "inspect_audio", "draft", "export", "export_vsqx", "build_score", "import_score", "export_score", "preview_xsampa", "cancel", "unload"],
+                      "optional_commands": ["cantonese4_status", "cantonese4_prepare", "cantonese4", "cantonese4_replay"],
                       "transport": "stdio", "max_pending": 8, "requires_server_port": False})
             return
         params = message.get("params", {})

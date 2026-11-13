@@ -43,17 +43,18 @@ def test_real_inference_stays_visible_outside_scroll_region() -> None:
     )
 
 
-def test_three_tabs_keep_configuration_and_scrolling_independent() -> None:
+def test_four_tabs_keep_configuration_and_scrolling_independent() -> None:
     root, names, parents = layout()
     pivot, = root.iter(f"{UI}Pivot")
     assert parents[pivot] is names["PageLayout"]
     assert pivot.attrib["Grid.Row"] == "2"
     tabs = pivot.findall(f"{UI}PivotItem")
-    assert len(tabs) == 3
+    assert len(tabs) == 4
     groups = (
         ("AudioPathBox", "ModelBox", "DeviceBox", "StartBox", "DurationBox", "Player", "Waveform", "PhoneList"),
         ("NoteSnapshotBox", "ScoreTempo", "AnalyzeScoreButton", "ImportNotesButton", "ImportScoreButton", "ExportScoreButton", "ScoreList"),
         ("ModelSetupStatus", "ModelProxyBox", "AutoDownloadBox", "InstallModelsButton", "ImportModelsButton", "EnvironmentActions", "ActivityLog"),
+        ("CantoneseModelButton", "CantonesePrepareButton", "CantoneseRunButton", "CantoneseOpenButton", "CantoneseJyutpingBox", "CantoneseIpaBox"),
     )
     for tab, controls in zip(tabs, groups):
         assert any(node.tag == f"{UI}ScrollViewer" for node in tab.iter())

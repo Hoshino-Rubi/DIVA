@@ -76,6 +76,7 @@ public sealed partial class MainPage : Page
         this.service=service;
         InitializeComponent();
         InitializeLanguageSelection();
+        InitializeCantonese();
         PhoneList.ItemsSource=rows;
         ScoreList.ItemsSource=scoreRows;
         Player.SetMediaPlayer(media);
@@ -147,6 +148,7 @@ public sealed partial class MainPage : Page
         }
         catch(Exception ex){Error(ex);}
         RenderModelChoices();
+        RenderCantoneseLanguage();
         foreach(var render in presentations.Values.ToArray())render();
         statusTitlePresentation?.Invoke();statusMessagePresentation?.Invoke();
         foreach(var row in rows)row.RefreshLanguage();
@@ -207,6 +209,7 @@ public sealed partial class MainPage : Page
         await RefreshModels();
         await RefreshNoteRuntime();
         await InitializeModelSetup();
+        await RefreshCantoneseStatus();
         if (App.StartupReportPath is string startupReport)
         {
             try
@@ -431,6 +434,7 @@ public sealed partial class MainPage : Page
         var info=await service.CallAsync("inspect_audio",new{audio=file});
         var storage=await StorageFile.GetFileFromPathAsync(file);
         media.Source=MediaSource.CreateFromStorageFile(storage);
+        if(!string.Equals(audio,file,StringComparison.OrdinalIgnoreCase))ResetCantoneseResult();
         audio=file;AudioPathBox.Text=file;audioDuration=info.GetProperty("duration").GetDouble();
         peaks=info.GetProperty("peaks").EnumerateArray().Select(x=>x.GetDouble()).ToArray();
         StartBox.Maximum=Math.Max(0,audioDuration-.1);StartBox.Value=0;DurationBox.Value=Math.Min(8,audioDuration);
@@ -487,6 +491,7 @@ public sealed partial class MainPage : Page
     { if(PhoneList.SelectedItem is PhoneRow row)Play(Math.Max(0,row.Start-.18),Math.Min(audioDuration,row.End+.18)); }
     private void SetBusy(bool busy)
     {
+        SetCantoneseBusy(busy);
         ScorePitchMode.IsEnabled=!busy;
         ScoreTranspose.IsEnabled=!busy && SelectedScorePitchMode=="manual";
         SetTaskControlsBusy(busy);

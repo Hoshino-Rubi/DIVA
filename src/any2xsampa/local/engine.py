@@ -27,6 +27,14 @@ class LocalEngine:
 
     def execute(self, action: str, params: dict, cancel: threading.Event, progress):
         check_cancel(cancel)
+        if action in {"cantonese4_status", "cantonese4_prepare", "cantonese4", "cantonese4_replay"}:
+            from .cantonese4 import status, prepare, run, replay
+            if action == "cantonese4_status":
+                return status(params)
+            if action == "cantonese4_prepare":
+                return prepare(params, cancel, progress)
+            self.close()
+            return (run if action == "cantonese4" else replay)(params, cancel, progress)
         if action in {"model_setup_status", "install_models"}:
             from .model_install import status, install
             return status() if action == "model_setup_status" else install(params, cancel, progress)
