@@ -1,14 +1,15 @@
-"""VSQ4 serialization of machine notes; never estimates or changes their pitch."""
+"""Serialize one playable Miku V4C syllable per audio-derived note."""
 from __future__ import annotations
 
 from pathlib import Path
+from statistics import median
 from typing import Any
 from xml.etree import ElementTree as ET
 
 from .common import finite, read, sha, write
 from .score_export import note_number, positive
+from .vsqx_export import require_playable_tree, write_generated_expression, validated_note_tokens
 from any2xsampa.vocaloid.draft import VocalNoteDraft, VocalTrackDraft, VocalTrackDraftTrack
-from any2xsampa.vocaloid.phoneme_policy import validate_miku_v4c_note_phonemes
 from any2xsampa.vocaloid.vsqx import build_vsqx_tree, write_vsqx
 from any2xsampa.vocaloid.vsqx_alignment import parse_vsqx_timeline
 
@@ -24,9 +25,17 @@ def validate_grid(tempo: float, resolution: int) -> float:
     return tempo * resolution / 60
 
 
-def _draft_notes(score: dict[str, Any], scale: float) -> list[VocalNoteDraft]:
+def _rules(score):
+    if score.get("recognition_mode") in {"singing_v9", "singing_v13"}:
+        from ..exporters.singing_v9_rules import load_rules
+        return load_rules()
+    return None
+
+
+def _draft_notes(score: dict[str, Any], scale: float, transpose: int) -> list[VocalNoteDraft]:
     notes = []
     previous_end = -1.0
+    rules = _rules(score)
     previous_tick = -1
     for i, row in enumerate(score["notes"]):
         start = finite(row["start_sec"], "note start")
@@ -36,17 +45,13 @@ def _draft_notes(score: dict[str, Any], scale: float) -> list[VocalNoteDraft]:
             raise ValueError("Overlapping or unordered monophonic score")
         if "end_sec" in row and abs(finite(row["end_sec"], "note end") - end) > 1e-8:
             raise ValueError("Score onset, offset and duration disagree")
-        pitch = note_number(row["pitch"])
+        pitch = note_number(note_number(row["pitch"]) + transpose)
         first, last = round(start * scale), round(end * scale)
         if last <= first or first < previous_tick:
             raise ValueError("Notes cannot be represented without loss at this tick resolution")
-        phones = row["v4c_phonemes"]
-        if (not isinstance(phones, list) or not phones
-                or not all(isinstance(p, str) and p.strip() for p in phones)
-                or validate_miku_v4c_note_phonemes(phones)):
-            raise ValueError("Missing or invalid Vocaloid phoneme sequence")
-        if not isinstance(row["lyric"], str) or not row["lyric"]:
-            raise ValueError("A VSQX note needs a displayed lyric or explicit placeholder")
+        phones = validated_note_tokens(row,rules)
+        if not isinstance(row["lyric"], str) or not row["lyric"].strip():
+            raise ValueError("A VSQX note needs a displayed lyric")
         notes.append(VocalNoteDraft(id=str(i), start_tick=first, duration_ticks=last-first,
                                     pitch=pitch, lyric=row["lyric"], phonemes=phones))
         previous_end, previous_tick = end, last
@@ -64,6 +69,9 @@ def _verify_written(file: Path, notes: list[VocalNoteDraft], score: dict, scale:
                * int(master.findtext(ns + "resolution", "480")) * 4
                * int(signature.findtext(ns + "nu", "4"))
                // int(signature.findtext(ns + "de", "4")))
+    sequences = require_playable_tree(root,_rules(score))
+    if sequences != [note.phonemes for note in notes]:
+        raise ValueError("Written VSQX syllables differ from validated note syllables")
     restored = parse_vsqx_timeline(file)["notes"]
     if len(restored) != len(notes):
         raise ValueError("VSQX note count failed independent readback")
@@ -99,9 +107,18 @@ def export_generated_score(score_path: Path, output: Path) -> dict:
     score = read(score_path)
     if score.get("schema_version") != "local_note_score_v1":
         raise ValueError("Expected local_note_score_v1")
+    if "recognition_mode" not in score and (score.get("source") == "audio_pyin_draft" or "note_evidence_mode" in score):
+        from .legacy_generated_score import export_generated_score as export_legacy
+        return export_legacy(score_path, output)
     tempo, resolution = score["tempo"], score["ticks_per_quarter"]
     scale = validate_grid(tempo, resolution)
-    notes = _draft_notes(score, scale)
+    parent_note_count = len(score["notes"])
+    if not parent_note_count:
+        raise ValueError("No notes to export")
+    anchor = "pitch"
+    source_median = median(note_number(row[anchor]) for row in score["notes"])
+    transpose = 12 if source_median < 58 else 0
+    notes = _draft_notes(score, scale, transpose)
     draft = VocalTrackDraft(tempo=tempo, ticks_per_quarter=resolution, tracks=[
         VocalTrackDraftTrack(id="audio", name="Audio transcription", singer_target="miku_v4c", notes=notes)
     ])
@@ -120,6 +137,8 @@ def export_generated_score(score_path: Path, output: Path) -> dict:
         round(score.get("input", {}).get("end_sec", 0) * scale)))
     for node in root.findall(".//" + ns + "note"):
         node.find(ns + "p").set("lock", "1")
+    write_generated_expression(part, ns[1:-1])
+    require_playable_tree(root,_rules(score))
     if sha(score_path) != digest:
         raise ValueError("Score changed during export")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -129,13 +148,14 @@ def export_generated_score(score_path: Path, output: Path) -> dict:
             created.append(output)
             write_vsqx(tree, handle, repair_zero_preroll=True)
         check = _verify_written(output, notes, score, scale)
-        proof = {"schema_version": "local_generated_vsqx_export_v2",
+        proof = {"schema_version": ("local_generated_vsqx_export_" + score["recognition_mode"].split("_")[-1] if _rules(score) else "local_generated_vsqx_export_v3"),
                  "score_path": str(score_path), "score_sha256": digest,
                  "output_sha256": sha(output), "template_sha256": sha(TEMPLATE),
-                 "note_count": len(notes), "pitch_preserved_from_analysis": True,
-                 "transpose_semitones": 0, "tempo_grid": tempo, "ticks_per_quarter": resolution,
+                 "note_count": len(notes), "parent_note_count": parent_note_count,
+                 "splice_count": len(notes) - parent_note_count, "pitch_preserved_from_analysis": transpose == 0,
+                 "transpose_semitones": transpose, "source_median_midi": source_median, "tempo_grid": tempo, "ticks_per_quarter": resolution,
                  "time_basis": "source_audio_seconds", "ctc_times_used_as_note_durations": False,
-                 "placeholder_note_count": score["placeholder_note_count"],
+                 "placeholder_note_count": 0,
                  "unassigned_phone_count": score["unassigned_phone_count"],
                  "note_source": score["source"], "manual_review_required": False,
                  "manual_vocaloid_import_verified": False, "quality_validated": False,
@@ -147,4 +167,5 @@ def export_generated_score(score_path: Path, output: Path) -> dict:
             file.unlink(missing_ok=True)
         raise
     return {"output": str(output), "provenance": str(proof_path), "note_count": len(notes),
-            "placeholder_note_count": score["placeholder_note_count"], "model_forwards": 0, **check}
+            "splice_count": len(notes) - parent_note_count, "transpose_semitones": transpose,
+            "placeholder_note_count": 0, "model_forwards": 0, **check}

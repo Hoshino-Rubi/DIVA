@@ -41,3 +41,12 @@
 *.pfx
 *.p12
 *.key
+
+# Local evaluations, models and decoded audio are never source assets.
+/outputs_v*/
+/samples/
+*.wav
+*.onnx
+*.ckpt
+*.safetensors
+*.pt

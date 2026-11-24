@@ -1,0 +1,57 @@
+{
+  "schema_version": "onnx_espeak_internal_phone_mapping_v1",
+  "profile": "cantonese_existing_inventory_contrast_v1",
+  "blank_labels": ["<pad>", "<s>", "</s>", "<unk>", "|"],
+  "normalization": {
+    "strip_trailing_tone_digits": true,
+    "aliases": {
+      "ɑu": "aʊ",
+      "iɑ": "a",
+      "iɛ": "ɛ",
+      "ei": "eɪ",
+      "əɜ": "ɜ",
+      "i.": "i",
+      "uei": "u",
+      "onɡ": "o",
+      "ou": "oʊ",
+      "oɜ": "o",
+      "iɜ": "i",
+      "ai": "aɪ",
+      "ts.": "ts",
+      "s.": "s",
+      "tɕ": "ts",
+      "tɕh": "ts",
+      "ts.h": "ts",
+      "tsh": "ts",
+      "th": "t",
+      "tʰ": "t",
+      "kh": "k",
+      "kʰ": "k",
+      "ph": "p",
+      "pʰ": "p",
+      "ʲ": "j"
+    }
+  },
+  "mappings": {
+    "a": ["a", "aɪ", "aʊ", "aː", "ɑ", "ɑː", "ɑːɹ", "æ", "ɐ", "ɑ̃"],
+    "@": ["ə", "əl", "ʌ", "ɜ", "ɜː", "ɚ", "ɝ"],
+    "e": ["e", "eɪ", "eː", "ɛ", "ɛ̃"],
+    "i": ["i", "iː", "ɪ"],
+    "o": ["o", "oʊ", "oː", "ɔ", "ɔː", "ɔːɹ", "ø", "ɔ̃"],
+    "u": ["u", "uː", "ʊ", "y", "yː"],
+    "m": ["m"],
+    "n": ["n", "ɲ"],
+    "N": ["ŋ"],
+    "p": ["p", "b"],
+    "t": ["t", "d"],
+    "k": ["k", "g"],
+    "ts": ["ts", "tʃ", "dʒ"],
+    "s": ["s", "z", "ʃ", "ʒ", "θ", "ð", "f", "v", "x", "ç", "ɕ", "h"],
+    "l": ["l", "ɫ", "ɾ", "ɹ", "r", "ʁ", "j", "w", "ʋ"]
+  },
+  "known_remaining_collapses": {
+    "s": ["f", "h", "x", "voicing and fricative place contrasts"],
+    "l": ["j", "w", "liquid and glide contrasts"],
+    "p_t_k": ["voicing and aspiration contrasts"]
+  }
+}

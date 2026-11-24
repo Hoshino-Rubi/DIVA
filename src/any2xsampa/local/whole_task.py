@@ -4,13 +4,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 import time
 import uuid
-from .common import ROOT, Cancelled, check_cancel, read, request, sha, write
+from .common import ROOT, Cancelled, check_cancel, phone_mapping_identity, read, request, sha, write
 from .registry import package
 from .whole_audio import POLICY, merge_results, plan_chunks, whole_input
 
 def whole_request(params: dict) -> dict:
-    if set(params)-{"audio","model","device","output_dir"}:
-        raise ValueError("Whole-file recognition accepts audio/model/device/output_dir only; no clip or reference conditions")
+    if set(params)-{"audio","model","device","output_dir","recognizer_phone_mapping"}:
+        raise ValueError("Whole-file recognition accepts audio/model/device/output_dir/recognizer_phone_mapping only; no clip or reference conditions")
     checked = request(params)
     return {k:v for k,v in checked.items() if k not in {"start","duration"}}
 
@@ -18,6 +18,7 @@ def run_whole(engine, params: dict, cancel, progress) -> dict:
     params = whole_request(params)
     check_cancel(cancel)
     spec = package(params["model"])
+    mapping = phone_mapping_identity(params.get("recognizer_phone_mapping"), spec["backend"])
     if params["device"] not in spec["devices"]:
         raise ValueError("Selected device is not supported by the model")
     info = whole_input(Path(params["audio"]))
@@ -29,12 +30,17 @@ def run_whole(engine, params: dict, cancel, progress) -> dict:
     manifest = {"schema_version":"local_whole_evidence_v1", "policy":POLICY,"input":info,"chunks":chunks,
                 "backend":spec["backend"],"model_id":params["model"],"package_sha256":spec["package_sha256"],
                 "device":params["device"],"completed":[],"reference_conditions_used":False}
+    if mapping is not None:
+        manifest["phone_mapping"] = mapping
     write(output/"request.json", {"command":"recognize-whole","params":params})
     write(output/"PLAN.json", manifest)
     started = time.monotonic()
     try:
         for chunk in chunks:
             check_cancel(cancel)
+            if mapping is not None and phone_mapping_identity(
+                    params["recognizer_phone_mapping"], spec["backend"]) != mapping:
+                raise ValueError("Selected phone mapping changed between whole-file chunks")
             if sha(Path(params["audio"])) != info["sha256"]:
                 raise ValueError("Whole-file input changed during processing")
             context = {"scope":"whole_file", "chunk_index":chunk["index"]+1,"chunk_total":len(chunks),
@@ -44,7 +50,8 @@ def run_whole(engine, params: dict, cancel, progress) -> dict:
             report({"stage":"chunk_start"})
             result = engine.execute("recognize", {"audio":params["audio"],"model":params["model"],"device":params["device"],
                 "start":chunk["start_sec"],"duration":chunk["end_sec"]-chunk["start_sec"],
-                "output_dir":str(output/"chunks"/f'{chunk["index"]:04d}')},cancel,report)
+                "output_dir":str(output/"chunks"/f'{chunk["index"]:04d}'),
+                **({"recognizer_phone_mapping":params["recognizer_phone_mapping"]} if mapping is not None else {})},cancel,report)
             file = Path(result["result_path"])
             manifest["completed"].append({"index":chunk["index"],"result_path":str(file),"result_sha256":sha(file)})
             write(output/"PROGRESS.json", {"status":"in_progress","completed":manifest["completed"],
@@ -53,6 +60,9 @@ def run_whole(engine, params: dict, cancel, progress) -> dict:
         check_cancel(cancel)
         if sha(Path(params["audio"])) != info["sha256"]:
             raise ValueError("Whole-file input changed before merge")
+        if mapping is not None and phone_mapping_identity(
+                params["recognizer_phone_mapping"], spec["backend"]) != mapping:
+            raise ValueError("Selected phone mapping changed before whole-file merge")
         write(output/"whole-evidence.json", manifest)
         progress({"stage":"merging","scope":"whole_file","chunk_index":len(chunks),"chunk_total":len(chunks)})
         evidence = merge_results(manifest,cancel)

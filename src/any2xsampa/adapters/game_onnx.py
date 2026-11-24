@@ -57,11 +57,9 @@ def load_audio(request: dict, destination: Path, sample_rate: int=44100) -> tupl
 
 class GameOnnxRuntime:
     def __init__(self, snapshot: Path, *, device: str, session_factory=None) -> None:
-        if device!='cpu':
-            raise ValueError('This qualified runtime currently supports explicit CPU only; CUDA validation is pending')
         self.lock,self.config=load_snapshot(snapshot)
         self.policy=read(POLICY_PATH)
-        if self.policy['device']!=device:raise ValueError('Device differs from frozen policy')
+        from .ort_device import create_session
         self.sessions={};self.calls=[]
         if session_factory is None:
             import onnxruntime as ort
@@ -71,10 +69,10 @@ class GameOnnxRuntime:
                 options.intra_op_num_threads=4;options.inter_op_num_threads=1
                 options.execution_mode=ort.ExecutionMode.ORT_SEQUENTIAL
                 options.use_deterministic_compute=True
-                return ort.InferenceSession(str(file),sess_options=options,providers=['CPUExecutionProvider'])
+                return create_session(file, options, device)
         for name in GRAPH_NAMES:
             session=session_factory(snapshot/(name+'.onnx'))
-            if session.get_providers()!=['CPUExecutionProvider']:raise ValueError('Unexpected execution provider')
+
             if {x.name for x in session.get_inputs()}!=EXPECTED_INPUTS[name] or [x.name for x in session.get_outputs()]!=EXPECTED_OUTPUTS[name]:
                 raise ValueError('Actual graph signature differs from reviewed author exporter: '+name)
             self.sessions[name]=session

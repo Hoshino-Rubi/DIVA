@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from any2xsampa.adapters.recognizer import RecognizerConfig
+from any2xsampa.adapters.recognizer_dispatch import validate_phone_mapping_selection
 from any2xsampa.dialects.registry import DialectRegistry
 from any2xsampa.pipeline.note_context import ScoreNoteContextLoader
 from any2xsampa.pipeline.runner import SingingToPhonesPipeline
@@ -57,6 +58,7 @@ class InferenceRequest:
     recognizer_device: str = "auto"
     disable_recognizer_fallback: bool = False
     debug_allow_recognizer_stub_fallback: bool = False
+    recognizer_phone_mapping: str | None = None
 
     def __post_init__(self) -> None:
         self.mode = str(self.mode).strip().lower()
@@ -101,6 +103,13 @@ class InferenceRequest:
             raise ValueError(
                 "recognizer_real_backend and recognizer_real_command are mutually exclusive"
             )
+        validate_phone_mapping_selection(
+            mode=self.recognizer_mode,
+            real_backend=self.recognizer_real_backend,
+            real_command=self.recognizer_real_command,
+            phone_mapping_path=self.recognizer_phone_mapping,
+        )
+        self.recognizer_phone_mapping = _optional_text(self.recognizer_phone_mapping)
 
     @classmethod
     def from_mapping(cls, payload: dict[str, Any], mode: str) -> InferenceRequest:
@@ -124,6 +133,7 @@ class InferenceRequest:
             recognizer_real_command=_optional_text(payload.get("recognizer_real_command")),
             recognizer_real_output=str(payload.get("recognizer_real_output", "real_recognizer_output.json")).strip(),
             recognizer_model=_optional_text(payload.get("recognizer_model")),
+            recognizer_phone_mapping=payload.get("recognizer_phone_mapping"),
             recognizer_device=str(payload.get("recognizer_device", "auto")).strip(),
             disable_recognizer_fallback=_strict_bool(
                 payload, "disable_recognizer_fallback", default=False
@@ -164,6 +174,7 @@ class InferenceRequest:
         payload.update(
             {
                 "recognizer_model": self.recognizer_model,
+                "recognizer_phone_mapping": self.recognizer_phone_mapping,
                 "recognizer_device": self.recognizer_device,
                 "debug_allow_recognizer_stub_fallback": (
                     self.debug_allow_recognizer_stub_fallback
@@ -184,6 +195,10 @@ class InferenceRequest:
     def validate_paths(self) -> None:
         if not Path(self.audio_path).exists():
             raise FileNotFoundError(f"Audio file not found: {self.audio_path}")
+        if self.recognizer_phone_mapping is not None:
+            mapping_path = Path(self.recognizer_phone_mapping)
+            if not mapping_path.is_file():
+                raise FileNotFoundError(f"Recognizer phone mapping file not found: {mapping_path}")
         for label, candidate in (
             ("Recognizer fixture", self.recognizer_fixture),
             ("Recognizer model", self.recognizer_model),
@@ -253,6 +268,10 @@ class InferenceService:
             real_output_path=Path(request.recognizer_real_output),
             model_path=Path(request.recognizer_model) if request.recognizer_model else None,
             device=request.recognizer_device,
+            phone_mapping_path=(
+                Path(request.recognizer_phone_mapping)
+                if request.recognizer_phone_mapping is not None else None
+            ),
             allow_stub_fallback=(
                 request.debug_allow_recognizer_stub_fallback
                 and not request.disable_recognizer_fallback
@@ -328,6 +347,7 @@ def _request_mapping_from_namespace(args: Any) -> dict[str, Any]:
         "recognizer_real_command": getattr(args, "recognizer_real_command", None),
         "recognizer_real_output": getattr(args, "recognizer_real_output", "real_recognizer_output.json"),
         "recognizer_model": getattr(args, "recognizer_model", None),
+        "recognizer_phone_mapping": getattr(args, "recognizer_phone_mapping", None),
         "recognizer_device": getattr(args, "recognizer_device", "auto"),
         "disable_recognizer_fallback": bool(getattr(args, "disable_recognizer_fallback", False)),
         "debug_allow_recognizer_stub_fallback": bool(

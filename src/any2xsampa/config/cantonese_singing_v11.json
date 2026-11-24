@@ -1,0 +1,19 @@
+{
+  "max_gap": 0.045,
+  "seam_radius": 0.04,
+  "short": 0.16,
+  "max_glide_step": 2,
+  "stable_mad": 0.3,
+  "unstable_speed": 9,
+  "checked_confidence": 0.7,
+  "ctc_consonant_initials": "bcdfghjklmnpqrstvwxzðŋɡɾɹʁʃβɣʒʎʋɕɲʔɭʑʕʐħɟɫɬχɖʈɸʂθçɳɻʝɰɽʀʙʤʧʷ",
+  "semivowel_vowel_labels": [
+    "ja",
+    "ju",
+    "jou",
+    "jɛ",
+    "jɔ",
+    "wɑ"
+  ],
+  "slope_weight": 1.6
+}

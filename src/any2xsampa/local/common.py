@@ -72,9 +72,9 @@ def crop(audio: Path, start: float, duration: float, destination: Path) -> dict:
             "source_end_sample_exclusive": last, "crop_sha256": sha(destination)}
 
 def request(value: dict) -> dict:
-    allowed = {"audio", "start", "duration", "model", "device", "output_dir"}
+    allowed = {"audio", "start", "duration", "model", "device", "output_dir", "recognizer_phone_mapping"}
     if set(value) - allowed or not {"audio", "model"} <= set(value):
-        raise ValueError("recognize accepts only audio, model, device, start, duration, output_dir")
+        raise ValueError("recognize accepts only audio, model, device, start, duration, output_dir, recognizer_phone_mapping")
     if not isinstance(value["audio"], str) or not isinstance(value["model"], str):
         raise ValueError("audio and model must be strings")
     start = finite(value.get("start", 0), "start")
@@ -84,5 +84,34 @@ def request(value: dict) -> dict:
     device = value.get("device", "cuda")
     if device not in {"cuda", "cpu"}:
         raise ValueError("Choose explicit cuda or cpu; silent auto fallback is forbidden")
+    selection = value.get("recognizer_phone_mapping")
+    if selection is not None:
+        if not isinstance(selection, str) or not selection.strip():
+            raise ValueError("recognizer_phone_mapping must be a nonempty path string")
+        selection = str(Path(selection).resolve())
+        if not Path(selection).is_file():
+            raise FileNotFoundError(selection)
     return {**value, "audio": str(Path(value["audio"]).resolve()), "start": start,
-            "duration": duration, "device": device}
+            "duration": duration, "device": device,
+            **({"recognizer_phone_mapping": selection} if selection is not None else {})}
+
+
+def phone_mapping_identity(selection: str | None, backend: str) -> dict | None:
+    """Identify only the explicitly selected mapping, never models/dependencies."""
+    if selection is None:
+        return None
+    if backend != "onnx-espeak":
+        raise ValueError("recognizer_phone_mapping requires an onnx-espeak model")
+    if not isinstance(selection, str) or not selection.strip():
+        raise ValueError("recognizer_phone_mapping must be a nonempty path string")
+    path = Path(selection).resolve()
+    with path.open("rb") as source:
+        data = source.read(1024 * 1024 + 1)
+    if len(data) > 1024 * 1024:
+        raise ValueError("Selected phone mapping exceeds 1MiB")
+    payload = json.loads(data.decode("utf-8-sig"))
+    if not isinstance(payload, dict) or not isinstance(payload.get("mappings"), dict):
+        raise ValueError("Selected phone mapping requires a mappings object")
+    return {"path": str(path), "sha256": hashlib.sha256(data).hexdigest(),
+            "profile": str(payload.get("profile", "unknown")),
+            "schema_version": str(payload.get("schema_version", "unknown"))}

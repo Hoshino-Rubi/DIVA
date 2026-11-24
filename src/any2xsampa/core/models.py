@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 import math
-from typing import Any
+from typing import Any, Literal
 
 
 @dataclass(slots=True)
@@ -230,6 +230,32 @@ class EnginePhoneExport:
 
 
 @dataclass(slots=True)
+class SubPhoneBoundaries:
+    """Measured landmarks on the source audio clock, in milliseconds."""
+    closure_end_ms: float | None = None
+    release_ms: float | None = None
+    voicing_onset_ms: float | None = None
+    coda_closure_ms: float | None = None
+    vowel_transition_ms: float | None = None
+    f0_hz: list[tuple[float, float]] = field(default_factory=list)
+
+    @property
+    def vot_ms(self) -> float | None:
+        if self.release_ms is None or self.voicing_onset_ms is None:
+            return None
+        return self.voicing_onset_ms - self.release_ms
+
+
+@dataclass(slots=True)
+class VsqxSplicingPlan:
+    """Export-only split attached to the phone which supplies the landmark."""
+    kind: Literal["coda", "diphthong"]
+    boundary_ms: float
+    leading_tokens: tuple[str, ...]
+    trailing_tokens: tuple[str, ...]
+
+
+@dataclass(slots=True)
 class PhoneSegment:
     time_range: TimeRange
     candidate_phones: list[PhoneCandidate]
@@ -240,6 +266,9 @@ class PhoneSegment:
     dialect_result: DialectConstraintResult | None = None
     syllable_group: SyllableGroup | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
+
+    subphone_boundaries: SubPhoneBoundaries | None = None
+    splicing_plan: VsqxSplicingPlan | None = None
 
     def __post_init__(self) -> None:
         if not self.candidate_phones:
@@ -252,6 +281,9 @@ class PhoneSegment:
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)
+        for field in ("splicing_plan", "subphone_boundaries"):
+            if payload[field] is None:
+                del payload[field]
         payload["start_sec"] = payload.pop("time_range")["start_sec"]
         payload["end_sec"] = asdict(self.time_range)["end_sec"]
         return payload

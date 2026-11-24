@@ -68,7 +68,14 @@ class SingingToPhonesPipeline:
         audio = Path(audio_path)
         vocal_audio = self.separator.separate(audio)
         # Lyrics are evidence for the constrained decoder, not recognizer truth.
-        segments = self.recognizer.recognize(vocal_audio)
+        recognizer = self.recognizer
+        config = self.recognizer_config
+        if (dialect == "taigi" and config.mode == "real" and not config.phone_mapping_path
+                and config.real_backend in {"onnx-espeak", "onnx_espeak", "trained-onnx"} and not config.real_command):
+            from dataclasses import replace
+            legacy = Path(__file__).resolve().parents[1] / "config/recognizer_onnx_legacy_map.json"
+            recognizer = ConfigurableUniversalPhoneRecognizer(replace(config, phone_mapping_path=legacy))
+        segments = recognizer.recognize(vocal_audio)
         segments = self.normalizer.normalize(segments)
         if mode == "infer-with-lyrics" and lyrics:
             segments = self.lyrics_decoder.apply(segments, lyrics=lyrics, dialect=dialect)

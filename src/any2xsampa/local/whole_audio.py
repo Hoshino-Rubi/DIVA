@@ -128,6 +128,23 @@ def stitch_candidate(chunks: list[dict], results: list[dict], info: dict, cancel
     return segments, {"algorithm": "global_frame_ownership_then_greedy_ctc", "frame_count": expected_frames,
                       "full_label_count": len(vocabulary), "ranges": ranges, "blank_frames": p["decoding"]["blank_frame_count"]}
 
+def _onnx_raw_label_trace(frames: list[dict]) -> dict:
+    """Retain captured top-K rows, without reconstructing missing raw labels."""
+    rows = []
+    for frame in frames:
+        candidates = copy.deepcopy(frame.get("raw_top_labels") or [])
+        row = {"chunk_index": frame["_source_chunk_index"], "frame_index": frame["_source_frame_index"],
+               "start_index": frame["start_index"], "end_index": frame["end_index"],
+               "start_sec": frame["start_sec"], "end_sec": frame["end_sec"],
+               "candidates": candidates, "trace_missing": not bool(candidates)}
+        if "raw_top_label" in frame:
+            row["raw_top_label"] = frame["raw_top_label"]
+        rows.append(row)
+    return {"source": "onnxruntime:raw_ctc_logits" if any(r["candidates"] for r in rows) else "unknown",
+            "time_basis": "original_audio", "trace_missing": any(r["trace_missing"] for r in rows),
+            "frames": rows}
+
+
 def stitch_onnx(chunks: list[dict], results: list[dict], info: dict, cancel) -> tuple[list, dict]:
     from any2xsampa.core.models import PhoneCandidate, PhoneSegment, TimeRange
     from any2xsampa.pipeline.normalizer import ConfigurablePhoneNormalizer
@@ -141,11 +158,14 @@ def stitch_onnx(chunks: list[dict], results: list[dict], info: dict, cancel) -> 
         raw = read(file)
         if raw.get("schema_version") != "local_onnx_frames_v1":
             raise ValueError("Expected blank-preserving ONNX frame evidence")
-        for frame in raw["frames"]:
+        if raw.get("phone_mapping") != result.get("phone_mapping"):
+            raise ValueError("ONNX frame evidence phone_mapping identity differs from chunk result")
+        for frame_index, frame in enumerate(raw["frames"]):
             start = chunk["start_sec"]+frame["start_index"]/16000
             end = chunk["start_sec"]+frame["end_index"]/16000
             if chunk["keep_start_sec"] <= (start+end)/2 < chunk["keep_end_sec"]:
-                frames.append({**frame,"start_sec":start,"end_sec":end})
+                frames.append({**frame,"start_sec":start,"end_sec":end,
+                               "_source_chunk_index":chunk["index"],"_source_frame_index":frame_index})
     segments, run = [], []
     def flush():
         if not run or not run[0]["symbol"]:
@@ -159,7 +179,9 @@ def stitch_onnx(chunks: list[dict], results: list[dict], info: dict, cancel) -> 
         ordered = [symbol]+[k for k in ordered if k != symbol]
         candidates = [PhoneCandidate(k,totals.get(k,0)) for k in ordered[:5]]
         segments.append(PhoneSegment(TimeRange(run[0]["start_sec"],run[-1]["end_sec"]),candidates,candidates[0].confidence,
-                                     metadata={"source_mode":"real","backend_kind":"onnx-espeak","whole_file_policy":POLICY}))
+                                     metadata={"source_mode":"real","backend_kind":"onnx-espeak","whole_file_policy":POLICY,
+                                               "raw_label_trace":_onnx_raw_label_trace(run),
+                                               "raw_trace_scope":"partial_top_k_not_full_posterior"}))
     for frame in frames:
         if run and frame["symbol"] != run[-1]["symbol"]:
             flush();run=[]
@@ -179,6 +201,8 @@ def merge_results(manifest: dict, cancel) -> dict:
     for result in results:
         if result["package_sha256"] != manifest["package_sha256"] or result["model_id"] != manifest["model_id"] or result["device"] != manifest["device"]:
             raise ValueError("Whole-file chunk model identity changed")
+        if result.get("phone_mapping") != manifest.get("phone_mapping"):
+            raise ValueError("Whole-file chunk phone_mapping identity changed")
     if manifest["backend"] == "guarded-phoneticxeus":
         segments, summary = stitch_candidate(chunks,results,info,cancel)
     elif manifest["backend"] == "onnx-espeak":
@@ -188,4 +212,5 @@ def merge_results(manifest: dict, cancel) -> dict:
     return {"segments":segments,"time_basis":"original_audio","scope":"whole_file", "merge_summary":summary,
             "model_id":manifest["model_id"],"package_sha256":manifest["package_sha256"],"device":manifest["device"],
             "quality":results[0].get("quality"),"chunk_count":len(chunks),"load_count":results[-1].get("load_count"),
-            "boundary_note":"Overlapping-context machine inference; seam phonetic correctness is not human-verified"}
+            "boundary_note":"Overlapping-context machine inference; seam phonetic correctness is not human-verified",
+            **({"phone_mapping":copy.deepcopy(manifest["phone_mapping"])} if manifest.get("phone_mapping") is not None else {})}

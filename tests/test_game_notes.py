@@ -138,9 +138,12 @@ def test_boundaries_and_pitch_are_separate_graph_outputs(monkeypatch,tmp_path):
     assert len(decode_regions(decoded,start_sec=0,duration_sec=1)['notes'])==3
 
 
-def test_cuda_is_not_silently_substituted_by_cpu(tmp_path):
-    from any2xsampa.adapters.game_onnx import GameOnnxRuntime
-    with pytest.raises(ValueError,match='CPU only'):GameOnnxRuntime(tmp_path,device='cuda')
+def test_cuda_is_not_silently_substituted_by_cpu(tmp_path, monkeypatch):
+    import onnxruntime as ort
+    from any2xsampa.adapters.ort_device import create_session
+    monkeypatch.setattr(ort, "get_available_providers", lambda: ["CPUExecutionProvider"])
+    with pytest.raises(RuntimeError, match="CUDAExecutionProvider is unavailable"):
+        create_session(tmp_path / "encoder.onnx", None, "cuda")
 
 
 def test_snapshot_hash_or_language_mismatch_fails_before_session_creation(tmp_path,monkeypatch):

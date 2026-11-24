@@ -4,6 +4,7 @@ import math
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from .common import ROOT, read, sha, write
+from ..exporters.miku_v4c import project_ipa
 from .vsqx_export import _tokens_for_phone
 from any2xsampa.vocaloid.draft import VocalNoteDraft, VocalTrackDraft, VocalTrackDraftTrack
 from any2xsampa.vocaloid.phoneme_policy import validate_miku_v4c_note_phonemes
@@ -72,6 +73,72 @@ def make_score(result: dict, pitch: dict, tempo: float) -> dict:
             "tempo":tempo,"tempo_source":"user_grid_tempo_not_estimated","ticks_per_quarter":policy["ticks_per_quarter"],
             "policy_sha256":sha(POLICY),"notes":rows,"phone_count":len(result["segments"]),
             "unassigned_phone_indices":unmatched,"unassigned_phone_count":len(unmatched),
+            "placeholder_note_count":sum(r["placeholder"] for r in rows),
+            "approximated_note_count":sum(bool(r["approximations"]) for r in rows),
+            "pitch_transpose_semitones":0,"ctc_times_are_note_durations":False,
+            "alignment_status":"automatic_draft_not_human_confirmed","model_forwards":0}
+
+def make_fixture_score(result: dict, pitch: dict, tempo: float, *, onset_window_ms: int = 0) -> dict:
+    tempo=positive(tempo,"tempo")
+    policy=read(POLICY)
+    rows=[]
+    start,end=result["input"]["start_sec"],result["input"]["end_sec"]
+    for index,raw in enumerate(pitch["note_candidates"]):
+        begin=float(raw["start_sec"])
+        duration=positive(raw["duration_sec"],"note duration")
+        if not math.isfinite(begin) or begin<start-1e-5 or begin>=end:
+            raise ValueError("Pitch note outside source interval")
+        finish=min(end,begin+duration)
+        if rows and begin < rows[-1]["end_sec"]-1e-5:
+            raise ValueError("Pitch notes overlap; refusing a misleading monophonic score")
+        rows.append({"index":index,"start_sec":begin,"end_sec":finish,"duration_sec":finish-begin,
+                     "pitch":note_number(raw["midi"]),"pitch_source":"audio_pyin",
+                     "phone_indices":[],"ipa":[],"v4c_phonemes":[],"approximations":[],
+                     "unsupported_phones":[],"lyric":"", "placeholder":False})
+    if not rows:
+        raise ValueError("No voiced pitch notes found; no fixed-pitch substitute was created")
+    unmatched=[]
+    distance_limit=policy["alignment"]["maximum_phone_distance_sec"]
+    onset_policy = read(POLICY.with_name("cantonese_subphones.json")) if onset_window_ms else {}
+    from any2xsampa.pipeline.elastic_cantonese import emission_delay, adjust_emission_times
+    delay = emission_delay(result["segments"], rows, set(onset_policy.get("nuclei", []))) if onset_window_ms else 0.
+    aligned_segments = result["segments"]
+    starts = [row["start_sec"] for row in rows]
+    from bisect import bisect_right
+    for index,segment in enumerate(aligned_segments):
+        midpoint=(float(segment["start_sec"])+float(segment["end_sec"]))/2
+        candidates=[]
+        for n,row in enumerate(rows):
+            distance=max(row["start_sec"]-midpoint,midpoint-row["end_sec"],0)
+            candidates.append((distance,abs((row["start_sec"]+row["end_sec"])/2-midpoint),n))
+        distance,_,n=min(candidates)
+        if onset_window_ms and segment["normalized_ipa"] in onset_policy["assignment_onsets"] and index + 1 < len(result["segments"]):
+            following = aligned_segments[index + 1]
+            upcoming = bisect_right(starts, midpoint)
+            if upcoming < len(rows) and following["normalized_ipa"] in onset_policy["nuclei"]:
+                next_mid = (following["start_sec"] + following["end_sec"]) / 2
+                boundary = starts[upcoming]
+                if 0 < boundary-midpoint <= onset_window_ms / 1000 and boundary <= next_mid < rows[upcoming]["end_sec"]:
+                    n, distance = upcoming, boundary - midpoint
+        if distance>distance_limit:
+            unmatched.append(index)
+            continue
+        row=rows[n]; phone=segment["normalized_ipa"]
+        row["phone_indices"].append(index);row["ipa"].append(phone)
+    for row in rows:
+        # Saved legacy/fixture IPA may be incomplete. Leave an explicit gap
+        # that the writer rejects, never replace missing evidence with a vowel.
+        try:
+            row["v4c_phonemes"] = project_ipa(row["ipa"])
+        except ValueError:
+            row.update(placeholder=True, placeholder_reason="requires_note_slice_decoding",
+                       unsupported_phones=list(row["ipa"]))
+        else:
+            row["lyric"] = "/" + " ".join(row["ipa"]) + "/"
+    return {"schema_version":"local_note_score_v1","source":"audio_pyin_draft","input":result["input"],
+            "tempo":tempo,"tempo_source":"user_grid_tempo_not_estimated","ticks_per_quarter":policy["ticks_per_quarter"],
+            "policy_sha256":sha(POLICY),"notes":rows,"phone_count":len(result["segments"]),
+            "assignment_delay_sec":delay,"unassigned_phone_indices":unmatched,"unassigned_phone_count":len(unmatched),
             "placeholder_note_count":sum(r["placeholder"] for r in rows),
             "approximated_note_count":sum(bool(r["approximations"]) for r in rows),
             "pitch_transpose_semitones":0,"ctc_times_are_note_durations":False,

@@ -21,6 +21,7 @@ class RecognizerConfigLike(Protocol):
     model_path: object
     device: object
     allow_stub_fallback: object
+    phone_mapping_path: object
 
 
 @dataclass(slots=True, frozen=True)
@@ -33,10 +34,27 @@ class RecognizerDispatchPlan:
     real_output_path: Path | None = None
     model_path: Path | None = None
     device: str = "auto"
+    phone_mapping_path: Path | None = None
 
 
 def normalize_recognizer_mode(value: object) -> str:
     return str(value or "").strip().lower()
+
+
+def validate_phone_mapping_selection(
+    *,
+    mode: str,
+    real_backend: str | None,
+    real_command: str | None,
+    phone_mapping_path: Path | str | None,
+) -> None:
+    if phone_mapping_path is None:
+        return
+    if not str(phone_mapping_path).strip():
+        raise ValueError("phone_mapping_path must be a non-empty path.")
+    backend = str(real_backend or "").strip().lower()
+    if mode != "real" or backend not in {"onnx-espeak", "onnx_espeak", "trained-onnx"} or real_command:
+        raise ValueError("phone_mapping_path requires real mode with an ONNX/eSpeak backend and no real_command.")
 
 
 def build_recognizer_dispatch_plan(config: RecognizerConfigLike) -> RecognizerDispatchPlan:
@@ -46,6 +64,13 @@ def build_recognizer_dispatch_plan(config: RecognizerConfigLike) -> RecognizerDi
     real_command = _optional_text(config.real_command)
     real_output_path = _optional_path(config.real_output_path)
     model_path = _optional_path(getattr(config, "model_path", None))
+    phone_mapping_path = getattr(config, "phone_mapping_path", None)
+    validate_phone_mapping_selection(
+        mode=mode,
+        real_backend=real_backend,
+        real_command=real_command,
+        phone_mapping_path=phone_mapping_path,
+    )
     device = str(getattr(config, "device", "auto") or "auto").strip().lower()
     if device not in {"auto", "cuda", "cpu"}:
         raise ValueError("Recognizer device must be one of: auto, cuda, cpu.")
@@ -69,6 +94,7 @@ def build_recognizer_dispatch_plan(config: RecognizerConfigLike) -> RecognizerDi
                 real_output_path=real_output_path,
                 model_path=model_path,
                 device=device,
+                phone_mapping_path=_optional_path(phone_mapping_path),
             )
         if real_command is None or real_output_path is None:
             raise ValueError("Real mode requires real_backend or real_command with real_output_path.")

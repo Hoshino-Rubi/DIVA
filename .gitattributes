@@ -3,3 +3,5 @@
 *.ps1 text eol=crlf
 *.png binary
 *.ico binary
+
+src/any2xsampa/config/*.json text eol=lf

@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from any2xsampa.core.models import VsqxSplicingPlan
+from any2xsampa.exporters.ipa_xsampa import miku_v4c_tokens
+from any2xsampa.exporters.miku_v4c import is_legal, project_ipa, project_jyutping, require_legal
 import hashlib
 import json
 from pathlib import Path
@@ -67,6 +70,94 @@ def _tokens_for_phone(phone: str, rules: dict[str, dict[str, Any]]) -> tuple[lis
     if not isinstance(tokens, list) or not all(isinstance(token, str) and token for token in tokens):
         return [], False
     return list(tokens), bool(rule.get("approximation", False))
+
+
+def make_vsqx_splice_plan(
+    segments: list[dict[str, Any]], policy: dict[str, Any]
+) -> VsqxSplicingPlan | None:
+    """Partition mapped phones at a measured closure or vowel transition."""
+    rules = policy["v4c_phone_rules"]
+    splicing = policy["v4c_splicing"]
+    labels = [segment["normalized_ipa"] for segment in segments]
+    tokens = [miku_v4c_tokens(label, rules)[0] for label in labels]
+    if not all(tokens):
+        return None
+    for i, (segment, label) in enumerate(zip(segments, labels, strict=True)):
+        bounds = segment.get("subphone_boundaries") or {}
+        before = [token for group in tokens[:i] for token in group]
+        after = [token for group in tokens[i + 1:] for token in group]
+        closure = bounds.get("coda_closure_ms")
+        if closure is not None and not after and label in splicing["coda_ipa"] and before:
+            carrier = before[-1]
+            if carrier in splicing["vowel_tokens"]:
+                return VsqxSplicingPlan("coda", closure, tuple(before), (carrier, *tokens[i]))
+        transition = bounds.get("vowel_transition_ms")
+        if transition is not None and label in splicing["diphthong_ipa"] and len(tokens[i]) == 2:
+            head, tail = tokens[i]
+            return VsqxSplicingPlan("diphthong", transition, (*before, head), (tail, *after))
+    return None
+
+
+def validated_note_tokens(row: dict[str, Any], rules=None) -> list[str]:
+    """Only accept whole playable syllables backed by a non-placeholder note."""
+    if row.get("placeholder"):
+        raise ValueError("Re-decode the audio note before exporting a placeholder")
+    tokens = row.get("v4c_phonemes")
+    if rules is not None:
+        from ..exporters.singing_v9_rules import allowed
+        if not isinstance(tokens,list) or not allowed(tokens,rules):
+            raise ValueError("Non-whitelisted V9 sequence")
+        return tokens
+    if syllable := row.get("jyutping"):
+        tokens = project_jyutping(syllable)
+    elif isinstance(tokens, list) and is_legal(tokens):
+        return list(tokens)
+    elif phones := row.get("ipa"):
+        tokens = project_ipa(phones)
+    else:
+        raise ValueError("Invalid Miku V4C note without acoustic IPA or Jyutping evidence")
+    require_legal(tokens)
+    return list(tokens)
+
+
+def require_playable_tree(root: ET.Element, rules=None) -> list[list[str]]:
+    """Validate the actual note/p values, including untouched template notes."""
+    tag = lambda name: _tag(name, _namespace(root))
+    sequences = []
+    for index, note in enumerate(root.iter(tag("note"))):
+        children = note.findall(tag("p"))
+        if len(children) != 1:
+            raise ValueError(f"Miku V4C note {index} needs exactly one phoneme sequence")
+        tokens = (children[0].text or "").split()
+        if rules is not None:
+            from ..exporters.singing_v9_rules import allowed
+            if not allowed(tokens,rules):raise ValueError("Non-whitelisted V9 XML")
+        else:
+            require_legal(tokens)
+        sequences.append(tokens)
+    return sequences
+
+
+def write_generated_expression(part: ET.Element, namespace: str) -> None:
+    """Set the static V3 articulation and a single native VSQ4 PBS event."""
+    q = lambda name: _tag(name, namespace)
+    for style in part.findall(f"{q('pStyle')}/{q('v')}[@id='opening']"):
+        style.text = "115"
+    notes = part.findall(q("note"))
+    for note in notes:
+        note.find(q("v")).text = "64"
+        note.find(f"{q('nStyle')}/{q('v')}[@id='opening']").text = "115"
+    for event in part.findall(q("cc")):
+        value = event.find(q("v"))
+        if value is not None and value.get("id") in {"P", "S"}:
+            part.remove(event)
+    event = ET.Element(q("cc"))
+    ET.SubElement(event, q("t")).text = "0"
+    ET.SubElement(event, q("v"), {"id": "S"}).text = "12"
+    part.insert(list(part).index(notes[0]), event)
+
+
+_tokens_for_phone = miku_v4c_tokens
 
 
 def _segments_for_note(segments: list[dict[str, Any]], start: float, end: float) -> list[dict[str, Any]]:

@@ -76,6 +76,7 @@ class RecognizerConfig:
     model_path: Path | None = None
     device: str = "auto"
     allow_stub_fallback: bool = False
+    phone_mapping_path: Path | None = None
 
 
 def _frame_trace(
@@ -599,6 +600,7 @@ class ConfigurableUniversalPhoneRecognizer(UniversalPhoneRecognizer):
                 output_path=getattr(plan, "real_output_path", None),
                 model_path=getattr(plan, "model_path", None),
                 device=getattr(plan, "device", "auto"),
+                phone_mapping_path=getattr(plan, "phone_mapping_path", None),
             )
         if plan.primary_kind == "real_command":
             if plan.real_command is None or plan.real_output_path is None:
@@ -611,6 +613,8 @@ class ConfigurableUniversalPhoneRecognizer(UniversalPhoneRecognizer):
         try:
             return self._build_from_plan(plan).recognize(vocal_audio_path, lyrics=lyrics)
         except Exception as exc:
+            if getattr(plan, "phone_mapping_path", None) is not None:
+                raise  # An explicit mapping must never be hidden by a debug stub.
             mode = str(getattr(plan, "mode", self.config.mode)).strip().lower()
             if mode == "real" and bool(self.config.allow_stub_fallback):
                 return _stub_segments(

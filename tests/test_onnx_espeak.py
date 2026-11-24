@@ -213,3 +213,13 @@ def test_chunked_prediction_projects_frames_to_global_indices(tmp_path: Path, mo
         (12800, 28800),
         (25600, 32000),
     ]
+
+
+def test_default_mapping_keeps_aspiration_and_top_k_separate() -> None:
+    recognizer = Recognizer(top_k=4)
+    recognizer._labels = ("<pad>", "p", "ph", "th", "kh", "ts.h")
+    frame = recognizer._frame_prediction(np.array([-9, 0, 4, 3, 2, 1]), 0, 320, np)
+    assert frame["symbol"] == "pʰ"
+    assert [candidate.symbol for candidate in frame["candidates"]] == ["pʰ", "tʰ", "kʰ", "tsʰ"]
+    assert recognizer._project_raw_label("ph2") == "pʰ"
+    assert recognizer._project_raw_label("p") == "p"

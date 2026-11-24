@@ -11,19 +11,21 @@ The Windows desktop app and CLI share a local subprocess engine. Normal use does
 
 New in v1.0.4: open **Cantonese (粤语增强)** to reuse the selected WAV and whole-file/clip range; select the extracted optional model folder, choose **Prepare models**, then **Start** for independent Jyutping, rule-derived IPA and X-SAMPA results. See the [v1.0.4 notes](docs/releases/v1.0.4.md) for explicit preparation downloads, separate model/code licenses and verification scope; existing phone recognition and automatic VSQX remain separate.
 
+**v1.1.0:** `any2xsampa.cmd cantonese-vsqx song.wav --output song.vsqx` uses V13 supervised scoop merging and V9 A+B phoneme decoding. Use `--no-scoop-merge` for the original V9 grid. See [model setup and accuracy limits](docs/releases/v1.1.0.md).
+
 ## Naming transition
 
 DIVA is the product name starting with **v1.0.2**, at [Hoshino-Rubi/DIVA](https://github.com/Hoshino-Rubi/DIVA). The old **v1.0.1** binaries still display Any2Xsampa and are unchanged, including `Any2Xsampa-Setup-v1.0.1.exe`. The `any2xsampa` Python package and commands, internal executable names, environment variables and data directories retain their existing names for compatibility. No settings, models or saved results need to be moved. See the [branding migration notes](docs/branding_migration.md).
 
-## Windows x64 · v1.0.4
+## Windows x64 · v1.1.0
 
-Download **DIVA-Setup-v1.0.4.exe** from the [v1.0.4 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.0.4) and run it. Setup downloads the fixed application volumes, checks their sizes and SHA256, then installs into a new folder. Partial downloads support explicit resumption; failures do not start retry loops. Public automatic installation requires an anonymously accessible, published Release.
+Download **DIVA-Setup-v1.1.0.exe** from the [v1.1.0 Release](https://github.com/Hoshino-Rubi/DIVA/releases/tag/v1.1.0) and run it. Setup downloads the fixed application volumes, checks their sizes and SHA256, then installs into a new folder. Partial downloads support explicit resumption; failures do not start retry loops. Public automatic installation requires an anonymously accessible, published Release.
 
 For offline installation, keep these beside Setup:
 
-- `DIVA-Windows-x64-v1.0.4.zip.001`
-- `DIVA-Windows-x64-v1.0.4.zip.002`
-- `DIVA-Windows-x64-v1.0.4.zip.003`
+- `DIVA-Windows-x64-v1.1.0.zip.001`
+- `DIVA-Windows-x64-v1.1.0.zip.002`
+- `DIVA-Windows-x64-v1.1.0.zip.003`
 
 Run the installer and choose a writable directory. It verifies the volumes and extracts the complete application. Do not run a volume directly or copy only the desktop EXE.
 Python, .NET and required libraries are bundled; no separate server or CUDA Toolkit installation is needed.

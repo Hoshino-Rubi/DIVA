@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "any2xsampa"
-version = "1.0.4"
+version = "1.1.0"
 description = "DIVA (Dialect Intonation & Vocal Automation): local singing-to-IPA and VSQX pipeline"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -12,6 +12,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+singing = ["numpy", "scipy", "soundfile", "torch", "transformers>=4.57,<5", "onnxruntime-gpu>=1.26,<2", "pycantonese==5.0.0"]
 grpc = ["grpcio>=1.64", "grpcio-tools>=1.64"]
 cantonese-g2p = ["pycantonese==5.0.0", "rustling==0.9.0"]
 

@@ -12,7 +12,24 @@ from any2xsampa.services.inference import InferenceRequest, InferenceService, Re
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="DIVA (Dialect Intonation & Vocal Automation): local singing-to-IPA and VSQX pipeline")
+    from any2xsampa import __version__
+    parser.add_argument("--version", action="version", version=__version__)
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    audio_score = subparsers.add_parser("cantonese-vsqx", help="Generate a Miku V4C project from Cantonese audio.")
+    audio_score.add_argument("audio", type=Path)
+    audio_score.add_argument("--output", type=Path, required=True)
+    audio_score.add_argument("--game-snapshot", type=Path, default=None)
+    audio_score.add_argument("--model", type=Path, help="Local frozen eSpeak CTC resource.")
+    audio_score.add_argument("--singing-adapter", type=Path, help="Local V9 rank-8 checkpoint; expects its sibling V5 adapter.")
+    audio_score.add_argument("--no-scoop-merge", dest="scoop_merge", action="store_false",
+                             help="Keep the V9 melody grid; retain A+B decoding and 0.70 checked-coda protection.")
+    audio_score.add_argument("--device", choices=("auto", "cuda", "cpu"), default="auto",
+                             help="ONNX backend for GAME and CTC (not the PyTorch vocal separator).")
+    audio_score.add_argument("--separator-bundle", type=Path)
+    audio_score.add_argument("--acoustic-python", type=Path, help="Local Python for MelBand separation.")
+    audio_score.add_argument("--syllable-bundle", type=Path, help="Local cantonese4-local-models folder for phrase-level encoder features.")
+    audio_score.add_argument("--fixture", type=Path, help="Replay phone evidence instead of running the closed-set acoustic model.")
 
     open_parser = subparsers.add_parser("infer-open", help="Infer phones from audio without lyrics.")
     open_parser.add_argument("--audio", required=True, help="Path to input audio.")
@@ -28,7 +45,55 @@ def build_parser() -> argparse.ArgumentParser:
     from any2xsampa.local.cli import add_parsers
     add_parsers(subparsers)
     _add_candidate_parser(subparsers)
+    _add_render_audit_parser(subparsers)
     return parser
+
+
+def _add_render_audit_parser(subparsers) -> None:
+    parser = subparsers.add_parser("audit-render", help="Inspect an existing PCM16 render using explicit sample windows; no recognition or synthesis.")
+    parser.add_argument("--wav", required=True, type=Path)
+    parser.add_argument("--schedule", required=True, type=Path, help="render_audit_schedule_v1 with clocks in rendered WAV samples.")
+    parser.add_argument("--check-period", action="store_true", help="Use installed optional YIN dependencies for descriptive periods; never verifies voicing or pronunciation.")
+    parser.add_argument("--output", type=Path, help="Write a new JSON report; existing files are preserved.")
+
+
+def _audit_render_command(args: argparse.Namespace) -> dict:
+    import math
+    from any2xsampa.local.render_audit import audit_wave
+
+    if args.output is not None and args.output.exists():
+        raise FileExistsError(args.output)
+    if args.schedule.stat().st_size > 1024 * 1024:
+        raise ValueError("Render audit schedule exceeds 1MiB")
+    schedule = json.loads(args.schedule.read_text(encoding="utf-8-sig"))
+    analyzer = None
+    if args.check_period:
+        from any2xsampa.local.render_period import analyze_period
+        analyzer = analyze_period
+    report = audit_wave(args.wav, schedule, period_analyzer=analyzer)
+    # All audio-only observations finish before the requested MIDI comparison.
+    for row in report["rows"]:
+        if row["kind"] != "note":
+            continue
+        target = row["request"].get("pitch_midi")
+        hz = (row.get("period_observation", {}).get("f0_quantiles_hz") or {}).get("p50")
+        valid_target = type(target) is int and 0 <= target <= 127
+        valid_period = type(hz) in (int, float) and math.isfinite(hz) and hz > 0
+        cents = 1200 * math.log2(hz / (440 * 2 ** ((target - 69) / 12))) \
+            if valid_target and valid_period else None
+        row["requested_pitch_comparison"] = {
+            "requested_midi": target, "median_difference_cents": cents,
+            "period_estimate_within_50c": abs(cents) <= 50 if cents is not None else None,
+            "pitch_truth": None, "reference_used_by_estimator": False,
+        }
+    report["period_check_requested"] = args.check_period
+    serialized = json.dumps(report, ensure_ascii=False, allow_nan=False, indent=2) + "\n"
+    if len(serialized.encode("utf-8")) > 4 * 1024 * 1024:
+        raise ValueError("Render audit report exceeds 4MiB")
+    if args.output is not None:
+        with args.output.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(serialized)
+    return report
 
 
 def _add_candidate_parser(subparsers) -> None:
@@ -89,6 +154,11 @@ def _add_recognizer_args(parser: argparse.ArgumentParser) -> None:
         "--recognizer-model",
         default=None,
         help="Local recognizer bundle directory required by model-backed real recognizers.",
+    )
+    parser.add_argument(
+        "--recognizer-phone-mapping",
+        default=None,
+        help="Optional phone mapping JSON for real ONNX/eSpeak only; omitted keeps the production mapping.",
     )
     parser.add_argument(
         "--recognizer-device",
@@ -171,8 +241,14 @@ def main(argv: list[str] | None = None) -> int:
                             "cantonese4", "cantonese4-status", "cantonese4-prepare", "cantonese4-replay"}:
             from any2xsampa.local.cli import run
             result = run(args)
+        elif args.command == "cantonese-vsqx":
+            from any2xsampa.local.cantonese_audio import transcribe
+            result = transcribe(args.audio, args.output, args.game_snapshot, args.model,
+                                args.separator_bundle, args.fixture, args.syllable_bundle, args.acoustic_python, args.singing_adapter, args.scoop_merge, args.device)
         elif args.command == "infer-candidate":
             result = _candidate_command(args)
+        elif args.command == "audit-render":
+            result = _audit_render_command(args)
         else:
             request = InferenceRequest.from_args_namespace(
                 args,

@@ -1,0 +1,19 @@
+{
+  "long_sec": 0.2,
+  "long_span": 0.55,
+  "distinct_onset_conf": 0.72,
+  "new_peak": 0.78,
+  "peak_rise": 0.35,
+  "lead_drop_db": 6,
+  "ultrashort": 0.135,
+  "lead_onset_conf": 0.48,
+  "lead_ctc": 0.34,
+  "continuous_dip": 6,
+  "standalone_gap": 0.15,
+  "baseline_sec": 8,
+  "bleed_drop_db": 16,
+  "nonblank_prob": 0.18,
+  "asr_guard_sec": 0.08,
+  "periodic_support": 0.6,
+  "formant_contrast_db": 5
+}

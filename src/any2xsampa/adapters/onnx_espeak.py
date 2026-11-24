@@ -712,7 +712,7 @@ class OnnxEspeakCTCUniversalPhoneRecognizer(UniversalPhoneRecognizer):
             symbol_score = means.get(symbol, 0.0)
             candidates = [PhoneCandidate(symbol, symbol_score)] + [
                 candidate for candidate in candidates if candidate.symbol != symbol
-            ]
+            ][:self.top_k - 1]
         posterior_frames = [
             {
                 "candidates": [

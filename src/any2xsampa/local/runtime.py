@@ -2,13 +2,41 @@
 from __future__ import annotations
 from contextlib import nullcontext
 import gc
-import json
 from pathlib import Path
 import shutil
 import sys
 import threading
-from .common import ROOT, check_cancel, read, request, sha, write
+from .common import ROOT, check_cancel, phone_mapping_identity, read, request, sha, write
 from .registry import package
+
+
+def _mapping_file_state(path: Path) -> tuple[int, ...]:
+    stat = path.stat()
+    return stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns
+
+
+def _verify_mapping_file(mapping: dict | None, state: tuple[int, ...] | None) -> None:
+    if mapping is None:
+        return
+    try:
+        unchanged = _mapping_file_state(Path(mapping["path"])) == state
+    except OSError as exc:
+        raise ValueError("Recognizer phone mapping changed during request") from exc
+    if not unchanged:
+        raise ValueError("Recognizer phone mapping changed during request")
+
+
+def _mapping_model_state(model) -> tuple:
+    return (frozenset(model._blank_labels), model._strip_trailing_tone_digits,
+            dict(model._raw_label_aliases), dict(model._raw_to_internal))
+
+
+def _verify_mapping_model(model, mapping: dict) -> None:
+    if (Path(model.phone_mapping_path).resolve() != Path(mapping["path"])
+            or model._mapping_profile != mapping["profile"]
+            or model._mapping_schema != mapping["schema_version"]):
+        raise ValueError("Loaded recognizer phone mapping does not match request identity")
+
 
 class RuntimeEngine:
     def __init__(self):
@@ -17,9 +45,15 @@ class RuntimeEngine:
         self.head = None
         self.lock = None
         self.loads = 0
+        self.phone_mapping: dict | None = None
+        self._phone_mapping_file_state: tuple[int, ...] | None = None
+        self._phone_mapping_model_state: tuple | None = None
 
     def close(self):
         self.head = self.model = None
+        self.phone_mapping = None
+        self._phone_mapping_file_state = None
+        self._phone_mapping_model_state = None
         gc.collect()
         if "torch" in sys.modules:
             sys.modules["torch"].cuda.empty_cache()
@@ -38,6 +72,12 @@ class RuntimeEngine:
         output = Path(p.pop("_output"))
         r = request(p)
         spec = package(r["model"])
+        selection = r.get("recognizer_phone_mapping")
+        mapping_state = (_mapping_file_state(Path(selection).resolve())
+                         if selection is not None and spec["backend"] == "onnx-espeak" else None)
+        # Identify once per request; stat guards bind the loader and forward to these same bytes.
+        phone_mapping = phone_mapping_identity(selection, spec["backend"])
+        _verify_mapping_file(phone_mapping, mapping_state)
         if Path(spec["python"]).resolve() != Path(sys.executable).resolve():
             raise ValueError("Model package requires a different isolated interpreter")
         if r["device"] not in spec["devices"]:
@@ -52,6 +92,8 @@ class RuntimeEngine:
         monitor = ProcessResourceMonitor(output / "monitor", timeout_seconds=900) if gpu else nullcontext()
         with monitor:
             key = (spec["package_sha256"], r["device"])
+            if phone_mapping is not None:
+                key += ((phone_mapping["path"], phone_mapping["sha256"]),)
             reused = self.key == key
             if self.key != key:
                 self.close()
@@ -60,7 +102,12 @@ class RuntimeEngine:
                 self.lock.__enter__()
                 progress({"stage": "loading", "model": r["model"], "device": r["device"]})
                 try:
-                    self._load(spec, r["device"], output)
+                    _verify_mapping_file(phone_mapping, mapping_state)
+                    self._phone_mapping_file_state = mapping_state
+                    if phone_mapping is None:
+                        self._load(spec, r["device"], output)
+                    else:
+                        self._load(spec, r["device"], output, phone_mapping)
                     self.key = key
                     self.loads += 1
                 except BaseException:
@@ -69,11 +116,14 @@ class RuntimeEngine:
             check_cancel(cancel)
             progress({"stage": "recognizing", "model_reused": reused, "load_count": self.loads})
             try:
+                self._phone_mapping_file_state = mapping_state
+                self._verify_phone_mapping(phone_mapping)
                 if spec["backend"] == "guarded-phoneticxeus":
                     result = self._candidate(r, spec, output)
                 else:
                     result = self._onnx(output)
                 check_cancel(cancel)
+                self._verify_phone_mapping(phone_mapping)
                 evidence = {**result, "model_id": spec["id"], "package_sha256": spec["package_sha256"],
                             "device": r["device"], "quality": spec["quality"], "load_count": self.loads}
                 artifact = output / "runtime-result.json"
@@ -83,7 +133,18 @@ class RuntimeEngine:
                 self.close()
                 raise
 
-    def _load(self, spec, device, output):
+    def _verify_phone_mapping(self, mapping: dict | None) -> None:
+        if mapping is None:
+            return
+        _verify_mapping_file(mapping, self._phone_mapping_file_state)
+        _verify_mapping_model(self.model, mapping)
+        if (self.phone_mapping != mapping
+                or _mapping_model_state(self.model) != self._phone_mapping_model_state):
+            raise ValueError("Loaded recognizer phone mapping does not match request identity")
+
+    def _load(self, spec, device, output, phone_mapping: dict | None = None):
+        if phone_mapping is not None and spec["backend"] != "onnx-espeak":
+            raise ValueError("recognizer_phone_mapping requires an onnx-espeak model")
         paths = spec["paths"]
         if spec["backend"] == "guarded-phoneticxeus":
             from any2xsampa.adapters.phoneticxeus_runtime import PhoneticXeusRuntime
@@ -105,9 +166,16 @@ class RuntimeEngine:
                 return session
             self.model = RecordedOnnxRecognizer(
                 model_path=paths["model"], vocab_path=paths["vocabulary"], device=device,
+                phone_mapping_path=Path(phone_mapping["path"]) if phone_mapping else None,
                 expected_model_sha256=spec["model_sha256"], expected_vocab_sha256=spec["vocabulary_sha256"],
                 cpu_thread_limit=4, session_factory=factory)
+            if phone_mapping is not None:
+                if self._phone_mapping_file_state is not None:
+                    _verify_mapping_file(phone_mapping, self._phone_mapping_file_state)
+                _verify_mapping_model(self.model, phone_mapping)
+                self._phone_mapping_model_state = _mapping_model_state(self.model)
             self.model._load_runtime()
+        self.phone_mapping = dict(phone_mapping) if phone_mapping is not None else None
 
     def _candidate(self, r, spec, output):
         from any2xsampa.adapters.candidate_inference import audio_request
@@ -133,6 +201,7 @@ class RuntimeEngine:
 
     def _onnx(self, output):
         from any2xsampa.pipeline.normalizer import ConfigurablePhoneNormalizer
+        self._verify_phone_mapping(self.phone_mapping)
         write(output / "FORWARD_STARTED.json", {"backend": "onnx-espeak", "full_encoder_forwards_requested": 1, "retry": False})
         from any2xsampa.adapters.onnx_espeak import OnnxEspeakInferenceError
         from dataclasses import asdict
@@ -143,12 +212,14 @@ class RuntimeEngine:
             if not self.model.last_frames or any(f["symbol"] is not None for f in self.model.last_frames):
                 raise
             segments = []  # Verified all-blank frames, e.g. an instrumental-only window.
+        self._verify_phone_mapping(self.phone_mapping)
+        mapping_metadata = {"phone_mapping": dict(self.phone_mapping)} if self.phone_mapping else {}
         frames = [{**f, "candidates": [asdict(c) for c in f["candidates"]]} for f in self.model.last_frames]
         frame_path = output / "onnx-frames.json"
-        write(frame_path, {"schema_version": "local_onnx_frames_v1", "frames": frames})
+        write(frame_path, {"schema_version": "local_onnx_frames_v1", "frames": frames, **mapping_metadata})
         self.model.last_frames = []
         write(output / "FORWARD_FINISHED.json", {"full_encoder_forwards_completed": 1})
         segments = ConfigurablePhoneNormalizer(ROOT / "src/any2xsampa/config/ipa_aliases.json").normalize(segments)
         return {"segments": [s.to_dict() for s in segments], "time_basis": "crop",
                 "model_metadata": self.model.model_metadata(), "frame_evidence_path": str(frame_path),
-                "frame_evidence_sha256": sha(frame_path)}
+                "frame_evidence_sha256": sha(frame_path), **mapping_metadata}

@@ -6,9 +6,19 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
+from typing import Any, Mapping
 import unicodedata
 
 CONFIG = Path(__file__).resolve().parents[1] / "config/ipa_to_xsampa_v2.json"
+
+
+def miku_v4c_tokens(phone: str, rules: Mapping[str, Mapping[str, Any]]) -> tuple[list[str], bool]:
+    """Project one complete IPA label into the configured voicebank vocabulary."""
+    rule = rules.get(unicodedata.normalize("NFC", phone), {})
+    tokens = rule.get("tokens", [])
+    if not isinstance(tokens, list) or not all(isinstance(token, str) and token for token in tokens):
+        return [], False
+    return list(tokens), bool(rule.get("approximation", False))
 
 
 @dataclass(frozen=True)

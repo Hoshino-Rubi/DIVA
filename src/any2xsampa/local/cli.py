@@ -26,6 +26,7 @@ def add_parsers(sub):
     p.add_argument("audio")
     p.add_argument("--model", required=True)
     p.add_argument("--device", choices=["cuda", "cpu"], default="cuda")
+    p.add_argument("--recognizer-phone-mapping", help="Optional ONNX phone mapping JSON; omitted preserves production mapping.")
     p.add_argument("--start", type=float, default=0)
     p.add_argument("--duration", type=float, default=8)
     p.add_argument("--whole-file", action="store_true", help="Recognize the entire WAV with overlapping bounded model windows.")

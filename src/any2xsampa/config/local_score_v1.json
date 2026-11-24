@@ -20,6 +20,90 @@
     "maximum_phone_distance_sec": 0.35,
     "kind": "posthoc_emission_anchor_heuristic_not_verified_phone_boundaries"
   },
+  "v4c_splicing": {
+    "min_fragment_ms": 24,
+    "coda_ipa": [
+      "p",
+      "t",
+      "k",
+      "p̚",
+      "t̚",
+      "k̚"
+    ],
+    "diphthong_ipa": [
+      "aɪ",
+      "aʊ",
+      "ɐi",
+      "ɐu",
+      "eɪ",
+      "oʊ",
+      "ɔi",
+      "ɔɪ",
+      "œy"
+    ],
+    "vowel_tokens": [
+      "a",
+      "o",
+      "e",
+      "i",
+      "u",
+      "y",
+      "@`",
+      "uei"
+    ],
+    "default_dyn": 64,
+    "pitch_bend_sensitivity": 2,
+    "styles": {
+      "coda": [
+        {
+          "vel": 64,
+          "ope": 127,
+          "dyn": 64
+        },
+        {
+          "vel": 64,
+          "ope": 85,
+          "dyn": 36
+        }
+      ],
+      "diphthong": [
+        {
+          "vel": 64,
+          "ope": 127,
+          "dyn": 64
+        },
+        {
+          "vel": 64,
+          "ope": 115,
+          "dyn": 56
+        }
+      ]
+    },
+    "pitch_smoothing": {
+      "transition_ms": 65,
+      "deadband": 0.12,
+      "maximum": 0.5,
+      "outlier": 1.75
+    }
+  },
+  "acoustic_comparison_aliases": {
+    "aː": "a",
+    "iː": "i",
+    "uː": "u",
+    "ɔː": "ɔ",
+    "ɛː": "ɛ",
+    "œː": "œ",
+    "yː": "y",
+    "eː": "e",
+    "oː": "o",
+    "t͡s": "ts",
+    "t͡sʰ": "tsʰ",
+    "p̚": "p",
+    "t̚": "t",
+    "k̚": "k",
+    "kʷ": "k",
+    "kʷʰ": "kʰ"
+  },
   "v4c_phone_rules": {
     "p": {
       "tokens": [
@@ -275,7 +359,31 @@
       ],
       "approximation": true,
       "basis": "legacy_internal_alias_for_export_only"
+    },
+    "p̚": {
+      "tokens": [
+        "p"
+      ],
+      "approximation": true
+    },
+    "t̚": {
+      "tokens": [
+        "t"
+      ],
+      "approximation": true
+    },
+    "k̚": {
+      "tokens": [
+        "k"
+      ],
+      "approximation": true
     }
+  },
+  "sequence_fallbacks": {
+    "n e i": [
+      "n",
+      "ei"
+    ]
   },
   "placeholder": {
     "phonemes": [

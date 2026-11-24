@@ -23,7 +23,7 @@ from any2xsampa.core.models import PhoneCandidate, PhoneSegment, TimeRange
 from any2xsampa.adapters.audio_provenance import AudioProvenanceError, validate_audio_binding
 from any2xsampa.adapters.onnx_espeak import OnnxEspeakCTCUniversalPhoneRecognizer
 from any2xsampa.adapters.recognizer_cantonese_singing_ctc import CantoneseSingingCTCRecognizer
-from any2xsampa.adapters.recognizer_dispatch import render_real_command_args
+from any2xsampa.adapters.recognizer_dispatch import render_real_command_args, validate_phone_mapping_selection
 
 
 class RealRecognizerFactory(Protocol):
@@ -53,6 +53,7 @@ class RealRecognizerRuntimeOptions:
     output_path: Path | None = None
     model_path: Path | None = None
     device: str = "auto"
+    phone_mapping_path: Path | None = None
 
 
 @dataclass(slots=True)
@@ -807,8 +808,16 @@ class RealBackendUniversalPhoneRecognizer(UniversalPhoneRecognizer):
         model_path: Path | None = None,
         device: str = "auto",
         backend_specs: Mapping[str, RealRecognizerBackendSpec] | None = None,
+        phone_mapping_path: Path | None = None,
     ) -> None:
         self.backend_name = backend_name.strip().lower()
+        validate_phone_mapping_selection(
+            mode="real",
+            real_backend=self.backend_name,
+            real_command=None,
+            phone_mapping_path=phone_mapping_path,
+        )
+        self.phone_mapping_path = Path(phone_mapping_path) if phone_mapping_path is not None else None
         self.output_path = Path(output_path) if output_path is not None else None
         self.model_path = Path(model_path) if model_path is not None else None
         self.device = device.strip().lower() or "auto"
@@ -829,6 +838,7 @@ class RealBackendUniversalPhoneRecognizer(UniversalPhoneRecognizer):
                     runtime_factory=lambda options: OnnxEspeakCTCUniversalPhoneRecognizer(
                         model_path=options.model_path,
                         device=options.device,
+                        phone_mapping_path=options.phone_mapping_path,
                     ),
                     capability=BackendCapabilityProfile(
                         backend_kind="onnx-espeak",
@@ -904,6 +914,7 @@ class RealBackendUniversalPhoneRecognizer(UniversalPhoneRecognizer):
                 output_path=self.output_path,
                 model_path=self.model_path,
                 device=self.device,
+                phone_mapping_path=self.phone_mapping_path,
             )
         )
 
